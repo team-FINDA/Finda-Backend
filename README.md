@@ -1,5 +1,5 @@
 # Finda-Backend
-
+```mermaid
 erDiagram
 	VOLUNTEER{
 		uuid id PK
@@ -72,3 +72,4 @@ erDiagram
 	VOLUNTEER ||--o{ ACTIVITY : VolunteerDetail
 	USER_ACTIVITY }o--|| ACTIVITY : TeacherArea
 	USER ||--o{ USER_ACTIVITY : asdf
+```
