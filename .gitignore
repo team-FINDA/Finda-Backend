@@ -1,6 +1,9 @@
-HELP.md
-.gradle
-build/
+# Help & Documentation
+**/HELP.md
+
+# Gradle
+.gradle/
+**/build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -13,16 +16,16 @@ build/
 .settings
 .springBeans
 .sts4-cache
-bin/
+**/bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
-out/
+**/out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
@@ -37,4 +40,25 @@ out/
 .vscode/
 
 ### Kotlin ###
-.kotlin
+.kotlin/
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Log files ###
+*.log
+logs/
+
+### Temporary files ###
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+### Application properties (민감 정보) ###
+**/application-local.yml
+**/application-local.properties
+**/application-secret.yml
+**/application-secret.properties
