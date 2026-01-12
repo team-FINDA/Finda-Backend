@@ -1,1 +1,14 @@
-spring.application.name=finda-auth
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://${AUTH_MYSQL_HOST}:${AUTH_DB_PORT}/${AUTH_DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${AUTH_MYSQL_USERNAME}
+    password: ${AUTH_MYSQL_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: ${AUTH_DEV_SHOW_SQL}
