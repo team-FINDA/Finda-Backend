@@ -1,1 +1,14 @@
-application.ymlspring.application.name=finda-volunteer
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://${VOLUNTEER_MYSQL_HOST}:${VOLUNTEER_DB_PORT}/${VOLUNTEER_DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${VOLUNTEER_MYSQL_USERNAME}
+    password: ${VOLUNTEER_MYSQL_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: ${VOLUNTEER_DEV_SHOW_SQL}

@@ -1,1 +1,14 @@
-spring.application.name=finda-notification
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://${NOTIFICATION_MYSQL_HOST}:${NOTIFICATION_DB_PORT}/${NOTIFICATION_DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${NOTIFICATION_MYSQL_USERNAME}
+    password: ${NOTIFICATION_MYSQL_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: ${NOTIFICATION_PROD_SHOW_SQL}
