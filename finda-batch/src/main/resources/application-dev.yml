@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://${BATCH_MYSQL_HOST}:${BATCH_DB_PORT}/${BATCH_DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${BATCH_MYSQL_USERNAME}
+    password: ${BATCH_MYSQL_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: ${BATCH_DEV_SHOW_SQL}
