@@ -19,20 +19,32 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter")
+extra["springCloudVersion"] = "2023.0.3"
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage")
+dependencies {
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+}
+
+
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
     }
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+        freeCompilerArgs.addAll(
+            "-Xjsr305=strict",
+            "-Xannotation-default-target=param-property"
+        )
     }
 }
 
