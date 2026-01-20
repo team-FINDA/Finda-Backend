@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class GlobalExceptionHandler {
 
     @ExceptionHandler(FindaException::class) // FindaException 발생 시 이 메서드 자동 실행
-    fun handleWeeShException(e: FindaException): ResponseEntity<ErrorResponse> {
+    fun handleFindaException(e: FindaException): ResponseEntity<ErrorResponse> {
         val errorCode = e.errorCode
         val response = ErrorResponse.of(errorCode, errorCode.message())
         return ResponseEntity(response, HttpStatus.valueOf(errorCode.status()))

@@ -16,5 +16,5 @@ enum class ErrorCode(
 
     override fun status(): Int = status
     override fun message(): String = message
-    override fun code(): String = "AUTH-$status-$sequence"
+    override fun code(): String = "GATEWAY-$status-$sequence"
 }

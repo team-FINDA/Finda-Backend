@@ -17,5 +17,5 @@ enum class ErrorCode(
 
     override fun status(): Int = status
     override fun message(): String = message
-    override fun code(): String = "BATCH-$status-$sequence"
+    override fun code(): String = "VOLUNTEER-$status-$sequence"
 }
