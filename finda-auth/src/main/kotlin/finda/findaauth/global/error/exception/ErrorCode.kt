@@ -10,8 +10,7 @@ enum class ErrorCode(
     INTERNAL_SERVER_ERROR(500, "Internal Server Error",1),
 
     // client error
-    BAD_REQUEST(400, "Bad Request",1)
-    ;
+    BAD_REQUEST(400, "Bad Request",1);
 
     override fun status(): Int = status
     override fun message(): String = message
