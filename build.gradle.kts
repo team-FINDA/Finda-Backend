@@ -1,3 +1,5 @@
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -9,6 +11,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.2.1"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("org.jlleitschuh.gradle.ktlint") version "11.6.0" apply false
 }
 
 allprojects {
@@ -46,6 +49,17 @@ allprojects {
 
 	tasks.withType<Test> {
 		useJUnitPlatform()
+	}
+}
+
+subprojects {
+	apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+	extensions.configure<KtlintExtension>("ktlint") {
+		android.set(false)
+		outputToConsole.set(true)
+		enableExperimentalRules.set(true)
+		ignoreFailures.set(false)
 	}
 }
 
