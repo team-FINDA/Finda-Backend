@@ -9,5 +9,4 @@ class FindaBatchApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
