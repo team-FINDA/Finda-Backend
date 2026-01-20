@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class FindaVolunteerApplication
 
 fun main(args: Array<String>) {
-	runApplication<FindaVolunteerApplication>(*args)
+    runApplication<FindaVolunteerApplication>(*args)
 }

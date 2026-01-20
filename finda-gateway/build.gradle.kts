@@ -31,8 +31,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
-
-
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")

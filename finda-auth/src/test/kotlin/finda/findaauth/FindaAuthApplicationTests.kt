@@ -9,5 +9,4 @@ class FindaAuthApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

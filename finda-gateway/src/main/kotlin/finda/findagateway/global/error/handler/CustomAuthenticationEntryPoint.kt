@@ -1,8 +1,8 @@
 package finda.findagateway.global.error.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import finda.findagateway.global.error.exception.JwtAuthenticationException
 import finda.findagateway.global.error.exception.ErrorCode
+import finda.findagateway.global.error.exception.JwtAuthenticationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException

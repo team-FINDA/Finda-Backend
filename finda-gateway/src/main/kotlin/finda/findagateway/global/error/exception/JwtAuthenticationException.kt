@@ -1,6 +1,5 @@
 package finda.findagateway.global.error.exception
 
-import finda.findagateway.global.error.exception.ErrorCode
 import org.springframework.security.core.AuthenticationException
 
 /**

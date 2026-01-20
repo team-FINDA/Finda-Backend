@@ -9,5 +9,4 @@ class FindaGatewayApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
