@@ -20,10 +20,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation(Dependencies.SPRING_WEB)
+    implementation(Dependencies.MYSQL_CONNECTOR)
+    implementation(Dependencies.SPRING_DATA_JPA)
+    implementation(Dependencies.UUID_TIME)
+
 }
 
 kotlin {
