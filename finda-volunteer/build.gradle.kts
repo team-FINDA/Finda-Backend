@@ -24,6 +24,9 @@ dependencies {
     implementation(Dependencies.MYSQL_CONNECTOR)
     implementation(Dependencies.SPRING_DATA_JPA)
     implementation(Dependencies.UUID_TIME)
+    implementation(Dependencies.SPRING_SECURITY)
+    implementation(Dependencies.JACKSON)
+    implementation(Dependencies.JACKSON_TYPE)
 
 }
 

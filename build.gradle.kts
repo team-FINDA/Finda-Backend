@@ -6,17 +6,19 @@ buildscript {
 	}
 }
 
-plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
-	id("org.springframework.boot") version "3.2.1"
-	id("io.spring.dependency-management") version "1.1.7"
-	id("org.jlleitschuh.gradle.ktlint") version "11.6.0" apply false
-}
+	plugins {
+		kotlin("jvm") version PluginVersions.JPA_PLUGIN_VERSION
+		kotlin("plugin.spring") version PluginVersions.JPA_PLUGIN_VERSION
+		kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
+		id("org.springframework.boot") version "3.2.1"
+		id("io.spring.dependency-management") version "1.1.7"
+		id("org.jlleitschuh.gradle.ktlint") version "11.6.0" apply false
+	}
 
 allprojects {
 	apply(plugin = "org.jetbrains.kotlin.jvm")
 	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+	apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "io.spring.dependency-management")
 
