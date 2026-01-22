@@ -21,7 +21,7 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
                 workStartDate = it.workStartDate,
                 workEndDate = it.workEndDate,
                 cycleType = it.cycleType,
-                userId = it.userId,
+                userId = it.userId
             )
         }
     }
@@ -38,7 +38,7 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             workStartDate = domain.workStartDate,
             workEndDate = domain.workEndDate,
             cycleType = domain.cycleType,
-            userId = domain.userId,
+            userId = domain.userId
         )
     }
 }

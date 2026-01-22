@@ -1,5 +1,7 @@
 package finda.findavolunteer.adapter.out.persistence.qrcode.entity
 
+import finda.findavolunteer.adapter.out.persistence.BaseEntity
+import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -8,8 +10,6 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 import java.util.UUID
-import finda.findavolunteer.adapter.out.persistence.BaseEntity
-import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 
 @Entity
 @Table(name = "tbl_qr_code")
@@ -36,5 +36,5 @@ class QrCodeJpaEntity(
     val studentId: UUID,
 
     @Column(nullable = false)
-    val teacherId: UUID,
+    val teacherId: UUID
 ) : BaseEntity(id)

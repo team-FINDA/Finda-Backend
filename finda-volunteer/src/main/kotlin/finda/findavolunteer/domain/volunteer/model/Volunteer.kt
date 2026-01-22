@@ -16,5 +16,5 @@ data class Volunteer(
     val workStartDate: LocalDate,
     val workEndDate: LocalDate,
     val cycleType: CycleType?,
-    val userId: String,
+    val userId: String
 )

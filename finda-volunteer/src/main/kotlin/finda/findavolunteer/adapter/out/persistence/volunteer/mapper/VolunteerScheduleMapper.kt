@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class VolunteerScheduleMapper(
-    private val volunteerRepository: VolunteerRepository,
+    private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<VolunteerSchedule, VolunteerScheduleJpaEntity> {
 
     override fun toDomain(entity: VolunteerScheduleJpaEntity?): VolunteerSchedule? {
@@ -30,7 +30,7 @@ class VolunteerScheduleMapper(
             id = domain.id,
             startDate = domain.startDate,
             endDate = domain.endDate,
-            volunteer = volunteer,
+            volunteer = volunteer
         )
     }
 }

@@ -5,5 +5,5 @@ import java.util.UUID
 data class VolunteerTeachers(
     val id: UUID,
     val volunteerId: UUID,
-    val userId: UUID,
+    val userId: UUID
 )

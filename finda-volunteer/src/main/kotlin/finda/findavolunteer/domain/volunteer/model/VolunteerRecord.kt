@@ -7,5 +7,5 @@ data class VolunteerRecord(
     val userId: String,
     val time: Int,
     val title: String,
-    val volunteerId: UUID,
+    val volunteerId: UUID
 )

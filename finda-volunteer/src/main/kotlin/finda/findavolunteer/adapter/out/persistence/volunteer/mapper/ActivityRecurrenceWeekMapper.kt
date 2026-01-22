@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ActivityRecurrenceWeekMapper(
-    private val volunteerRepository: VolunteerRepository,
+    private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<ActivityRecurrenceWeek, ActivityRecurrenceWeekJpaEntity> {
 
     override fun toDomain(entity: ActivityRecurrenceWeekJpaEntity?): ActivityRecurrenceWeek? {
@@ -28,7 +28,7 @@ class ActivityRecurrenceWeekMapper(
         return ActivityRecurrenceWeekJpaEntity(
             id = domain.id,
             weekday = domain.weekday,
-            volunteer = volunteer,
+            volunteer = volunteer
         )
     }
 }

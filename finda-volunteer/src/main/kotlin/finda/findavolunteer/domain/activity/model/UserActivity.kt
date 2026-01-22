@@ -4,5 +4,5 @@ import java.util.UUID
 
 data class UserActivity(
     val id: UUID,
-    val activityId: UUID,
+    val activityId: UUID
 )

@@ -12,5 +12,5 @@ enum class Month {
     SEPTEMBER,
     OCTOBER,
     NOVEMBER,
-    DECEMBER,
+    DECEMBER
 }

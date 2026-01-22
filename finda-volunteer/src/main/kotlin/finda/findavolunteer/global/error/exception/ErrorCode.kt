@@ -11,7 +11,7 @@ enum class ErrorCode(
 
     // client error
     BAD_REQUEST(400, "Bad Request", 1),
-    VOLUNTEER_NOT_FOUND(400,"Volunteer Not Found",2);
+    VOLUNTEER_NOT_FOUND(400, "Volunteer Not Found", 2);
 
     override fun status(): Int = status
     override fun message(): String = message

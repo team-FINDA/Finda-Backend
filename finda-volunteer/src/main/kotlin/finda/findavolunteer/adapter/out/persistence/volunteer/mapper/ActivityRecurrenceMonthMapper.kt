@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class ActivityRecurrenceMonthMapper(
     private val volunteerRepository: VolunteerRepository,
-    private val volunteerMapper: VolunteerMapper,
+    private val volunteerMapper: VolunteerMapper
 ) : GenericMapper<ActivityRecurrenceMonth, ActivityRecurrenceMonthJpaEntity> {
 
     override fun toDomain(entity: ActivityRecurrenceMonthJpaEntity?): ActivityRecurrenceMonth? {
@@ -18,7 +18,7 @@ class ActivityRecurrenceMonthMapper(
             ActivityRecurrenceMonth(
                 id = it.id!!,
                 volunteerId = it.volunteer!!.id!!,
-                day = it.day,
+                day = it.day
             )
         }
     }
@@ -29,7 +29,7 @@ class ActivityRecurrenceMonthMapper(
         return ActivityRecurrenceMonthJpaEntity(
             id = domain.id,
             volunteer = volunteer,
-            day = domain.day,
+            day = domain.day
         )
     }
 }

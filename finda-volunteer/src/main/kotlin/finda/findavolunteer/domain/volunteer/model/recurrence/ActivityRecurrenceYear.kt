@@ -6,5 +6,5 @@ data class ActivityRecurrenceYear(
     val id: UUID,
     val volunteerId: UUID,
     val day: Int,
-    val month: Int,
+    val month: Int
 )

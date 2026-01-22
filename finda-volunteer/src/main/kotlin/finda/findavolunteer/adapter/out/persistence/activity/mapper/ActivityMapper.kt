@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ActivityMapper(
-    private val volunteerRepository: VolunteerRepository,
+    private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<Activity, ActivityJpaEntity> {
 
     override fun toDomain(entity: ActivityJpaEntity?): Activity? {
@@ -17,7 +17,7 @@ class ActivityMapper(
             Activity(
                 id = it.id!!,
                 activityName = it.activityName,
-                volunteerId = it.volunteer!!.id!!,
+                volunteerId = it.volunteer!!.id!!
             )
         }
     }
@@ -28,7 +28,7 @@ class ActivityMapper(
         return ActivityJpaEntity(
             id = domain.id,
             activityName = domain.activityName,
-            volunteer = volunteer,
+            volunteer = volunteer
         )
     }
 }

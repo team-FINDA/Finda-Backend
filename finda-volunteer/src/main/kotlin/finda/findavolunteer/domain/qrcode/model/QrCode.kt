@@ -1,6 +1,5 @@
 package finda.findavolunteer.domain.qrcode.model
 
-import finda.findavolunteer.domain.volunteer.model.Volunteer
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -12,5 +11,5 @@ data class QrCode(
     val isUsed: Boolean = false,
     val usedAt: LocalDateTime? = null,
     val studentId: UUID,
-    val teacherId: UUID,
+    val teacherId: UUID
 )

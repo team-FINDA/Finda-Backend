@@ -1,5 +1,7 @@
 package finda.findavolunteer.adapter.out.persistence.volunteer.entity.recurrence
 
+import finda.findavolunteer.adapter.out.persistence.BaseEntity
+import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -7,8 +9,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.util.UUID
-import finda.findavolunteer.adapter.out.persistence.BaseEntity
-import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 
 @Entity
 @Table(name = "activity_recurrence_year")
@@ -23,5 +23,5 @@ class ActivityRecurrenceYearJpaEntity(
     val day: Int,
 
     @Column(nullable = false)
-    val month: Int,
+    val month: Int
 ) : BaseEntity(id)

@@ -7,5 +7,5 @@ data class VolunteerSchedule(
     val id: UUID,
     val startDate: LocalDate,
     val endDate: LocalDate,
-    val volunteerId: UUID,
+    val volunteerId: UUID
 )

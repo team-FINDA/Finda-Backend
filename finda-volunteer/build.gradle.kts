@@ -27,7 +27,6 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
-
 }
 
 kotlin {

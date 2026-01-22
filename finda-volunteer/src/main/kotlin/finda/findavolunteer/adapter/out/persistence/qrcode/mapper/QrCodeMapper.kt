@@ -2,7 +2,6 @@ package finda.findavolunteer.adapter.out.persistence.qrcode.mapper
 
 import finda.findavolunteer.adapter.out.persistence.GenericMapper
 import finda.findavolunteer.adapter.out.persistence.qrcode.entity.QrCodeJpaEntity
-import finda.findavolunteer.adapter.out.persistence.volunteer.mapper.VolunteerMapper
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
 import finda.findavolunteer.domain.qrcode.model.QrCode
 import org.springframework.data.repository.findByIdOrNull
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class QrCodeMapper(
-    private val volunteerRepository: VolunteerRepository,
+    private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<QrCode, QrCodeJpaEntity> {
 
     override fun toDomain(entity: QrCodeJpaEntity?): QrCode? {
@@ -23,7 +22,7 @@ class QrCodeMapper(
                 isUsed = it.isUsed,
                 usedAt = it.usedAt,
                 studentId = it.studentId,
-                teacherId = it.teacherId,
+                teacherId = it.teacherId
             )
         }
     }
@@ -39,7 +38,7 @@ class QrCodeMapper(
             isUsed = domain.isUsed,
             usedAt = domain.usedAt,
             studentId = domain.studentId,
-            teacherId = domain.teacherId,
+            teacherId = domain.teacherId
         )
     }
 }
