@@ -27,6 +27,5 @@ class DeviceTokenJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "os", nullable = false)
-    @Enumerated(EnumType.STRING)
     val os: DeviceOs
 ) : BaseEntity(id)
