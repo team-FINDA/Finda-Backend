@@ -38,7 +38,7 @@ class VolunteerJpaEntity(
     @Column(name = "work_end_date", nullable = false)
     val workEndDate: LocalDate,
 
-    @Column(name = "cycle_type", nullable = false)
+    @Column(name = "cycle_type", nullable = true)
     val cycleType: CycleType?,
 
     @Column(name = "user_id", nullable = false)
