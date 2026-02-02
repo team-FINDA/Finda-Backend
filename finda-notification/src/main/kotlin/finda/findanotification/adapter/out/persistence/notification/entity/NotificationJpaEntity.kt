@@ -22,6 +22,7 @@ class NotificationJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     val type: NotificationType,
 
     @Column(name = "volunteer_id", nullable = true)
