@@ -29,7 +29,7 @@ class QrCodeJpaEntity(
     @Column(nullable = false)
     val isUsed: Boolean = false,
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     val usedAt: LocalDateTime? = null,
 
     @Column(nullable = false)
