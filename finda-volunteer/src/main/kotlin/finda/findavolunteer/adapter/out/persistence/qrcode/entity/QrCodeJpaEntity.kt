@@ -17,7 +17,7 @@ class QrCodeJpaEntity(
     id: UUID?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "volunteer_id")
+    @JoinColumn(name = "volunteer_id", nullable = true)
     val volunteer: VolunteerJpaEntity?,
 
     @Column(name = "code", nullable = false)
