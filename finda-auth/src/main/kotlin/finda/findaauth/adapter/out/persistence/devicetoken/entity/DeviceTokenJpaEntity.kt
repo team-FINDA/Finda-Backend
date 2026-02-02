@@ -22,10 +22,10 @@ class DeviceTokenJpaEntity(
     @JoinColumn(name = "user_id")
     val user: UserJpaEntity?,
 
-    @Column(nullable = false)
+    @Column(name = "device_token", nullable = false)
     val deviceToken: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "os", nullable = false)
     val os: DeviceOs
 ) : BaseEntity(id)

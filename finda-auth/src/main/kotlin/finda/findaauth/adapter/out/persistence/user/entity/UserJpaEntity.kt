@@ -12,15 +12,15 @@ import java.util.UUID
 class UserJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     val name: String,
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     val email: String,
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     val password: String,
 
-    @Column(nullable = true)
+    @Column(name = "deleted_at", nullable = true)
     val deletedAt: LocalDateTime? = null
 ) : BaseEntity(id)

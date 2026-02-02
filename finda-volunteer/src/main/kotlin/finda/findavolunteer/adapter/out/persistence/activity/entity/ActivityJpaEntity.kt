@@ -15,7 +15,7 @@ import java.util.UUID
 class ActivityJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "activity_name", nullable = false)
     val activityName: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

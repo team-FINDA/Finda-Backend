@@ -12,12 +12,12 @@ import java.util.UUID
 class NotificationPreferenceJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "type", nullable = false)
     val type: String,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: String,
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     val enabled: Boolean
 ) : BaseEntity(id)

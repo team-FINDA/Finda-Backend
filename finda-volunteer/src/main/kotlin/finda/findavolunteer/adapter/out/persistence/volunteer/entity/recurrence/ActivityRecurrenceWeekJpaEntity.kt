@@ -16,7 +16,7 @@ import java.util.UUID
 class ActivityRecurrenceWeekJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "weekday", nullable = false)
     val weekday: Weekday,
 
     @ManyToOne(fetch = FetchType.LAZY)

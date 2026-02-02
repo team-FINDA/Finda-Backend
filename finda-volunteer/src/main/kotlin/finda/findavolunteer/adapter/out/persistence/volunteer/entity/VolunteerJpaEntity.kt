@@ -14,33 +14,33 @@ import java.util.UUID
 class VolunteerJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     val status: VolunteerStatus,
 
-    @Column(nullable = false)
+    @Column(name = "personnel", nullable = false)
     val personnel: Int,
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     val title: String,
 
-    @Column(nullable = false)
+    @Column(name = "unit_volunteer_hours", nullable = false)
     val unitVolunteerHours: Float,
 
-    @Column(nullable = false)
+    @Column(name = "application_start_date", nullable = false)
     val applicationStartDate: LocalDate,
 
-    @Column(nullable = false)
+    @Column(name = "application_end_date", nullable = false)
     val applicationEndDate: LocalDate,
 
-    @Column(nullable = false)
+    @Column(name = "work_start_date", nullable = false)
     val workStartDate: LocalDate,
 
-    @Column(nullable = false)
+    @Column(name = "work_end_date", nullable = false)
     val workEndDate: LocalDate,
 
-    @Column(nullable = false)
+    @Column(name = "cycle_type", nullable = false)
     val cycleType: CycleType?,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: String
 ) : BaseEntity(id)

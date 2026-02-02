@@ -30,18 +30,18 @@ class StudentJpaEntity(
     @JoinColumn(name = "user_id", unique = true)
     val user: UserJpaEntity?,
 
-    @Column(nullable = false)
+    @Column(name = "grade", nullable = false)
     val grade: Int,
 
-    @Column(nullable = false)
+    @Column(name = "class_num", nullable = false)
     val classNum: Int,
 
-    @Column(nullable = false)
+    @Column(name = "num", nullable = false)
     val num: Int,
 
-    @Column(nullable = false)
+    @Column(name = "total_volunteer_time", nullable = false)
     val totalVolunteerTime: Int,
 
-    @Column(nullable = true)
+    @Column(name = "deleted_at", nullable = true)
     val deletedAt: LocalDateTime? = null
 ) : BaseEntity(id)

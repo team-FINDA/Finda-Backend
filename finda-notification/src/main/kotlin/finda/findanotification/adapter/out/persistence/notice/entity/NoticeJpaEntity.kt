@@ -11,12 +11,12 @@ import java.util.UUID
 class NoticeJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     val title: String,
 
-    @Column(nullable = false)
+    @Column(name = "body", nullable = false)
     val body: String,
 
-    @Column(nullable = false)
+    @Column(name = "admin_id", nullable = false)
     val adminId: String
 ) : BaseEntity(id)

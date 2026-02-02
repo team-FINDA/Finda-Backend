@@ -21,12 +21,12 @@ class StudentParticipationJpaEntity(
     @JoinColumn(name = "volunteer_id")
     val volunteer: VolunteerJpaEntity?,
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     val status: ParticitationStatus,
 
-    @Column(nullable = false)
+    @Column(name = "participated_at", nullable = false)
     val participatedAt: LocalDateTime,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: String
 ) : BaseEntity(id)

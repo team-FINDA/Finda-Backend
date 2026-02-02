@@ -14,16 +14,16 @@ import java.util.UUID
 class NotificationJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     val title: String,
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "body", nullable = false, columnDefinition = "TEXT")
     val body: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "type", nullable = false)
     val type: NotificationType,
 
-    @Column(nullable = true)
+    @Column(name = "volunteer_id", nullable = true)
     val volunteerId: String
 ) : BaseEntity(id)

@@ -15,5 +15,4 @@ abstract class BaseTimeEntity(
     @LastModifiedDate
     @Column(name = "modified_at")
     var modifiedAt: LocalDateTime = LocalDateTime.now()
-
 )

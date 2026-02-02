@@ -14,13 +14,13 @@ import java.util.UUID
 class VolunteerRecordJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: String,
 
-    @Column(nullable = false)
+    @Column(name = "time", nullable = false)
     val time: Int,
 
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false)
     val title: String,
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -9,15 +9,15 @@ import jakarta.persistence.Table
 @Table(name = "tbl_volunteer_notification_preference")
 class VolunteerNotificationPreferenceJpaEntity(
     @Id
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     val id: String,
 
-    @Column(nullable = false)
+    @Column(name = "volunteer_id", nullable = false)
     val volunteerId: String,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: String,
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     val enabled: Boolean
 )

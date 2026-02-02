@@ -19,6 +19,6 @@ class ActivityRecurrenceMonthJpaEntity(
     @JoinColumn(name = "volunteer_id")
     val volunteer: VolunteerJpaEntity?,
 
-    @Column(nullable = false)
+    @Column(name = "day", nullable = false)
     val day: Int
 ) : BaseEntity(id)

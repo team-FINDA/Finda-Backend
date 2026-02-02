@@ -15,7 +15,7 @@ import java.util.UUID
 class VolunteerTeachersJpaEntity(
     id: UUID?,
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     val userId: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
