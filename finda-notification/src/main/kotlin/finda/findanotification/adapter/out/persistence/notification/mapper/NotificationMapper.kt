@@ -15,7 +15,7 @@ class NotificationMapper : GenericMapper<Notification, NotificationJpaEntity> {
                 title = it.title,
                 body = it.body,
                 type = it.type,
-                volunteerId = it.volunteerId
+                volunteerId = it.volunteerId!!
             )
         }
     }
