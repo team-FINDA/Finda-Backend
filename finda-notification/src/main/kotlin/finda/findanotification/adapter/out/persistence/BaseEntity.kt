@@ -15,6 +15,6 @@ abstract class BaseEntity(
     @Id
     @GeneratedValue(generator = "timeBasedUUID")
     @GenericGenerator(name = "timeBasedUUID", type = TimeBasedUUIDGenerator::class)
-    @Column(columnDefinition = "BINARY(16)", nullable = false)
+    @Column(name = "id", columnDefinition = "BINARY(16)", nullable = false)
     val id: UUID? = if (id == UUID(0, 0)) null else id
 }
