@@ -13,7 +13,7 @@ abstract class BaseUUIDEntity(
 ) {
     @Id
     @GeneratedValue(generator = "timeBasedUUID")
-    @GenericGenerator(name = "timeBasedUUID", strategy = "team.aliens.dms.persistence.TimeBasedUUIDGenerator")
+    @GenericGenerator(name = "timeBasedUUID", strategy = "finda.findaauth.adapter.out.persistence.TimeBasedUUIDGenerator")
     @Column(columnDefinition = "BINARY(16)", nullable = false)
     val id: UUID? = if (id == UUID(0, 0)) null else id
 }
