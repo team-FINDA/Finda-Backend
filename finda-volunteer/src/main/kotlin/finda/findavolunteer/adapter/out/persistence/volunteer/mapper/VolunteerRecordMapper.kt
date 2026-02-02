@@ -17,7 +17,7 @@ class VolunteerRecordMapper(
             VolunteerRecord(
                 id = it.id!!,
                 userId = it.userId,
-                time = it.time,
+                volunteerTime = it.volunteerTime,
                 title = it.title,
                 volunteerId = it.volunteer!!.id!!
             )
@@ -30,7 +30,7 @@ class VolunteerRecordMapper(
         return VolunteerRecordJpaEntity(
             id = domain.id,
             userId = domain.userId,
-            time = domain.time,
+            volunteerTime = domain.volunteerTime,
             title = domain.title,
             volunteer = volunteer
         )
