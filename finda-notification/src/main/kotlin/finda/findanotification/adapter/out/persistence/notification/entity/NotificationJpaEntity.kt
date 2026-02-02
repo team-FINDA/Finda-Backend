@@ -25,5 +25,5 @@ class NotificationJpaEntity(
     val type: NotificationType,
 
     @Column(name = "volunteer_id", nullable = true)
-    val volunteerId: String
+    val volunteerId: String?
 ) : BaseEntity(id)
