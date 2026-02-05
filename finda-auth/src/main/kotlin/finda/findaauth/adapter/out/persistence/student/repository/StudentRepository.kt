@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface StudentRepository : CrudRepository<StudentJpaEntity, UUID>
+interface StudentRepository : CrudRepository<StudentJpaEntity, UUID> {
+    fun existsByUserId(userId: UUID): Boolean
+}
