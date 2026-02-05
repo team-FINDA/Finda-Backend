@@ -1,6 +1,7 @@
 package finda.findagateway.global.security.jwt
 
 import finda.findagateway.domain.model.UserType
+import finda.findagateway.global.security.principle.CustomUserDetails
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -9,7 +10,6 @@ import io.jsonwebtoken.security.SignatureException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
@@ -65,8 +65,22 @@ class JwtAuthenticationWebFilter(
                 return respondWithUnauthorized(exchange, "Invalid user type: $userTypeStr")
             }
 
-            val authorities = listOf(SimpleGrantedAuthority("ROLE_${userType.name}"))
-            val auth = UsernamePasswordAuthenticationToken(userId, null, authorities)
+            val isStudent = userType == UserType.STUDENT
+            val isTeacher = userType == UserType.TEACHER
+
+            val userDetails = CustomUserDetails(
+                userId = userId,
+                username = userId.toString(),
+                password = "",
+                isStudent = isStudent,
+                isTeacher = isTeacher
+            )
+
+            val auth = UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.authorities
+            )
 
             chain.filter(exchange)
                 .contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth))
@@ -80,7 +94,6 @@ class JwtAuthenticationWebFilter(
                 }
         } catch (e: ExpiredJwtException) {
             log.warn("Expired JWT for URI: {}", exchange.request.uri.path)
-
             respondWithUnauthorized(exchange, "Token expired")
         } catch (e: SignatureException) {
             log.warn("Invalid JWT signature for URI: {}", exchange.request.uri.path)
