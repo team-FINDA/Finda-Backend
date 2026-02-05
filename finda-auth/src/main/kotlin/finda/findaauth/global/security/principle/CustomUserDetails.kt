@@ -1,12 +1,12 @@
 package finda.findaauth.global.security.principle
 
+import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import java.util.UUID
 
 class CustomUserDetails(
-    val userId: UUID,
+    val user: UserJpaEntity,
     private val username: String,
     private val password: String,
     isStudent: Boolean,

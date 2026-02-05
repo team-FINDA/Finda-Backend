@@ -19,11 +19,11 @@ class CustomUserDetailsService(
         val user = userRepository.findByEmail(email)
             ?: throw UsernameNotFoundException("User not found with email: $email")
 
-        val isStudent = studentRepository.existsByUserId(user.id!!)
-        val isTeacher = teacherRepository.existsByUserId(user.id)
+        val isStudent = studentRepository.existsByUser(user)
+        val isTeacher = teacherRepository.existsByUser(user)
 
         return CustomUserDetails(
-            userId = user.id,
+            user = user,
             username = user.name,
             password = user.password,
             isStudent = isStudent,
