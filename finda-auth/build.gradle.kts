@@ -30,6 +30,7 @@ dependencies {
     implementation(Dependencies.JWT_API)
     runtimeOnly(Dependencies.JWT_IMPL)
     runtimeOnly(Dependencies.JWT_JACKSON)
+    implementation(Dependencies.SPRING_DATA_REDIS)
 }
 
 kotlin {
