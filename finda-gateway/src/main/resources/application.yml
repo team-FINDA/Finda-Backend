@@ -27,7 +27,7 @@ spring:
       open-in-view: false
 
 jwt:
-  secret: ${JWT_SECRET:dGhpc0lzQVZlcnlTZWN1cmVTZWNyZXRLZXlGb3JKV1RUb2tlbkdlbmVyYXRpb25XaXRoSFM1MTJBbGdvcml0aG1JdE11c3RCZUxvbmdFbm91Z2g=}
+  secret: ${JWT_SECRET}
   access-exp: 3600
   refresh-exp: 604800
   header: Authorization
