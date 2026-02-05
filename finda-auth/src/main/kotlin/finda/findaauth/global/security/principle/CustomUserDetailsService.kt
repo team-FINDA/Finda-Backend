@@ -27,7 +27,8 @@ class CustomUserDetailsService(
             username = user.name,
             password = user.password,
             isStudent = isStudent,
-            isTeacher = isTeacher
+            isTeacher = isTeacher,
+            deletedAt = user.deletedAt
         )
     }
 }

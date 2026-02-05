@@ -4,13 +4,15 @@ import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.time.LocalDateTime
 
 class CustomUserDetails(
     val user: UserJpaEntity,
     private val username: String,
     private val password: String,
     isStudent: Boolean,
-    isTeacher: Boolean
+    isTeacher: Boolean,
+    private val deletedAt: LocalDateTime? = null
 ) : UserDetails {
 
     private val authorities: List<GrantedAuthority> = when {
@@ -29,5 +31,5 @@ class CustomUserDetails(
     override fun isAccountNonExpired(): Boolean = true
     override fun isAccountNonLocked(): Boolean = true
     override fun isCredentialsNonExpired(): Boolean = true
-    override fun isEnabled(): Boolean = true
+    override fun isEnabled(): Boolean = deletedAt == null
 }

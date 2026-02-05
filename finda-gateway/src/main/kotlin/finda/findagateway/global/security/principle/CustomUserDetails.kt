@@ -35,5 +35,10 @@ class CustomUserDetails(
     override fun isAccountNonExpired(): Boolean = true
     override fun isAccountNonLocked(): Boolean = true
     override fun isCredentialsNonExpired(): Boolean = true
+    /**
+     * Gateway에서는 JWT 검증만 수행하고 DB 조회를 하지 않으므로
+     * 사용자의 탈퇴 여부를 확인할 수 없음
+     * 실제 사용자 상태 확인은 Auth 서비스에서 수행
+     */
     override fun isEnabled(): Boolean = true
 }
