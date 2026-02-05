@@ -27,6 +27,10 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
+    implementation(Dependencies.JWT_API)
+    runtimeOnly(Dependencies.JWT_IMPL)
+    runtimeOnly(Dependencies.JWT_JACKSON)
+    implementation(Dependencies.SPRING_DATA_REDIS)
 }
 
 kotlin {

@@ -25,3 +25,10 @@ spring:
           show_sql: false
       database-platform: org.hibernate.dialect.MySQL8Dialect
       open-in-view: false
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-exp: 3600
+  refresh-exp: 604800
+  header: Authorization
+  prefix: "Bearer "
