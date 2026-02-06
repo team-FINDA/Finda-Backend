@@ -35,4 +35,3 @@ jwt:
 
 teacher:
   signup-secret: ${TEACHER_SIGNUP_SECRET}
-  

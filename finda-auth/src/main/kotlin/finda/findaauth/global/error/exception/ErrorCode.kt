@@ -17,7 +17,10 @@ enum class ErrorCode(
     EXPIRED_TOKEN(401, "Expired Token", 2),
 
     // user
-    USER_NOT_FOUND(404, "User Not Found", 1);
+    USER_NOT_FOUND(404, "User Not Found", 1),
+
+    // auth
+    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 1);
 
     override fun status(): Int = status
     override fun message(): String = message
