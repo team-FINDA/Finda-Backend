@@ -32,3 +32,7 @@ jwt:
   refresh-exp: 604800
   header: Authorization
   prefix: "Bearer "
+
+teacher:
+  signup-secret: ${TEACHER_SIGNUP_SECRET}
+  
