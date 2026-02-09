@@ -1,11 +1,11 @@
 package finda.findaauth.adapter.`in`.student
 
+import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
 import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeRequest
-import finda.findaauth.adapter.`in`.student.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.teacher.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase

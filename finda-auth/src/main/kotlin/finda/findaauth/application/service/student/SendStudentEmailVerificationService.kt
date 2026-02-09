@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.student
 
+import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
 import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
-import finda.findaauth.adapter.`in`.student.dto.response.EmailVerificationResponse
 import finda.findaauth.application.exception.mail.EmailSendLimitExceededException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
@@ -26,7 +26,7 @@ class SendStudentEmailVerificationService(
     override fun execute(
         request: SendEmailVerificationRequest
     ): EmailVerificationResponse {
-        val email = StudentEmailUtils.toFullEmail(request.email)
+        val email = StudentEmailUtils.toFullEmail(request.accountId)
 
         if (userQueryPort.existsByEmail(email)) {
             throw EmailAlreadyExistsException

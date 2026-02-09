@@ -1,4 +1,4 @@
-package finda.findaauth.adapter.`in`.teacher.dto.response
+package finda.findaauth.adapter.`in`.auth.dto.response
 
 data class EmailVerificationResponse(
     val success: Boolean,

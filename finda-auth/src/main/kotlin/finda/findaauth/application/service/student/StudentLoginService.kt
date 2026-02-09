@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.student
 
 import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
-import finda.findaauth.adapter.`in`.teacher.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType
@@ -21,7 +21,7 @@ class StudentLoginService(
 ) : StudentLoginUseCase {
 
     override fun execute(request: StudentLoginRequest): TokenResponse {
-        val email = StudentEmailUtils.toFullEmail(request.email)
+        val email = StudentEmailUtils.toFullEmail(request.accountId)
 
         val user = userQueryPort.findByEmail(email)
             ?: throw UnauthorizedException

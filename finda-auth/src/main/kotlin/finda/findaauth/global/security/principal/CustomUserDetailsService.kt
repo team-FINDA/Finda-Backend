@@ -1,4 +1,4 @@
-package finda.findaauth.global.security.principle
+package finda.findaauth.global.security.principal
 
 import finda.findaauth.adapter.out.persistence.student.repository.StudentRepository
 import finda.findaauth.adapter.out.persistence.teacher.repository.TeacherRepository

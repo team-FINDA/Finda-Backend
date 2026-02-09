@@ -1,9 +1,9 @@
 package finda.findaauth.adapter.`in`.teacher
 
 import finda.findaauth.adapter.`in`.teacher.dto.request.*
-import finda.findaauth.adapter.`in`.teacher.dto.response.EmailVerificationResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
 import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenResponse
-import finda.findaauth.adapter.`in`.teacher.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.application.port.`in`.teacher.*
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping

@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.student
 
+import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeRequest
-import finda.findaauth.adapter.`in`.student.dto.response.EmailVerificationResponse
 import finda.findaauth.application.exception.mail.VerificationCodeMismatchException
 import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
 import finda.findaauth.application.port.`in`.student.VerifyEmailCodeUseCase
@@ -17,7 +17,7 @@ class VerifyStudentEmailCodeService(
     override fun execute(
         request: VerifyEmailCodeRequest
     ): EmailVerificationResponse {
-        val email = StudentEmailUtils.toFullEmail(request.email)
+        val email = StudentEmailUtils.toFullEmail(request.accountId)
         val inputCode = request.code
 
         val savedCode = verificationStore.getCode(email)

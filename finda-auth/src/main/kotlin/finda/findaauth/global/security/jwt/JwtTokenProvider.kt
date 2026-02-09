@@ -1,6 +1,6 @@
 package finda.findaauth.global.security.jwt
 
-import finda.findaauth.adapter.`in`.teacher.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.adapter.out.persistence.auth.entity.RefreshToken
 import finda.findaauth.adapter.out.persistence.auth.repository.RefreshTokenRepository
 import finda.findaauth.domain.user.model.UserType

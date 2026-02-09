@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.teacher
 
 import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherLoginRequest
-import finda.findaauth.adapter.`in`.teacher.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.application.port.`in`.teacher.TeacherLoginUseCase
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType

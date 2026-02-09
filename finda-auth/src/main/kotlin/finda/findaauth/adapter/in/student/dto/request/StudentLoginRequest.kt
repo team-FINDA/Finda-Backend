@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size
 
 data class StudentLoginRequest(
 
-    @field:NotBlank(message = "이메일은 필수입니다")
-    val email: String,
+    @field:NotBlank(message = "accountId는 필수입니다")
+    val accountId: String,
 
     @field:NotBlank(message = "비밀번호는 필수입니다")
     @field:Size(min = 8, message = "비밀번호는 최소 8자입니다")
