@@ -1,6 +1,6 @@
 package finda.findaauth.adapter.out.persistence.auth.entity
 
-import jakarta.persistence.Id
+import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 
 @RedisHash(value = "teacher_signup_token", timeToLive = 600)
