@@ -19,7 +19,7 @@ class StudentPersistenceAdapter(
 
         val entity = studentMapper.toEntity(student, userEntity)
 
-        val savedEntity = studentRepository.save(entity)
-        return studentMapper.toDomain(savedEntity)
+        val saved = studentRepository.save(entity)
+        return studentMapper.toDomain(saved)
     }
 }

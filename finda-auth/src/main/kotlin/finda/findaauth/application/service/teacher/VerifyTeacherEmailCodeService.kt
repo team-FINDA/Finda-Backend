@@ -6,21 +6,21 @@ import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.VerificationCodeMismatchException
 import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
 import finda.findaauth.application.port.`in`.teacher.VerifyEmailCodeUseCase
-import finda.findaauth.application.port.out.auth.AuthQueryPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.global.mail.EmailVerificationStore
 import org.springframework.stereotype.Service
 
 @Service
 class VerifyTeacherEmailCodeService(
     private val verificationStore: EmailVerificationStore,
-    private val authQueryPort: AuthQueryPort
+    private val teacherPreAuthQueryPort: TeacherPreAuthQueryPort
 ) : VerifyEmailCodeUseCase {
 
     override fun execute(
         preAuthToken: String,
         request: VerifyEmailCodeRequest
     ): EmailVerificationResponse {
-        if (!authQueryPort.isValid(preAuthToken)) {
+        if (!teacherPreAuthQueryPort.isValid(preAuthToken)) {
             throw InvalidPreAuthTokenException
         }
 

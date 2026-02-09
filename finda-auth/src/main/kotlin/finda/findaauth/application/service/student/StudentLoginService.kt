@@ -7,7 +7,7 @@ import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType
 import finda.findaauth.global.security.jwt.JwtTokenProvider
 import finda.findaauth.global.security.jwt.exception.UnauthorizedException
-import finda.findaauth.global.util.StudentEmailUtils
+import finda.findaauth.global.mail.util.StudentEmailUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

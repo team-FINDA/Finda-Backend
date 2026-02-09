@@ -1,4 +1,4 @@
-package finda.findaauth.global.redis.config
+package finda.findaauth.global.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -5,14 +5,14 @@ import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenResponse
 import finda.findaauth.application.config.TeacherSignupProperties
 import finda.findaauth.application.exception.auth.InvalidSignupSecretException
 import finda.findaauth.application.port.`in`.teacher.VerifyTeacherSignupUseCase
-import finda.findaauth.application.port.out.auth.AuthCommandPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthCommandPort
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class VerifyTeacherSignupService(
     private val teacherSignupProperties: TeacherSignupProperties,
-    private val authCommandPort: AuthCommandPort
+    private val teacherPreAuthCommandPort: TeacherPreAuthCommandPort
 ) : VerifyTeacherSignupUseCase {
 
     override fun execute(request: VerifySignupRequest): PreAuthTokenResponse {
@@ -22,7 +22,7 @@ class VerifyTeacherSignupService(
 
         val preAuthToken = UUID.randomUUID().toString()
 
-        authCommandPort.save(preAuthToken)
+        teacherPreAuthCommandPort.save(preAuthToken)
 
         return PreAuthTokenResponse(preAuthToken)
     }

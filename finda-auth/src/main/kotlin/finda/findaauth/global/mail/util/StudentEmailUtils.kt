@@ -1,4 +1,4 @@
-package finda.findaauth.global.util
+package finda.findaauth.global.mail.util
 
 object StudentEmailUtils {
     private const val STUDENT_EMAIL_DOMAIN = "@dsm.hs.kr"

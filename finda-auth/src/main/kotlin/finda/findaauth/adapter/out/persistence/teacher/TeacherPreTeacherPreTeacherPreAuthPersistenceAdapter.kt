@@ -1,15 +1,15 @@
-package finda.findaauth.adapter.out.persistence.auth
+package finda.findaauth.adapter.out.persistence.teacher
 
-import finda.findaauth.application.port.out.auth.AuthCommandPort
-import finda.findaauth.application.port.out.auth.AuthQueryPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthCommandPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 @Component
-class AuthPersistenceAdapter(
+class TeacherPreTeacherPreTeacherPreAuthPersistenceAdapter(
     private val redisTemplate: StringRedisTemplate
-) : AuthCommandPort, AuthQueryPort {
+) : TeacherPreAuthCommandPort, TeacherPreAuthQueryPort {
 
     companion object {
         private const val PREFIX = "pre-auth-token:"

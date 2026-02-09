@@ -6,7 +6,7 @@ import finda.findaauth.application.exception.mail.VerificationCodeMismatchExcept
 import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
 import finda.findaauth.application.port.`in`.student.VerifyEmailCodeUseCase
 import finda.findaauth.global.mail.EmailVerificationStore
-import finda.findaauth.global.util.StudentEmailUtils
+import finda.findaauth.global.mail.util.StudentEmailUtils
 import org.springframework.stereotype.Service
 
 @Service

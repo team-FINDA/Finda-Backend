@@ -11,7 +11,7 @@ import finda.findaauth.domain.student.model.Student
 import finda.findaauth.domain.student.vo.StudentNumber
 import finda.findaauth.domain.user.model.User
 import finda.findaauth.global.mail.EmailVerificationStore
-import finda.findaauth.global.util.StudentEmailUtils
+import finda.findaauth.global.mail.util.StudentEmailUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -6,7 +6,7 @@ import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.EmailSendLimitExceededException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.teacher.SendEmailVerificationUseCase
-import finda.findaauth.application.port.out.auth.AuthQueryPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.global.mail.EmailSendLimitStore
 import finda.findaauth.global.mail.EmailService
@@ -22,14 +22,14 @@ class SendTeacherEmailVerificationService(
     private val userQueryPort: UserQueryPort,
     private val verificationStore: EmailVerificationStore,
     private val sendLimitStore: EmailSendLimitStore,
-    private val authQueryPort: AuthQueryPort
+    private val teacherPreAuthQueryPort: TeacherPreAuthQueryPort
 ) : SendEmailVerificationUseCase {
 
     override fun execute(
         preAuthToken: String,
         request: SendEmailVerificationRequest
     ): EmailVerificationResponse {
-        if (!authQueryPort.isValid(preAuthToken)) {
+        if (!teacherPreAuthQueryPort.isValid(preAuthToken)) {
             throw InvalidPreAuthTokenException
         }
 
