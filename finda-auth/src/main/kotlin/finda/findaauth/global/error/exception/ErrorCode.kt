@@ -11,6 +11,7 @@ enum class ErrorCode(
 
     // client error
     BAD_REQUEST(400, "Bad Request", 1),
+    NOT_FOUND(404, "Not Found", 1),
 
     // jwt
     INVALID_TOKEN(401, "Invalid Token", 1),
@@ -18,16 +19,16 @@ enum class ErrorCode(
     UNAUTHORIZED(401, "Unauthorized", 3),
 
     // user
-    USER_NOT_FOUND(404, "User Not Found", 1),
+    USER_NOT_FOUND(404, "User Not Found", 2),
     EMAIL_ALREADY_EXISTS(409, "Email Already Exists", 1),
 
     // auth
-    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret",4),
-    INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token",5),
-    INVALID_CREDENTIALS(401, "Invalid email or password",6),
+    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 4),
+    INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token", 5),
+    INVALID_CREDENTIALS(401, "Invalid email or password", 6),
 
     // email verification
-    VERIFICATION_CODE_NOT_FOUND(404, "Verification Code Not Found", 2),
+    VERIFICATION_CODE_NOT_FOUND(404, "Verification Code Not Found", 3),
     VERIFICATION_CODE_MISMATCH(400, "Verification Code Mismatch", 2),
     EMAIL_NOT_VERIFIED(400, "Email Not Verified", 3),
     EMAIL_SEND_LIMIT_EXCEEDED(429, "Email Send Limit Exceeded", 1);
