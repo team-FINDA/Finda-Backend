@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.teacher
 
-import finda.findaauth.adapter.`in`.teacher.dto.request.SendEmailVerificationRequest
 import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
+import finda.findaauth.adapter.`in`.teacher.dto.request.SendEmailVerificationRequest
 import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.EmailSendLimitExceededException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException

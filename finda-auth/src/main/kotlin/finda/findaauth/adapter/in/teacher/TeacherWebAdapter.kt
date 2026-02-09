@@ -1,10 +1,18 @@
 package finda.findaauth.adapter.`in`.teacher
 
-import finda.findaauth.adapter.`in`.teacher.dto.request.*
 import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenResponse
 import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
-import finda.findaauth.application.port.`in`.teacher.*
+import finda.findaauth.adapter.`in`.teacher.dto.request.SendEmailVerificationRequest
+import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherLoginRequest
+import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherSignupRequest
+import finda.findaauth.adapter.`in`.teacher.dto.request.VerifyEmailCodeRequest
+import finda.findaauth.adapter.`in`.teacher.dto.request.VerifySignupRequest
+import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenResponse
+import finda.findaauth.application.port.`in`.teacher.SendEmailVerificationUseCase
+import finda.findaauth.application.port.`in`.teacher.TeacherLoginUseCase
+import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
+import finda.findaauth.application.port.`in`.teacher.VerifyEmailCodeUseCase
+import finda.findaauth.application.port.`in`.teacher.VerifyTeacherSignupUseCase
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -58,7 +66,10 @@ class TeacherWebAdapter(
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody @Valid request: TeacherLoginRequest): TokenResponse {
+    fun login(
+        @RequestBody @Valid
+        request: TeacherLoginRequest
+    ): TokenResponse {
         return teacherLoginUseCase.execute(request)
     }
 }

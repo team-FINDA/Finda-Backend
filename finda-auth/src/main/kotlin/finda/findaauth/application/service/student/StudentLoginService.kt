@@ -1,13 +1,13 @@
 package finda.findaauth.application.service.student
 
-import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
 import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
+import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
+import finda.findaauth.application.exception.auth.InvalidCredentialsException
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType
-import finda.findaauth.global.security.jwt.JwtTokenProvider
-import finda.findaauth.application.exception.auth.InvalidCredentialsException
 import finda.findaauth.global.mail.util.StudentEmailUtils
+import finda.findaauth.global.security.jwt.JwtTokenProvider
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

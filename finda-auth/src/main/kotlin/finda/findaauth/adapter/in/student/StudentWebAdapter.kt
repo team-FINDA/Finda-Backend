@@ -1,11 +1,11 @@
 package finda.findaauth.adapter.`in`.student
 
 import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeRequest
-import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase
@@ -22,7 +22,7 @@ class StudentWebAdapter(
     private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
     private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
     private val studentSignupUseCase: StudentSignupUseCase,
-    private val studentLoginUseCase: StudentLoginUseCase,
+    private val studentLoginUseCase: StudentLoginUseCase
 ) {
 
     @PostMapping("/send-verification")

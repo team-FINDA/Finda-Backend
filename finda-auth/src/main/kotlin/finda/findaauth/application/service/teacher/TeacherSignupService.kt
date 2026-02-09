@@ -5,8 +5,8 @@ import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.EmailNotVerifiedException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
-import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.application.port.out.teacher.TeacherCommandPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.application.port.out.user.UserCommandPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.teacher.model.Teacher
