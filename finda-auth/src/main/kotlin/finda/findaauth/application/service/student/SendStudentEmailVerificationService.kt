@@ -9,6 +9,7 @@ import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.global.mail.EmailSendLimitStore
 import finda.findaauth.global.mail.EmailService
 import finda.findaauth.global.mail.EmailVerificationStore
+import finda.findaauth.global.util.StudentEmailUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
@@ -25,7 +26,8 @@ class SendStudentEmailVerificationService(
     override fun execute(
         request: SendEmailVerificationRequest
     ): EmailVerificationResponse {
-        val email = request.email
+
+        val email = StudentEmailUtils.toFullEmail(request.email)
 
         if (userQueryPort.existsByEmail(email)) {
             throw EmailAlreadyExistsException
