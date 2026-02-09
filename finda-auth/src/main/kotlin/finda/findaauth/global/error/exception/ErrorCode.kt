@@ -15,6 +15,7 @@ enum class ErrorCode(
     // jwt
     INVALID_TOKEN(401, "Invalid Token", 1),
     EXPIRED_TOKEN(401, "Expired Token", 2),
+    UNAUTHORIZED(401, "Unauthorized", 3),
 
     // user
     USER_NOT_FOUND(404, "User Not Found", 1),

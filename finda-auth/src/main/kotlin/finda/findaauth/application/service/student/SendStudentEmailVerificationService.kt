@@ -26,7 +26,6 @@ class SendStudentEmailVerificationService(
     override fun execute(
         request: SendEmailVerificationRequest
     ): EmailVerificationResponse {
-
         val email = StudentEmailUtils.toFullEmail(request.email)
 
         if (userQueryPort.existsByEmail(email)) {

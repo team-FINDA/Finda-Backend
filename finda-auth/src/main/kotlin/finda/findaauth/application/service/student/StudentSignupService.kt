@@ -27,7 +27,6 @@ class StudentSignupService(
 ) : StudentSignupUseCase {
 
     override fun execute(request: StudentSignupRequest) {
-
         val email = StudentEmailUtils.toFullEmail(request.email)
 
         validateSignup(email)

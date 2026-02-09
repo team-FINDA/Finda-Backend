@@ -17,7 +17,6 @@ class VerifyStudentEmailCodeService(
     override fun execute(
         request: VerifyEmailCodeRequest
     ): EmailVerificationResponse {
-
         val email = StudentEmailUtils.toFullEmail(request.email)
         val inputCode = request.code
 

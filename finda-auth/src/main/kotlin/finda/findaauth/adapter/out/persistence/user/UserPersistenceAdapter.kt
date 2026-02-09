@@ -2,6 +2,7 @@ package finda.findaauth.adapter.out.persistence.user
 
 import finda.findaauth.adapter.out.persistence.user.mapper.UserMapper
 import finda.findaauth.adapter.out.persistence.user.repository.UserRepository
+import finda.findaauth.application.exception.user.UserNotFoundException
 import finda.findaauth.application.port.out.user.UserCommandPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.User
@@ -21,4 +22,11 @@ class UserPersistenceAdapter(
 
     override fun existsByEmail(email: String): Boolean =
         userRepository.existsByEmail(email)
+
+    override fun findByEmail(email: String): User? {
+        val userEntity = userRepository.findByEmail(email)
+            ?: throw UserNotFoundException
+
+        return userMapper.toDomain(userEntity)
+    }
 }
