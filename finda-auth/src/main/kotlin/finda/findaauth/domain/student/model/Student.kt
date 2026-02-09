@@ -8,6 +8,6 @@ data class Student(
     val grade: Int,
     val classNum: Int,
     val num: Int,
-    val totalVolunteerTime: Int,
+    val totalVolunteerTime: Int = 0,
     val deletedAt: LocalDateTime? = null
 )

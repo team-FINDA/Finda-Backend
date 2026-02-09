@@ -11,7 +11,7 @@ import finda.findaauth.global.mail.EmailVerificationStore
 import org.springframework.stereotype.Service
 
 @Service
-class VerifyEmailCodeService(
+class VerifyTeacherEmailCodeService(
     private val verificationStore: EmailVerificationStore,
     private val authQueryPort: AuthQueryPort
 ) : VerifyEmailCodeUseCase {

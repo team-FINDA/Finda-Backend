@@ -17,7 +17,7 @@ import kotlin.random.Random
 
 @Service
 @Transactional
-class SendEmailVerificationService(
+class SendTeacherEmailVerificationService(
     private val emailService: EmailService,
     private val userQueryPort: UserQueryPort,
     private val verificationStore: EmailVerificationStore,
