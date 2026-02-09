@@ -22,8 +22,9 @@ enum class ErrorCode(
     EMAIL_ALREADY_EXISTS(409, "Email Already Exists", 1),
 
     // auth
-    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 1),
-    INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token", 2),
+    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret",4),
+    INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token",5),
+    INVALID_CREDENTIALS(401, "Invalid email or password",6),
 
     // email verification
     VERIFICATION_CODE_NOT_FOUND(404, "Verification Code Not Found", 2),
