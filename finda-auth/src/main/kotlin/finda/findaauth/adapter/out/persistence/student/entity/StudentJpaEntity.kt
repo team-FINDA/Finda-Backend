@@ -24,8 +24,6 @@ import java.util.*
     ]
 )
 class StudentJpaEntity(
-    id: UUID?,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     val user: UserJpaEntity?,
@@ -44,4 +42,4 @@ class StudentJpaEntity(
 
     @Column(name = "deleted_at", nullable = true)
     val deletedAt: LocalDateTime? = null
-) : BaseEntity(id)
+) : BaseEntity()

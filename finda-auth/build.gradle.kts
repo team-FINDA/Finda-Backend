@@ -31,6 +31,8 @@ dependencies {
     runtimeOnly(Dependencies.JWT_IMPL)
     runtimeOnly(Dependencies.JWT_JACKSON)
     implementation(Dependencies.SPRING_DATA_REDIS)
+    implementation(Dependencies.SPRING_MAIL)
+    implementation(Dependencies.SPRING_VALIDITY)
 }
 
 kotlin {

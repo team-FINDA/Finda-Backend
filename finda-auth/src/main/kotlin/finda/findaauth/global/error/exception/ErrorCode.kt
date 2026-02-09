@@ -18,9 +18,17 @@ enum class ErrorCode(
 
     // user
     USER_NOT_FOUND(404, "User Not Found", 1),
+    EMAIL_ALREADY_EXISTS(409, "Email Already Exists", 1),
 
     // auth
-    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 1);
+    INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 1),
+    INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token", 2),
+
+    // email verification
+    VERIFICATION_CODE_NOT_FOUND(404, "Verification Code Not Found", 2),
+    VERIFICATION_CODE_MISMATCH(400, "Verification Code Mismatch", 2),
+    EMAIL_NOT_VERIFIED(400, "Email Not Verified", 3),
+    EMAIL_SEND_LIMIT_EXCEEDED(429, "Email Send Limit Exceeded", 1);
 
     override fun status(): Int = status
     override fun message(): String = message

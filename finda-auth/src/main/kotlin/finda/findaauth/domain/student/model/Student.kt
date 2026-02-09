@@ -3,7 +3,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class Student(
-    val id: UUID,
+    val id: UUID?,
     val userId: UUID,
     val grade: Int,
     val classNum: Int,

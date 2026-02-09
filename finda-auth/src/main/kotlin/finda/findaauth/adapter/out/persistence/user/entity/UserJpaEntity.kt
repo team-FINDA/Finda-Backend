@@ -5,13 +5,10 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import java.time.LocalDateTime
-import java.util.UUID
 
 @Entity
 @Table(name = "tbl_user")
 class UserJpaEntity(
-    id: UUID?,
-
     @Column(name = "name", nullable = false)
     val name: String,
 
@@ -23,4 +20,4 @@ class UserJpaEntity(
 
     @Column(name = "deleted_at", nullable = true)
     val deletedAt: LocalDateTime? = null
-) : BaseEntity(id)
+) : BaseEntity()

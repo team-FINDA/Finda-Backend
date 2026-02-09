@@ -1,4 +1,4 @@
-package finda.findaauth.adapter.`in`.dto.response
+package finda.findaauth.adapter.`in`.teacher.dto.response
 
 import java.time.LocalDateTime
 
