@@ -2,8 +2,8 @@ package finda.findaauth.application.service.student
 
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeRequest
 import finda.findaauth.adapter.`in`.student.dto.response.EmailVerificationResponse
-import finda.findaauth.application.exception.teacher.VerificationCodeMismatchException
-import finda.findaauth.application.exception.teacher.VerificationCodeNotFoundException
+import finda.findaauth.application.exception.mail.VerificationCodeMismatchException
+import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
 import finda.findaauth.application.port.`in`.student.VerifyEmailCodeUseCase
 import finda.findaauth.global.mail.EmailVerificationStore
 import org.springframework.stereotype.Service

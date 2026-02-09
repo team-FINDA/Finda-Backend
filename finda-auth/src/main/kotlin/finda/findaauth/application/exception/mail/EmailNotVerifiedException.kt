@@ -1,4 +1,4 @@
-package finda.findaauth.application.exception.teacher
+package finda.findaauth.application.exception.mail
 
 import finda.findaauth.global.error.exception.ErrorCode
 import finda.findaauth.global.error.exception.FindaException

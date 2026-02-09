@@ -2,7 +2,7 @@ package finda.findaauth.application.service.student
 
 import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
 import finda.findaauth.adapter.`in`.student.dto.response.EmailVerificationResponse
-import finda.findaauth.application.exception.teacher.EmailSendLimitExceededException
+import finda.findaauth.application.exception.mail.EmailSendLimitExceededException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.out.user.UserQueryPort

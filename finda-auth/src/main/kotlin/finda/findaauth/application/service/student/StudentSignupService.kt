@@ -1,7 +1,7 @@
 package finda.findaauth.application.service.student
 
 import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
-import finda.findaauth.application.exception.teacher.EmailNotVerifiedException
+import finda.findaauth.application.exception.mail.EmailNotVerifiedException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase
 import finda.findaauth.application.port.out.student.StudentCommandPort

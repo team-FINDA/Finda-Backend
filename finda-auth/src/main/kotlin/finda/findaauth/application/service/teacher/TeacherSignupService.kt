@@ -2,7 +2,7 @@ package finda.findaauth.application.service.teacher
 
 import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherSignupRequest
 import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
-import finda.findaauth.application.exception.teacher.EmailNotVerifiedException
+import finda.findaauth.application.exception.mail.EmailNotVerifiedException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
 import finda.findaauth.application.port.out.auth.AuthQueryPort
