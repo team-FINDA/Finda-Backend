@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 @Component
-class TeacherPreTeacherPreTeacherPreAuthPersistenceAdapter(
+class TeacherPreAuthPersistenceAdapter(
     private val redisTemplate: StringRedisTemplate
 ) : TeacherPreAuthCommandPort, TeacherPreAuthQueryPort {
 
