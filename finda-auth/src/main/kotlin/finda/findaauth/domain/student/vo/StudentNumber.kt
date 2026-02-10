@@ -11,7 +11,7 @@ class StudentNumber(
             val trimmed = value.trim()
             val parts = trimmed.split(Regex("\\s+"))
 
-            require(parts.size == 2) { "학생 정보 형식은 '2408 이름'이어야 합니다" }
+            require(parts.size == 2) { "학생 정보 형식은 '학번 이름'이어야 합니다" }
 
             val numberPart = parts[0]
             val name = parts[1]
