@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -27,11 +28,11 @@ class GlobalExceptionHandler {
         return ResponseEntity(response, HttpStatus.valueOf(errorCode.status()))
     }
 
-    @ExceptionHandler(NoHandlerFoundException::class)
-    fun handleNoHandlerFoundException(e: NoHandlerFoundException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(e: NoResourceFoundException): ResponseEntity<ErrorResponse> {
         val errorCode = ErrorCode.NOT_FOUND
-        val response = ErrorResponse.of(errorCode, "No endpoint found for ${e.requestURL}")
-        return ResponseEntity(response, HttpStatus.valueOf(errorCode.status()))
+        val response = ErrorResponse.of(errorCode, e.message ?: "Not Found")
+        return ResponseEntity(response, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(Exception::class) // 예상치 못한 에러

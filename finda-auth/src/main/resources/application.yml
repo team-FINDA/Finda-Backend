@@ -9,13 +9,6 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
-  mvc:
-    throw-exception-if-no-handler-found: true
-
-  web:
-    resources:
-      add-mappings: false
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
