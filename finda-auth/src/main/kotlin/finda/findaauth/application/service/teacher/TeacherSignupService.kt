@@ -6,6 +6,7 @@ import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
 import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherSignupCommand
 import finda.findaauth.application.port.out.teacher.TeacherCommandPort
+import finda.findaauth.application.port.out.teacher.TeacherPreAuthCommandPort
 import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.application.port.out.user.UserCommandPort
 import finda.findaauth.application.port.out.user.UserQueryPort
@@ -24,7 +25,8 @@ class TeacherSignupService(
     private val userCommandPort: UserCommandPort,
     private val teacherCommandPort: TeacherCommandPort,
     private val userQueryPort: UserQueryPort,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val teacherPreAuthCommandPort: TeacherPreAuthCommandPort
 ) : TeacherSignupUseCase {
 
     override fun execute(
@@ -53,11 +55,8 @@ class TeacherSignupService(
 
         val savedUser = userCommandPort.save(user)
 
-        val teacher = Teacher(
-            id = null,
-            userId = savedUser.id!!
-        )
+        teacherCommandPort.save(Teacher(id = null, userId = savedUser.id!!))
 
-        teacherCommandPort.save(teacher)
+        teacherPreAuthCommandPort.delete(command.preAuthToken)
     }
 }

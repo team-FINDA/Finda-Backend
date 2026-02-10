@@ -21,6 +21,10 @@ class TeacherPreAuthPersistenceAdapter(
             .set("$PREFIX$token", "1", TTL, TimeUnit.MINUTES)
     }
 
+    override fun delete(token: String) {
+        redisTemplate.delete("$PREFIX$token")
+    }
+
     override fun isValid(token: String): Boolean {
         return redisTemplate.hasKey("$PREFIX$token")
     }
