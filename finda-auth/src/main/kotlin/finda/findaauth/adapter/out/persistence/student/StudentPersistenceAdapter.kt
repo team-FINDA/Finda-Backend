@@ -28,4 +28,8 @@ class StudentPersistenceAdapter(
     override fun existsByUserId(userId: UUID): Boolean {
         return studentRepository.existsByUserId(userId)
     }
+
+    override fun existsByStudentNumber(grade: Int, classNum: Int, num: Int): Boolean {
+        return studentRepository.existsByGradeAndClassNumAndNum(grade, classNum, num)
+    }
 }

@@ -4,4 +4,6 @@ import java.util.UUID
 
 interface StudentQueryPort {
     fun existsByUserId(userId: UUID): Boolean
+
+    fun existsByStudentNumber(grade: Int, classNum: Int, num: Int): Boolean
 }

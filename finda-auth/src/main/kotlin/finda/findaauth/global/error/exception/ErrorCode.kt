@@ -22,6 +22,9 @@ enum class ErrorCode(
     USER_NOT_FOUND(404, "User Not Found", 2),
     EMAIL_ALREADY_EXISTS(409, "Email Already Exists", 1),
 
+    // student
+    STUDENT_NUMBER_ALREADY_EXISTS(409, "Student Number Already Exists", 2),
+
     // auth
     INVALID_SIGNUP_SECRET(401, "Invalid Signup Secret", 4),
     INVALID_PRE_AUTH_TOKEN(401, "Invalid Pre Auth Token", 5),
