@@ -9,4 +9,5 @@ import java.util.UUID
 @Repository
 interface TeacherRepository : CrudRepository<TeacherJpaEntity, UUID> {
     fun existsByUser(user: UserJpaEntity): Boolean
+    fun existsByUserId(userId: UUID): Boolean
 }

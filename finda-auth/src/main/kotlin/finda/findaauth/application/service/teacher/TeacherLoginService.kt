@@ -4,6 +4,7 @@ import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherLoginRequest
 import finda.findaauth.application.exception.auth.InvalidCredentialsException
 import finda.findaauth.application.port.`in`.teacher.TeacherLoginUseCase
+import finda.findaauth.application.port.out.teacher.TeacherQueryPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType
 import finda.findaauth.global.security.jwt.JwtTokenProvider
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 class TeacherLoginService(
     private val userQueryPort: UserQueryPort,
     private val passwordEncoder: PasswordEncoder,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val teacherQueryPort: TeacherQueryPort
 ) : TeacherLoginUseCase {
 
     override fun execute(request: TeacherLoginRequest): TokenResponse {
@@ -24,6 +26,10 @@ class TeacherLoginService(
             ?: throw InvalidCredentialsException
 
         if (!passwordEncoder.matches(request.password, user.password)) {
+            throw InvalidCredentialsException
+        }
+
+        if (!teacherQueryPort.existsByUserId(user.id!!)) {
             throw InvalidCredentialsException
         }
 
