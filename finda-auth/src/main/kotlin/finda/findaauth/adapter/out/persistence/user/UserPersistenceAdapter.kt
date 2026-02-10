@@ -25,8 +25,6 @@ class UserPersistenceAdapter(
 
     override fun findByEmail(email: String): User? {
         val userEntity = userRepository.findByEmail(email)
-            ?: throw UserNotFoundException
-
-        return userMapper.toDomain(userEntity)
+        return userEntity?.let { userMapper.toDomain(it) }
     }
 }
