@@ -12,6 +12,7 @@ object Dependencies {
     const val SPRING_DATA_JPA = "org.springframework.boot:spring-boot-starter-data-jpa:${PluginVersions.SPRING_PLUGIN_VERSION}"
     const val MYSQL_CONNECTOR = "mysql:mysql-connector-java:${DependencyVersions.MYSQL}"
     const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
+    const val SPRING_VALIDITY = "org.springframework.boot:spring-boot-starter-validation"
 
     const val JWT_API = "io.jsonwebtoken:jjwt-api:${DependencyVersions.JWT}"
     const val JWT_IMPL = "io.jsonwebtoken:jjwt-impl:${DependencyVersions.JWT}"
@@ -20,4 +21,6 @@ object Dependencies {
     const val SPRING_DATA_REDIS = "org.springframework.boot:spring-boot-starter-data-redis"
 
     const val SPRING_CLOUD_GATEWAY = "org.springframework.cloud:spring-cloud-starter-gateway"
+
+    const val SPRING_MAIL = "org.springframework.boot:spring-boot-starter-mail"
 }
