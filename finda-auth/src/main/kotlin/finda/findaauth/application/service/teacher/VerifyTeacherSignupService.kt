@@ -7,6 +7,7 @@ import finda.findaauth.application.port.`in`.teacher.dto.request.VerifySignupCom
 import finda.findaauth.application.port.`in`.teacher.dto.response.PreAuthTokenResult
 import finda.findaauth.application.port.out.teacher.TeacherPreAuthCommandPort
 import org.springframework.stereotype.Service
+import java.security.MessageDigest
 import java.util.UUID
 
 @Service
@@ -16,7 +17,11 @@ class VerifyTeacherSignupService(
 ) : VerifyTeacherSignupUseCase {
 
     override fun execute(command: VerifySignupCommand): PreAuthTokenResult {
-        if (teacherSignupProperties.signupSecret != command.secretKey) {
+        if (!MessageDigest.isEqual(
+                teacherSignupProperties.signupSecret.toByteArray(),
+                command.secretKey.toByteArray()
+            )
+        ) {
             throw InvalidSignupSecretException
         }
 

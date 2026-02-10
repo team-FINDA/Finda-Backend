@@ -1,5 +1,6 @@
 package finda.findaauth.application.service.student
 
+import finda.findaauth.application.exception.mail.TooManyVerificationAttemptsException
 import finda.findaauth.application.exception.mail.VerificationCodeMismatchException
 import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
 import finda.findaauth.application.port.`in`.auth.dto.response.EmailVerificationResult
@@ -24,10 +25,17 @@ class VerifyStudentEmailCodeService(
             ?: throw VerificationCodeNotFoundException
 
         if (savedCode != inputCode) {
+            val attempts = verificationStore.incrementAttempts(email)
+            if (attempts >= EmailVerificationStore.MAX_ATTEMPTS) {
+                verificationStore.deleteCode(email)
+                verificationStore.deleteAttempts(email)
+                throw TooManyVerificationAttemptsException
+            }
             throw VerificationCodeMismatchException
         }
 
         verificationStore.deleteCode(email)
+        verificationStore.deleteAttempts(email)
         verificationStore.markAsVerified(email)
 
         return EmailVerificationResult(
