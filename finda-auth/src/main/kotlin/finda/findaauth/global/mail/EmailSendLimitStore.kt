@@ -12,13 +12,18 @@ class EmailSendLimitStore(
     private val redisTemplate: RedisTemplate<String, String>
 ) {
     companion object {
+        // Redis 키는 대소문자 구분하므로 모든 이메일을 lowercase()로 정규화하여 사용
         private const val COUNT_PREFIX = "email:send:count:"
         private const val MAX_SEND_COUNT = 5
     }
 
+    private fun normalizeEmail(email: String): String {
+        return email.lowercase()
+    }
+
     private fun getTodayKey(email: String): String {
         val today = LocalDate.now()
-        return "$COUNT_PREFIX$email:$today"
+        return "$COUNT_PREFIX${normalizeEmail(email)}:$today"
     }
 
     private fun getSecondsUntilMidnight(): Long {
