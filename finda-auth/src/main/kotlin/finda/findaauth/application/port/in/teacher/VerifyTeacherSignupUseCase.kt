@@ -1,8 +1,8 @@
 package finda.findaauth.application.port.`in`.teacher
 
-import finda.findaauth.adapter.`in`.teacher.dto.request.VerifySignupRequest
-import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenResponse
+import finda.findaauth.application.port.`in`.teacher.dto.request.VerifySignupCommand
+import finda.findaauth.application.port.`in`.teacher.dto.response.PreAuthTokenResult
 
 interface VerifyTeacherSignupUseCase {
-    fun execute(request: VerifySignupRequest): PreAuthTokenResponse
+    fun execute(command: VerifySignupCommand): PreAuthTokenResult
 }

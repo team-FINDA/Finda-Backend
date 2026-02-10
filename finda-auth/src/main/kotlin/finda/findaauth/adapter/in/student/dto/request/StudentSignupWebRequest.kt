@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-data class StudentSignupRequest(
+data class StudentSignupWebRequest(
     @field:NotBlank(message = "accountId는 필수입니다")
     val accountId: String,
 

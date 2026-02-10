@@ -1,7 +1,7 @@
 package finda.findaauth.application.port.`in`.teacher
 
-import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherSignupRequest
+import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherSignupCommand
 
 interface TeacherSignupUseCase {
-    fun execute(preAuthToken: String, request: TeacherSignupRequest)
+    fun execute(command: TeacherSignupCommand)
 }

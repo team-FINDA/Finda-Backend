@@ -1,5 +1,5 @@
 package finda.findaauth.adapter.`in`.teacher.dto.request
 
-data class VerifySignupRequest(
+data class VerifySignupWebRequest(
     val secretKey: String
 )

@@ -1,8 +1,8 @@
 package finda.findaauth.application.port.`in`.teacher
 
-import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.teacher.dto.request.VerifyEmailCodeRequest
+import finda.findaauth.application.port.`in`.auth.dto.response.EmailVerificationResult
+import finda.findaauth.application.port.`in`.teacher.dto.request.VerifyEmailCodeCommand
 
 interface VerifyEmailCodeUseCase {
-    fun execute(preAuthToken: String, request: VerifyEmailCodeRequest): EmailVerificationResponse
+    fun execute(command: VerifyEmailCodeCommand): EmailVerificationResult
 }

@@ -1,11 +1,11 @@
 package finda.findaauth.application.service.teacher
 
-import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.teacher.dto.request.VerifyEmailCodeRequest
 import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.VerificationCodeMismatchException
 import finda.findaauth.application.exception.mail.VerificationCodeNotFoundException
+import finda.findaauth.application.port.`in`.auth.dto.response.EmailVerificationResult
 import finda.findaauth.application.port.`in`.teacher.VerifyEmailCodeUseCase
+import finda.findaauth.application.port.`in`.teacher.dto.request.VerifyEmailCodeCommand
 import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.global.mail.EmailVerificationStore
 import org.springframework.stereotype.Service
@@ -17,15 +17,14 @@ class VerifyTeacherEmailCodeService(
 ) : VerifyEmailCodeUseCase {
 
     override fun execute(
-        preAuthToken: String,
-        request: VerifyEmailCodeRequest
-    ): EmailVerificationResponse {
-        if (!teacherPreAuthQueryPort.isValid(preAuthToken)) {
+        command: VerifyEmailCodeCommand
+    ): EmailVerificationResult {
+        if (!teacherPreAuthQueryPort.isValid(command.preAuthToken)) {
             throw InvalidPreAuthTokenException
         }
 
-        val email = request.email
-        val inputCode = request.code
+        val email = command.email
+        val inputCode = command.code
 
         val savedCode = verificationStore.getCode(email)
             ?: throw VerificationCodeNotFoundException
@@ -37,7 +36,7 @@ class VerifyTeacherEmailCodeService(
         verificationStore.deleteCode(email)
         verificationStore.markAsVerified(email)
 
-        return EmailVerificationResponse(
+        return EmailVerificationResult(
             success = true,
             message = "이메일 인증이 완료되었습니다"
         )

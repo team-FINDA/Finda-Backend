@@ -1,8 +1,8 @@
 package finda.findaauth.application.port.`in`.teacher
 
-import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
-import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherLoginRequest
+import finda.findaauth.application.port.`in`.auth.dto.response.TokenResult
+import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherLoginCommand
 
 interface TeacherLoginUseCase {
-    fun execute(request: TeacherLoginRequest): TokenResponse
+    fun execute(command: TeacherLoginCommand): TokenResult
 }

@@ -1,8 +1,8 @@
 package finda.findaauth.global.security.jwt
 
-import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
 import finda.findaauth.adapter.out.persistence.auth.entity.RefreshToken
 import finda.findaauth.adapter.out.persistence.auth.repository.RefreshTokenRepository
+import finda.findaauth.application.port.`in`.auth.dto.response.TokenResult
 import finda.findaauth.domain.user.model.UserType
 import finda.findaauth.global.security.jwt.exception.ExpiredTokenException
 import finda.findaauth.global.security.jwt.exception.InvalidTokenException
@@ -40,7 +40,7 @@ class JwtTokenProvider(
         private const val MILLIS_PER_SECOND = 1000L
     }
 
-    fun generateTokens(userId: UUID, userType: UserType) = TokenResponse(
+    fun generateTokens(userId: UUID, userType: UserType) = TokenResult(
         accessToken = generateAccessToken(userId, userType),
         accessExp = LocalDateTime.now().plusSeconds(jwtProperties.accessExp),
         refreshToken = generateRefreshToken(userId),

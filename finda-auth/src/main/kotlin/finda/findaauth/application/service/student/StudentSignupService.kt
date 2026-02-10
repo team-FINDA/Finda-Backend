@@ -1,9 +1,9 @@
 package finda.findaauth.application.service.student
 
-import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
 import finda.findaauth.application.exception.mail.EmailNotVerifiedException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase
+import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
 import finda.findaauth.application.port.out.student.StudentCommandPort
 import finda.findaauth.application.port.out.user.UserCommandPort
 import finda.findaauth.application.port.out.user.UserQueryPort
@@ -26,20 +26,20 @@ class StudentSignupService(
     private val passwordEncoder: PasswordEncoder
 ) : StudentSignupUseCase {
 
-    override fun execute(request: StudentSignupRequest) {
-        val email = StudentEmailUtils.toFullEmail(request.accountId)
+    override fun execute(command: StudentSignupCommand) {
+        val email = StudentEmailUtils.toFullEmail(command.accountId)
 
         validateSignup(email)
 
         val (studentNumber, name) =
-            StudentNumber.parse(request.studentInfo)
+            StudentNumber.parse(command.studentInfo)
 
         val user = userCommandPort.save(
             User(
                 id = null,
                 email = email,
                 name = name,
-                password = passwordEncoder.encode(request.password)
+                password = passwordEncoder.encode(command.password)
             )
         )
 

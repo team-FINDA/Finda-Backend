@@ -7,7 +7,6 @@ import finda.findaauth.adapter.out.persistence.user.repository.UserRepository
 import finda.findaauth.application.port.out.teacher.TeacherCommandPort
 import finda.findaauth.application.port.out.teacher.TeacherQueryPort
 import finda.findaauth.domain.teacher.model.Teacher
-import finda.findaauth.domain.user.model.User
 import org.springframework.stereotype.Component
 import java.util.UUID
 

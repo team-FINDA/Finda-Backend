@@ -1,10 +1,10 @@
 package finda.findaauth.application.service.teacher
 
-import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherSignupRequest
 import finda.findaauth.application.exception.auth.InvalidPreAuthTokenException
 import finda.findaauth.application.exception.mail.EmailNotVerifiedException
 import finda.findaauth.application.exception.user.EmailAlreadyExistsException
 import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
+import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherSignupCommand
 import finda.findaauth.application.port.out.teacher.TeacherCommandPort
 import finda.findaauth.application.port.out.teacher.TeacherPreAuthQueryPort
 import finda.findaauth.application.port.out.user.UserCommandPort
@@ -28,14 +28,13 @@ class TeacherSignupService(
 ) : TeacherSignupUseCase {
 
     override fun execute(
-        preAuthToken: String,
-        request: TeacherSignupRequest
+        command: TeacherSignupCommand
     ) {
-        if (!teacherPreAuthQueryPort.isValid(preAuthToken)) {
+        if (!teacherPreAuthQueryPort.isValid(command.preAuthToken)) {
             throw InvalidPreAuthTokenException
         }
 
-        val email = request.email
+        val email = command.email
 
         if (!verificationStore.isVerified(email)) {
             throw EmailNotVerifiedException
@@ -48,8 +47,8 @@ class TeacherSignupService(
         val user = User(
             id = null,
             email = email,
-            name = request.name,
-            password = passwordEncoder.encode(request.password)
+            name = command.name,
+            password = passwordEncoder.encode(command.password)
         )
 
         val savedUser = userCommandPort.save(user)

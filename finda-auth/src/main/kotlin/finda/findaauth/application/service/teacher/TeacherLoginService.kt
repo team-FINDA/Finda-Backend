@@ -1,9 +1,9 @@
 package finda.findaauth.application.service.teacher
 
-import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
-import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherLoginRequest
 import finda.findaauth.application.exception.auth.InvalidCredentialsException
+import finda.findaauth.application.port.`in`.auth.dto.response.TokenResult
 import finda.findaauth.application.port.`in`.teacher.TeacherLoginUseCase
+import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherLoginCommand
 import finda.findaauth.application.port.out.teacher.TeacherQueryPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.UserType
@@ -21,11 +21,11 @@ class TeacherLoginService(
     private val teacherQueryPort: TeacherQueryPort
 ) : TeacherLoginUseCase {
 
-    override fun execute(request: TeacherLoginRequest): TokenResponse {
-        val user = userQueryPort.findByEmail(request.email)
+    override fun execute(command: TeacherLoginCommand): TokenResult {
+        val user = userQueryPort.findByEmail(command.email)
             ?: throw InvalidCredentialsException
 
-        if (!passwordEncoder.matches(request.password, user.password)) {
+        if (!passwordEncoder.matches(command.password, user.password)) {
             throw InvalidCredentialsException
         }
 

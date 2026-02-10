@@ -1,7 +1,7 @@
 package finda.findaauth.application.port.`in`.student
 
-import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
+import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
 
 interface StudentSignupUseCase {
-    fun execute(request: StudentSignupRequest)
+    fun execute(command: StudentSignupCommand)
 }

@@ -1,15 +1,19 @@
 package finda.findaauth.adapter.`in`.student
 
-import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.auth.dto.response.TokenResponse
-import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
-import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginRequest
-import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupRequest
-import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeRequest
+import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationWebResponse
+import finda.findaauth.adapter.`in`.auth.dto.response.TokenWebResponse
+import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationWebRequest
+import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginWebRequest
+import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupWebRequest
+import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeWebRequest
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase
 import finda.findaauth.application.port.`in`.student.VerifyEmailCodeUseCase
+import finda.findaauth.application.port.`in`.student.dto.request.SendEmailVerificationCommand
+import finda.findaauth.application.port.`in`.student.dto.request.StudentLoginCommand
+import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
+import finda.findaauth.application.port.`in`.student.dto.request.VerifyEmailCodeCommand
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -28,32 +32,58 @@ class StudentWebAdapter(
     @PostMapping("/send-verification")
     fun sendEmailVerification(
         @Valid @RequestBody
-        request: SendEmailVerificationRequest
-    ): EmailVerificationResponse {
-        return sendEmailVerificationUseCase.execute(request)
+        request: SendEmailVerificationWebRequest
+    ): EmailVerificationWebResponse {
+        return EmailVerificationWebResponse.from(
+            sendEmailVerificationUseCase.execute(
+                SendEmailVerificationCommand(
+                    accountId = request.accountId
+                )
+            )
+        )
     }
 
     @PostMapping("/verify-email")
     fun verifyEmailCode(
         @Valid @RequestBody
-        request: VerifyEmailCodeRequest
-    ): EmailVerificationResponse {
-        return verifyEmailCodeUseCase.execute(request)
+        request: VerifyEmailCodeWebRequest
+    ): EmailVerificationWebResponse {
+        return EmailVerificationWebResponse.from(
+            verifyEmailCodeUseCase.execute(
+                VerifyEmailCodeCommand(
+                    accountId = request.accountId,
+                    code = request.code
+                )
+            )
+        )
     }
 
     @PostMapping("/signup")
     fun signup(
         @Valid @RequestBody
-        request: StudentSignupRequest
+        request: StudentSignupWebRequest
     ) {
-        return studentSignupUseCase.execute(request)
+        studentSignupUseCase.execute(
+            StudentSignupCommand(
+                accountId = request.accountId,
+                studentInfo = request.studentInfo,
+                password = request.password
+            )
+        )
     }
 
     @PostMapping("/login")
     fun login(
         @RequestBody @Valid
-        request: StudentLoginRequest
-    ): TokenResponse {
-        return studentLoginUseCase.execute(request)
+        request: StudentLoginWebRequest
+    ): TokenWebResponse {
+        return TokenWebResponse.from(
+            studentLoginUseCase.execute(
+                StudentLoginCommand(
+                    accountId = request.accountId,
+                    password = request.password
+                )
+            )
+        )
     }
 }

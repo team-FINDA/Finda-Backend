@@ -1,8 +1,8 @@
 package finda.findaauth.application.port.`in`.student
 
-import finda.findaauth.adapter.`in`.auth.dto.response.EmailVerificationResponse
-import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationRequest
+import finda.findaauth.application.port.`in`.auth.dto.response.EmailVerificationResult
+import finda.findaauth.application.port.`in`.student.dto.request.SendEmailVerificationCommand
 
 interface SendEmailVerificationUseCase {
-    fun execute(request: SendEmailVerificationRequest): EmailVerificationResponse
+    fun execute(command: SendEmailVerificationCommand): EmailVerificationResult
 }
