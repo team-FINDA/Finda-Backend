@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 import kotlin.random.Random
 
 @Service
-@Transactional
 class SendStudentEmailVerificationService(
     private val emailService: EmailService,
     private val userQueryPort: UserQueryPort,
