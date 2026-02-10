@@ -1,6 +1,6 @@
 package finda.findaauth.domain.student.vo
 
-class StudentNumber(
+data class StudentNumber(
     val grade: Int,
     val classNum: Int,
     val num: Int
