@@ -12,9 +12,11 @@ class EmailVerificationStore(
         // Redis 키는 대소문자 구분하므로 모든 이메일을 lowercase()로 정규화하여 사용
         private const val CODE_PREFIX = "email:verification:code:"
         private const val VERIFIED_PREFIX = "email:verification:verified:"
+        private const val ATTEMPT_PREFIX = "email:verification:attempts:"
 
         private const val CODE_EXPIRE_MINUTES = 5L
         private const val VERIFIED_EXPIRE_HOURS = 1L
+        const val MAX_ATTEMPTS = 5L
     }
 
     private fun normalizeEmail(email: String): String {
@@ -53,5 +55,24 @@ class EmailVerificationStore(
 
     fun deleteVerified(email: String) {
         redisTemplate.delete(VERIFIED_PREFIX + normalizeEmail(email))
+    }
+
+    fun incrementAttempts(email: String): Long {
+        val key = ATTEMPT_PREFIX + normalizeEmail(email)
+        val count = redisTemplate.opsForValue().increment(key) ?: 1L
+        if (count == 1L) {
+            redisTemplate.expire(key, CODE_EXPIRE_MINUTES, TimeUnit.MINUTES)
+        }
+        return count
+    }
+
+    fun isAttemptExceeded(email: String): Boolean {
+        val key = ATTEMPT_PREFIX + normalizeEmail(email)
+        val count = redisTemplate.opsForValue().get(key)
+        return (count?.toLongOrNull() ?: 0L) >= MAX_ATTEMPTS
+    }
+
+    fun deleteAttempts(email: String) {
+        redisTemplate.delete(ATTEMPT_PREFIX + normalizeEmail(email))
     }
 }
