@@ -12,6 +12,6 @@ object Dependencies {
     const val MYSQL_CONNECTOR = "mysql:mysql-connector-java:${DependencyVersions.MYSQL}"
     const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
 
-
-
+    const val KAFKA = "org.springframework.kafka:spring-kafka:${DependencyVersions.KAFKA}"
+    const val QUARTZ = "org.springframework.boot:spring-boot-starter-quartz"
 }
