@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -24,6 +25,13 @@ class GlobalExceptionHandler {
         val errorCode = ErrorCode.BAD_REQUEST
         val response = ErrorResponse.of(errorCode, errorCode.message())
         return ResponseEntity(response, HttpStatus.valueOf(errorCode.status()))
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(e: NoResourceFoundException): ResponseEntity<ErrorResponse> {
+        val errorCode = ErrorCode.NOT_FOUND
+        val response = ErrorResponse.of(errorCode, e.message ?: "Not Found")
+        return ResponseEntity(response, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(Exception::class) // 예상치 못한 에러

@@ -4,4 +4,6 @@ object DependencyVersions {
     const val JACKSON_VERSION = "2.16.1"
     const val KAFKA = "2.9.13"
 
+    const val JWT = "0.11.5"
+    const val SPRING_CLOUD = "2023.0.3"
 }

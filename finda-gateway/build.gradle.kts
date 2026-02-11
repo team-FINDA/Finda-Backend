@@ -19,21 +19,20 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2023.0.3"
-
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+    implementation(Dependencies.SPRING_CLOUD_GATEWAY)
+    implementation(Dependencies.SPRING_SECURITY)
+    implementation(Dependencies.JACKSON_KOTLIN)
+    implementation(Dependencies.KOTLIN_REFLECT)
 
-    implementation("org.springframework.boot:spring-boot-starter-security")
-
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation(Dependencies.JWT_API)
+    runtimeOnly(Dependencies.JWT_IMPL)
+    runtimeOnly(Dependencies.JWT_JACKSON)
 }
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${DependencyVersions.SPRING_CLOUD}")
     }
 }
 

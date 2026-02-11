@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class Teacher(
-    val id: UUID,
+    val id: UUID?,
     val userId: UUID,
     val deletedAt: LocalDateTime? = null
 )

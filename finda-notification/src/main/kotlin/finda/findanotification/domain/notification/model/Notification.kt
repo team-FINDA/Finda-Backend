@@ -8,5 +8,5 @@ data class Notification(
     val title: String,
     val body: String,
     val type: NotificationType,
-    val volunteerId: String
+    val volunteerId: String?
 )

@@ -9,19 +9,59 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    properties:
       hibernate:
-        ddl-auto: validate
+        format_sql: false
+        show_sql: false
         order_inserts: true
         order_updates: true
         jdbc:
           batch_size: 100
-      properties:
-        hibernate:
-          format_sql: false
-          show_sql: false
-      database-platform: org.hibernate.dialect.MySQL8Dialect
-      open-in-view: false
+
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-exp: 3600
+  refresh-exp: 604800
+  header: Authorization
+  prefix: "Bearer "
+
+teacher:
+  signup-secret: ${TEACHER_SIGNUP_SECRET}
