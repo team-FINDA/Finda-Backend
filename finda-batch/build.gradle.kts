@@ -15,7 +15,6 @@ java {
 
 dependencies {
     implementation(Dependencies.SPRING_WEB)
-    implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.KAFKA)
     implementation(Dependencies.QUARTZ)
