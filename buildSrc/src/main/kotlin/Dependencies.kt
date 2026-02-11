@@ -9,6 +9,7 @@ object Dependencies {
     const val SPRING_WEB = "org.springframework.boot:spring-boot-starter-web"
 
     const val SPRING_DATA_JPA = "org.springframework.boot:spring-boot-starter-data-jpa:${PluginVersions.SPRING_PLUGIN_VERSION}"
+    const val SPRING_JDBC = "org.springframework.boot:spring-boot-starter-jdbc"
     const val MYSQL_CONNECTOR = "mysql:mysql-connector-java:${DependencyVersions.MYSQL}"
     const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
 
