@@ -22,9 +22,9 @@ class NoticeJpaEntity(
     @Column(name = "admin_id", nullable = false)
     val adminId: String,
 
-    @Column(name = "date", nullable = false)
-    val date: LocalDateTime,
+    @Column(name = "notice_date", nullable = false)
+    val noticeDate: LocalDateTime,
 
-    @Column(name = "time", nullable = false)
-    val time: LocalTime
+    @Column(name = "notice_time", nullable = false)
+    val noticeTime: LocalTime
 ) : BaseEntity(id)

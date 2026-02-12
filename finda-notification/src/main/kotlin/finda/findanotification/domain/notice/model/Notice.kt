@@ -9,6 +9,6 @@ data class Notice(
     val title: String,
     val body: String,
     val adminId: String,
-    val date: LocalDateTime,
-    val time: LocalTime
+    val noticeDate: LocalDateTime,
+    val noticeTime: LocalTime
 )

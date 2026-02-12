@@ -15,8 +15,8 @@ class NoticeMapper : GenericMapper<Notice, NoticeJpaEntity> {
                 title = it.title,
                 body = it.body,
                 adminId = it.adminId,
-                date = it.date,
-                time = it.time
+                noticeDate = it.noticeDate,
+                noticeTime = it.noticeTime
             )
         }
     }
@@ -27,8 +27,8 @@ class NoticeMapper : GenericMapper<Notice, NoticeJpaEntity> {
             title = domain.title,
             body = domain.body,
             adminId = domain.adminId,
-            date = domain.date,
-            time = domain.time
+            noticeDate = domain.noticeDate,
+            noticeTime = domain.noticeTime
         )
     }
 }

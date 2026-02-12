@@ -5,6 +5,6 @@ import java.util.UUID
 
 data class VolunteerSchedule(
     val id: UUID,
-    val date: LocalDate,
+    val scheduleDate: LocalDate,
     val volunteerId: UUID
 )
