@@ -15,11 +15,8 @@ import java.util.UUID
 class VolunteerScheduleJpaEntity(
     id: UUID?,
 
-    @Column(name = "start_date", nullable = false)
-    val startDate: LocalDate,
-
-    @Column(name = "end_date", nullable = false)
-    val endDate: LocalDate,
+    @Column(name = "schedule_date", nullable = false)
+    val scheduleDate: LocalDate,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_id")

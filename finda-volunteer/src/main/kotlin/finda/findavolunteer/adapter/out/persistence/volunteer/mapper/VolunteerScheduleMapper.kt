@@ -16,8 +16,7 @@ class VolunteerScheduleMapper(
         return entity?.let {
             VolunteerSchedule(
                 id = it.id!!,
-                startDate = it.startDate,
-                endDate = it.endDate,
+                scheduleDate = it.scheduleDate,
                 volunteerId = it.volunteer!!.id!!
             )
         }
@@ -28,8 +27,7 @@ class VolunteerScheduleMapper(
 
         return VolunteerScheduleJpaEntity(
             id = domain.id,
-            startDate = domain.startDate,
-            endDate = domain.endDate,
+            scheduleDate = domain.scheduleDate,
             volunteer = volunteer
         )
     }
