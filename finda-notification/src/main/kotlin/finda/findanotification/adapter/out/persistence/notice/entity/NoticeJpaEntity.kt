@@ -4,7 +4,7 @@ import finda.findanotification.adapter.out.persistence.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
 
@@ -23,7 +23,7 @@ class NoticeJpaEntity(
     val adminId: String,
 
     @Column(name = "notice_date", nullable = false)
-    val noticeDate: LocalDateTime,
+    val noticeDate: LocalDate,
 
     @Column(name = "notice_time", nullable = false)
     val noticeTime: LocalTime
