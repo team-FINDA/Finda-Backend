@@ -15,7 +15,7 @@ object Dependencies {
     const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
     const val SPRING_VALIDITY = "org.springframework.boot:spring-boot-starter-validation"
 
-    const val KAFKA = "org.springframework.kafka:spring-kafka:${DependencyVersions.KAFKA}"
+    const val KAFKA = "org.springframework.kafka:spring-kafka"
     const val QUARTZ = "org.springframework.boot:spring-boot-starter-quartz"
     const val JWT_API = "io.jsonwebtoken:jjwt-api:${DependencyVersions.JWT}"
     const val JWT_IMPL = "io.jsonwebtoken:jjwt-impl:${DependencyVersions.JWT}"
