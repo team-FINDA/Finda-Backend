@@ -33,6 +33,7 @@ dependencies {
     implementation(Dependencies.SPRING_DATA_REDIS)
     implementation(Dependencies.SPRING_MAIL)
     implementation(Dependencies.SPRING_VALIDITY)
+    implementation(Dependencies.LIQUIBASE)
 }
 
 kotlin {

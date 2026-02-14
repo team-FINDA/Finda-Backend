@@ -23,4 +23,6 @@ object Dependencies {
     const val SPRING_CLOUD_GATEWAY = "org.springframework.cloud:spring-cloud-starter-gateway"
 
     const val SPRING_MAIL = "org.springframework.boot:spring-boot-starter-mail"
+
+    const val LIQUIBASE = "org.liquibase:liquibase-core"
 }

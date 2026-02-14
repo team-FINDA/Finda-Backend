@@ -14,10 +14,10 @@ java {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation(Dependencies.SPRING_WEB)
+    implementation(Dependencies.SPRING_SECURITY)
+    implementation(Dependencies.JACKSON_KOTLIN)
+    implementation(Dependencies.LIQUIBASE)
 }
 
 kotlin {

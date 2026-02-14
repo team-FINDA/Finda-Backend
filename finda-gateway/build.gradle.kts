@@ -24,7 +24,6 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON_KOTLIN)
     implementation(Dependencies.KOTLIN_REFLECT)
-
     implementation(Dependencies.JWT_API)
     runtimeOnly(Dependencies.JWT_IMPL)
     runtimeOnly(Dependencies.JWT_JACKSON)
