@@ -9,20 +9,20 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: validate
-      order_inserts: true
-      order_updates: true
-      jdbc:
-        batch_size: 100
     properties:
       hibernate:
         format_sql: false
         show_sql: false
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 100
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
 
