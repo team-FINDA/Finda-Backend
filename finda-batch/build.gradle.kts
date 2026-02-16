@@ -18,6 +18,11 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON_KOTLIN)
     implementation(Dependencies.LIQUIBASE)
+    implementation(Dependencies.JACKSON)
+    implementation(Dependencies.KAFKA)
+    implementation(Dependencies.QUARTZ)
+    implementation(Dependencies.MYSQL_CONNECTOR)
+    implementation(Dependencies.SPRING_DATA_JPA)
 }
 
 kotlin {

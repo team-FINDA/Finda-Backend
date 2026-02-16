@@ -9,6 +9,7 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
 
 @Entity
@@ -46,5 +47,8 @@ class VolunteerJpaEntity(
     val cycleType: CycleType?,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String
+    val userId: String,
+
+    @Column(name = "remind_time", nullable = false)
+    val remindTime: LocalTime
 ) : BaseEntity(id)

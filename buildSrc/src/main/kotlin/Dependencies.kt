@@ -10,10 +10,13 @@ object Dependencies {
     const val SPRING_WEB = "org.springframework.boot:spring-boot-starter-web"
 
     const val SPRING_DATA_JPA = "org.springframework.boot:spring-boot-starter-data-jpa:${PluginVersions.SPRING_PLUGIN_VERSION}"
+    const val SPRING_JDBC = "org.springframework.boot:spring-boot-starter-jdbc"
     const val MYSQL_CONNECTOR = "mysql:mysql-connector-java:${DependencyVersions.MYSQL}"
     const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
     const val SPRING_VALIDITY = "org.springframework.boot:spring-boot-starter-validation"
 
+    const val KAFKA = "org.springframework.kafka:spring-kafka"
+    const val QUARTZ = "org.springframework.boot:spring-boot-starter-quartz"
     const val JWT_API = "io.jsonwebtoken:jjwt-api:${DependencyVersions.JWT}"
     const val JWT_IMPL = "io.jsonwebtoken:jjwt-impl:${DependencyVersions.JWT}"
     const val JWT_JACKSON = "io.jsonwebtoken:jjwt-jackson:${DependencyVersions.JWT}"
