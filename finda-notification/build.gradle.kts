@@ -26,6 +26,7 @@ dependencies {
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.SPRING_WEB)
+    implementation(Dependencies.LIQUIBASE)
 }
 
 kotlin {
