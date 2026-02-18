@@ -8,6 +8,7 @@ import org.quartz.SimpleScheduleBuilder
 import org.quartz.TriggerBuilder
 import org.quartz.TriggerKey
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
@@ -27,7 +28,7 @@ class NoticeScheduledJobScheduler(
             .usingJobData("noticeId", event.noticeId.toString())
             .build()
 
-        val triggerTime = event.noticeDate
+        val triggerTime = LocalDateTime.of(event.noticeDate, event.noticeTime)
             .atZone(ZoneId.of("Asia/Seoul"))
             .toInstant()
 
