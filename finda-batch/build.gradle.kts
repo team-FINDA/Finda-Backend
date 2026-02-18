@@ -14,6 +14,10 @@ java {
 }
 
 dependencies {
+    implementation(Dependencies.SPRING_WEB)
+    implementation(Dependencies.SPRING_SECURITY)
+    implementation(Dependencies.JACKSON_KOTLIN)
+    implementation(Dependencies.LIQUIBASE)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.KAFKA)
