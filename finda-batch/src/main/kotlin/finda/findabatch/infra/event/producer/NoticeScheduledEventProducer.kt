@@ -10,11 +10,14 @@ class NoticeScheduledEventProducer(
     private val kafkaTemplate: KafkaTemplate<String, Any>
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
-    private val TOPIC = "NOTICE-FIRED"
 
     fun produce(event: NoticeScheduledFiredEvent) {
         kafkaTemplate.send(TOPIC, event).whenComplete { _, ex ->
             if (ex != null) log.error("Failed to send NoticeScheduledFiredEvent: $event", ex)
         }
+    }
+
+    companion object {
+        private const val TOPIC = "NOTICE-FIRED"
     }
 }
