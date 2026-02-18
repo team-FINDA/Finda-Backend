@@ -43,7 +43,7 @@ class JwtTokenProvider(
     fun generateTokens(userId: UUID, userType: UserType) = TokenResult(
         accessToken = generateAccessToken(userId, userType),
         accessExp = LocalDateTime.now().plusSeconds(jwtProperties.accessExp),
-        refreshToken = generateRefreshToken(userId),
+        refreshToken = generateRefreshToken(userId, userType),
         refreshExp = LocalDateTime.now().plusSeconds(jwtProperties.refreshExp)
     )
 
@@ -57,10 +57,11 @@ class JwtTokenProvider(
             .signWith(secretKey, SignatureAlgorithm.HS512)
             .compact()
 
-    private fun generateRefreshToken(userId: UUID): String {
+    private fun generateRefreshToken(userId: UUID, userType: UserType): String {
         val token = Jwts.builder()
             .setSubject(userId.toString())
             .claim(CLAIM_TYPE, TOKEN_TYPE_REFRESH)
+            .claim(CLAIM_USER_TYPE, userType.name)
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + jwtProperties.refreshExp * MILLIS_PER_SECOND))
             .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -87,11 +88,12 @@ class JwtTokenProvider(
         return UsernamePasswordAuthenticationToken(userId, null, emptyList())
     }
 
-    fun validateRefreshToken(token: String): UUID {
+    fun validateRefreshToken(token: String): RefreshTokenClaims {
         val claims = getClaims(token)
         if (claims[CLAIM_TYPE] != TOKEN_TYPE_REFRESH) throw InvalidTokenException
 
         val userId = parseUserId(claims.subject)
+        val userType = UserType.valueOf(claims[CLAIM_USER_TYPE] as String)
 
         val savedToken = refreshTokenRepository.findById(token)
             .orElseThrow { InvalidTokenException }
@@ -100,7 +102,7 @@ class JwtTokenProvider(
 
         refreshTokenRepository.deleteById(token)
 
-        return userId
+        return RefreshTokenClaims(userId, userType)
     }
 
     private fun parseUserId(subject: String): UUID =
