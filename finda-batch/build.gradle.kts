@@ -15,6 +15,7 @@ java {
 
 dependencies {
     implementation(Dependencies.JACKSON)
+    implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.KAFKA)
     implementation(Dependencies.QUARTZ)
     implementation(Dependencies.MYSQL_CONNECTOR)
