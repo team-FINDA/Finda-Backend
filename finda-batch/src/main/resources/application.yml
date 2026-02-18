@@ -9,19 +9,47 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
-    jpa:
-      hibernate:
-        ddl-auto: validate
-        order_inserts: true
-        order_updates: true
-        jdbc:
-          batch_size: 100
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: finda-batch
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        hibernate:
-          format_sql: false
-          show_sql: false
-      database-platform: org.hibernate.dialect.MySQL8Dialect
-      open-in-view: false
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    overwrite-existing-jobs: true
+    auto-startup: true
+    wait-for-jobs-to-complete-on-shutdown: true
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: Finda-Batch-Scheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: ${QUARTZ_CLUSTERED:false}
+            useProperties: false
+            misfireThreshold: 300000
+            acquireTriggersWithinLock: true
+            txIsolationLevelSerializable: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
