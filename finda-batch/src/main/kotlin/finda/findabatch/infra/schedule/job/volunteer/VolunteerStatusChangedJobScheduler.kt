@@ -58,6 +58,7 @@ class VolunteerStatusChangedJobScheduler(
 
         when {
             scheduler.checkExists(triggerKey) -> scheduler.rescheduleJob(triggerKey, trigger)
+            scheduler.checkExists(jobKey) -> scheduler.scheduleJob(trigger)
             else -> scheduler.scheduleJob(jobDetail, trigger)
         }
     }
