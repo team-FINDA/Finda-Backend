@@ -56,7 +56,7 @@ class KafkaConfig(
         props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = JsonDeserializer::class.java
         props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
-        props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
+        props[JsonDeserializer.USE_TYPE_INFO_HEADERS] = false
 
         return props
     }
