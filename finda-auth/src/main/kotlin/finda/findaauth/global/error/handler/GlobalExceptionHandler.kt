@@ -3,6 +3,7 @@ package finda.findaauth.global.error.handler
 import finda.findaauth.global.error.exception.ErrorCode
 import finda.findaauth.global.error.exception.FindaException
 import finda.findaauth.global.error.response.ErrorResponse
+import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -39,5 +40,12 @@ class GlobalExceptionHandler {
         val errorCode = ErrorCode.INTERNAL_SERVER_ERROR
         val response = ErrorResponse.of(errorCode, e.message ?: "Unknown error")
         return ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolationException(e: ConstraintViolationException): ResponseEntity<ErrorResponse> {
+        val errorCode = ErrorCode.BAD_REQUEST
+        val response = ErrorResponse.of(errorCode, errorCode.message())
+        return ResponseEntity(response, HttpStatus.valueOf(errorCode.status()))
     }
 }
