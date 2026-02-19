@@ -19,21 +19,12 @@ spring:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: finda-batch
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   quartz:
     job-store-type: jdbc
     jdbc:
       initialize-schema: never
     overwrite-existing-jobs: true
-    auto-startup: true
     wait-for-jobs-to-complete-on-shutdown: true
     properties:
       org:
