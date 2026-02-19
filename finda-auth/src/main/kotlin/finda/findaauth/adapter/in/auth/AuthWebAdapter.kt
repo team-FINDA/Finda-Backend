@@ -3,6 +3,7 @@ package finda.findaauth.adapter.`in`.auth
 import finda.findaauth.adapter.`in`.auth.dto.response.TokenWebResponse
 import finda.findaauth.application.port.`in`.auth.ReissueUseCase
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +16,7 @@ class AuthWebAdapter(
 ) {
     @PostMapping("/reissue")
     fun reissue(
-        @Valid @RequestHeader
+        @NotBlank @RequestHeader("Refresh-Token")
         token: String
     ): TokenWebResponse {
         return TokenWebResponse.from(
