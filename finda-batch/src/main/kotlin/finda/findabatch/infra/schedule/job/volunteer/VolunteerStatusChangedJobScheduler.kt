@@ -9,6 +9,7 @@ import org.quartz.Scheduler
 import org.quartz.SimpleScheduleBuilder
 import org.quartz.TriggerBuilder
 import org.quartz.TriggerKey
+import org.quartz.impl.matchers.GroupMatcher
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.LocalTime
@@ -20,8 +21,9 @@ import java.util.UUID
 class VolunteerStatusChangedJobScheduler(
     private val scheduler: Scheduler
 ) {
-
+    // 기존 스케줄 삭제 후 reuqest의 날짜로 재성성
     fun schedule(event: VolunteerStatusChangedEvent) {
+        delete(event.volunteerId)
         scheduleJob(event.volunteerId, VolunteerStatus.APPLICATION, VolunteerProgress.START, event.applicationStartDate)
         scheduleJob(event.volunteerId, VolunteerStatus.APPLICATION, VolunteerProgress.END, event.applicationEndDate)
         scheduleJob(event.volunteerId, VolunteerStatus.WORK, VolunteerProgress.START, event.workStartDate)
@@ -64,6 +66,10 @@ class VolunteerStatusChangedJobScheduler(
     }
 
     fun delete(volunteerId: UUID) {
-        TODO()
+        val prefix = "${volunteerId}_"
+        val jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals("volunteer-status"))
+        jobKeys
+            .filter { it.name.startsWith(prefix) }
+            .forEach { scheduler.deleteJob(it) }
     }
 }

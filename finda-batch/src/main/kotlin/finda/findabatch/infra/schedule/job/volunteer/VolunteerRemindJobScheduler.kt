@@ -20,7 +20,9 @@ import java.util.UUID
 class VolunteerRemindJobScheduler(
     private val scheduler: Scheduler
 ) {
+    // 기존 봉사를 다 지우고 request의 날짜로 재생성
     fun schedule(event: VolunteerRemindEvent) {
+        delete(event.volunteerId)
         event.scheduleDate.forEach { date ->
             schedule(event.volunteerId, date, event.remindTime)
         }
