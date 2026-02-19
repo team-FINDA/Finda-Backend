@@ -4,26 +4,27 @@ import finda.findabatch.domain.volunteer.VolunteerProgress
 import finda.findabatch.domain.volunteer.VolunteerStatus
 import finda.findabatch.infra.event.dto.volunteer.VolunteerStatusChangedFiredEvent
 import finda.findabatch.infra.event.producer.VolunteerStatusChangedEventProducer
-import org.quartz.Job
+import finda.findabatch.infra.schedule.job.BaseQuartzJob
+import finda.findabatch.infra.schedule.job.requireEnum
+import finda.findabatch.infra.schedule.job.requireUuid
 import org.quartz.JobExecutionContext
 import org.springframework.stereotype.Component
-import java.util.UUID
 
 @Component
 class VolunteerStatusChangedJob(
     private val volunteerStatusChangedEventProducer: VolunteerStatusChangedEventProducer
-) : Job {
+) : BaseQuartzJob() {
 
-    override fun execute(context: JobExecutionContext) {
-        val volunteerId = context.jobDetail.jobDataMap.getString("volunteerId")
-        val status = context.jobDetail.jobDataMap.getString("status")
-        val progress = context.jobDetail.jobDataMap.getString("progress")
+    override fun doExecute(context: JobExecutionContext) {
+        val volunteerId = context.requireUuid("volunteerId")
+        val status = context.requireEnum<VolunteerStatus>("status")
+        val progress = context.requireEnum<VolunteerProgress>("progress")
 
         volunteerStatusChangedEventProducer.produce(
             VolunteerStatusChangedFiredEvent(
-                volunteerId = UUID.fromString(volunteerId),
-                status = VolunteerStatus.valueOf(status),
-                progress = VolunteerProgress.valueOf(progress)
+                volunteerId = volunteerId,
+                status = status,
+                progress = progress
             )
         )
     }
