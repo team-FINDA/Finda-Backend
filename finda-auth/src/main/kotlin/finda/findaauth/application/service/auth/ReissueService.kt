@@ -12,6 +12,8 @@ class ReissueService(
 
     override fun execute(token: String): TokenResult {
         val (userId, userType) = jwtTokenProvider.validateRefreshToken(token)
-        return jwtTokenProvider.generateTokens(userId, userType)
+        val result = jwtTokenProvider.generateTokens(userId, userType)
+        jwtTokenProvider.deleteRefreshToken(token)
+        return result
     }
 }
