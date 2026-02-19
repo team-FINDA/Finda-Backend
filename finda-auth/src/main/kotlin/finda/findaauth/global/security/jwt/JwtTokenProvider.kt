@@ -100,8 +100,6 @@ class JwtTokenProvider(
 
         if (savedToken.userId != userId) throw InvalidTokenException
 
-        refreshTokenRepository.deleteById(token)
-
         return RefreshTokenClaims(userId, userType)
     }
 
@@ -133,4 +131,8 @@ class JwtTokenProvider(
             ?.substring(jwtProperties.prefix.length)
 
             ?.takeIf { it.isNotBlank() }
+
+    fun deleteRefreshToken(token: String) {
+        refreshTokenRepository.deleteById(token)
+    }
 }
