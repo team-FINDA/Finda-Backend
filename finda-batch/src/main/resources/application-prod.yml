@@ -1,4 +1,4 @@
-spring:
+  spring:
   config:
     activate:
       on-profile: prod
@@ -7,6 +7,13 @@ spring:
     url: jdbc:mysql://${BATCH_MYSQL_HOST}:${BATCH_DB_PORT}/${BATCH_DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: ${BATCH_MYSQL_USERNAME}
     password: ${BATCH_MYSQL_PASSWORD}
+
+  kafka:
+    enabled: true
+
+  quartz:
+    jdbc:
+      initialize-schema: never
 
   jpa:
     properties:
