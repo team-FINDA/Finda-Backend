@@ -5,6 +5,9 @@ import io.grpc.stub.StreamObserver
 import net.devh.boot.grpc.server.service.GrpcService
 import java.util.UUID
 
+/**
+ * RestController와 유사한 개념
+ */
 @GrpcService
 class AuthGrpcService(
     private val getDeviceTokenService: GetDeviceTokenService
