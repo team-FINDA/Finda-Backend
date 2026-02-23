@@ -28,4 +28,10 @@ object Dependencies {
     const val SPRING_MAIL = "org.springframework.boot:spring-boot-starter-mail"
 
     const val LIQUIBASE = "org.liquibase:liquibase-core"
+
+    const val GRPC_SERVER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
+    const val GRPC_PROTOBUF = "io.grpc:grpc-protobuf:${DependencyVersions.GRPC}"
+    const val GRPC_STUB = "io.grpc:grpc-stub:${DependencyVersions.GRPC}"
+    const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${DependencyVersions.PROTOBUF}"
+    const val JAVAX_ANNOTATION = "javax.annotation:javax.annotation-api:${DependencyVersions.JAVAX_ANNOTATION}"
 }
