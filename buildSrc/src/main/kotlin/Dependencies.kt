@@ -34,4 +34,5 @@ object Dependencies {
     const val GRPC_STUB = "io.grpc:grpc-stub:${DependencyVersions.GRPC}"
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${DependencyVersions.PROTOBUF}"
     const val JAVAX_ANNOTATION = "javax.annotation:javax.annotation-api:${DependencyVersions.JAVAX_ANNOTATION}"
+    const val GRPC_CLIENT = "net.devh:grpc-client-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
 }
