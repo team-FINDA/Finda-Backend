@@ -2,7 +2,7 @@ package finda.findanotification.adapter.out.persistence.notification
 
 import finda.findanotification.adapter.out.persistence.notification.mapper.NotificationMapper
 import finda.findanotification.adapter.out.persistence.notification.repository.NotificationRepository
-import finda.findanotification.application.port.out.SaveNotificationPort
+import finda.findanotification.application.port.out.notification.SaveNotificationPort
 import finda.findanotification.domain.notification.model.Notification
 import org.springframework.stereotype.Component
 

@@ -1,4 +1,4 @@
-package finda.findanotification.application.port.out
+package finda.findanotification.application.port.out.notification
 
 import finda.findanotification.domain.notification.model.Notification
 

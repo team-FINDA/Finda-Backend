@@ -27,4 +27,4 @@ class NoticeJpaEntity(
 
     @Column(name = "notice_time", nullable = false)
     val noticeTime: LocalTime
-) : BaseEntity(id)
+) : BaseEntity()

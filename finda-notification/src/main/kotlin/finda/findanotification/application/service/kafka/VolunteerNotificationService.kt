@@ -6,7 +6,7 @@ import finda.findanotification.adapter.out.fcm.FcmClient
 import finda.findanotification.adapter.out.grpc.AuthGrpcClient
 import finda.findanotification.adapter.out.persistence.notificationpreference.repository.VolunteerNotificationPreferenceRepository
 import finda.findanotification.application.port.`in`.kafka.SendVolunteerNotificationUseCase
-import finda.findanotification.application.port.out.SaveNotificationPort
+import finda.findanotification.application.port.out.notification.SaveNotificationPort
 import finda.findanotification.domain.notification.enum.NotificationType
 import finda.findanotification.domain.notification.model.Notification
 import org.springframework.stereotype.Service
