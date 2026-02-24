@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface VolunteerNotificationPreferenceRepository : CrudRepository<VolunteerNotificationPreferenceJpaEntity, String>
+interface VolunteerNotificationPreferenceRepository : CrudRepository<VolunteerNotificationPreferenceJpaEntity, String> {
+    fun findByVolunteerId(volunteerId: String): VolunteerNotificationPreferenceJpaEntity?
+}
