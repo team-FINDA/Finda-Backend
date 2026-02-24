@@ -35,4 +35,6 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${DependencyVersions.PROTOBUF}"
     const val JAVAX_ANNOTATION = "javax.annotation:javax.annotation-api:${DependencyVersions.JAVAX_ANNOTATION}"
     const val GRPC_CLIENT = "net.devh:grpc-client-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
+
+    const val FIRE_BASE = "com.google.firebase:firebase-admin:${DependencyVersions.FIRE_BASE}"
 }

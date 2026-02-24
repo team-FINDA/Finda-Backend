@@ -8,4 +8,5 @@ object DependencyVersions {
     const val GRPC = "1.58.0"
     const val PROTOBUF = "3.24.0"
     const val JAVAX_ANNOTATION = "1.3.2"
+    const val FIRE_BASE = "9.5.0"
 }

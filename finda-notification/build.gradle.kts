@@ -33,6 +33,7 @@ dependencies {
     implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.PROTOBUF_JAVA)
     compileOnly(Dependencies.JAVAX_ANNOTATION)
+    implementation(Dependencies.FIRE_BASE)
 }
 
 protobuf {
