@@ -18,6 +18,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: finda-notification
+
   jpa:
     hibernate:
       ddl-auto: validate
