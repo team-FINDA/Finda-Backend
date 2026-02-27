@@ -6,7 +6,6 @@ import java.time.LocalTime
 data class CreateNoticeCommand(
     val title: String,
     val body: String,
-    val adminId: String,
     val noticeDate: LocalDate?,
     val noticeTime: LocalTime?
 )

@@ -20,7 +20,6 @@ class NoticeWebAdapter(
             CreateNoticeCommand(
                 title = request.title,
                 body = request.body,
-                adminId = request.adminId,
                 noticeDate = request.noticeDate,
                 noticeTime = request.noticeTime
             )

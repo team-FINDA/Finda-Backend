@@ -23,7 +23,6 @@ class CreateNoticeService(
             id = UUID.randomUUID(),
             title = request.title,
             body = request.body,
-            adminId = request.adminId,
             noticeDate = request.noticeDate ?: LocalDate.now(),
             noticeTime = request.noticeTime ?: LocalTime.now()
         )
