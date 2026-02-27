@@ -28,17 +28,16 @@ class VolunteerNotificationService(
         if (!preference.enabled) return
 
         val deviceToken = authGrpcClient.getDeviceToken(preference.userId)
-        fcmClient.sendNotification(
-            deviceToken = deviceToken,
-            title = "봉사 상태가 변경되었습니다",
-            body = "상태: ${event.status} / 진행: ${event.progress}"
-        )
+        val title = "봉사 상태가 변경되었습니다"
+        val body = "상태: ${event.status} / 진행: ${event.progress}"
+
+        fcmClient.sendNotification(deviceToken, title, body)
 
         saveNotificationPort.save(
             Notification(
                 id = UUID.randomUUID(),
-                title = "봉사 상태가 변경되었습니다",
-                body = "상태: ${event.status} / 진행: ${event.progress}",
+                title = title,
+                body = body,
                 type = NotificationType.NOTIFICATION,
                 volunteerId = event.volunteerId.toString()
             )
@@ -53,17 +52,16 @@ class VolunteerNotificationService(
         if (!preference.enabled) return
 
         val deviceToken = authGrpcClient.getDeviceToken(preference.userId)
-        fcmClient.sendNotification(
-            deviceToken = deviceToken,
-            title = "봉사 활동 리마인드",
-            body = "내일 봉사 활동이 있습니다"
-        )
+        val title = "봉사 활동 리마인드"
+        val body = "오늘 봉사 활동이 있습니다"
+
+        fcmClient.sendNotification(deviceToken, title, body)
 
         saveNotificationPort.save(
             Notification(
                 id = UUID.randomUUID(),
-                title = "봉사 활동 리마인드",
-                body = "내일 봉사 활동이 있습니다",
+                title = title,
+                body = body,
                 type = NotificationType.NOTIFICATION,
                 volunteerId = event.volunteerId.toString()
             )
