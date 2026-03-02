@@ -35,6 +35,7 @@ dependencies {
     compileOnly(Dependencies.JAVAX_ANNOTATION)
     implementation(Dependencies.FIRE_BASE)
     implementation(Dependencies.KAFKA)
+    implementation(Dependencies.SPRING_VALIDITY)
 }
 
 protobuf {
