@@ -21,7 +21,6 @@ class AuthGrpcService(
         request: UserRequest,
         responseObserver: StreamObserver<DeviceTokenResponse>
     ) = handleGrpc(responseObserver) {
-
         val userId = parseUUID(request.userId)
 
         val token = getDeviceTokenService.getByUserId(userId)
@@ -33,7 +32,6 @@ class AuthGrpcService(
         request: UserListRequest,
         responseObserver: StreamObserver<DeviceTokenListResponse>
     ) = handleGrpc(responseObserver) {
-
         val userIds = request.userIdsList.map(::parseUUID)
 
         val tokens = getDeviceTokenService.getAllByUserIds(userIds)
@@ -71,17 +69,14 @@ class AuthGrpcService(
         try {
             observer.onNext(block())
             observer.onCompleted()
-
         } catch (e: DeviceTokenNotFoundException) {
             observer.onError(
                 Status.NOT_FOUND
                     .withDescription(e.message)
                     .asRuntimeException()
             )
-
         } catch (e: StatusRuntimeException) {
             observer.onError(e)
-
         } catch (e: Exception) {
             observer.onError(
                 Status.INTERNAL

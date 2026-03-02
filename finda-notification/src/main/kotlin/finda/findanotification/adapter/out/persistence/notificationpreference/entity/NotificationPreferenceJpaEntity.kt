@@ -16,7 +16,7 @@ class NotificationPreferenceJpaEntity(
     val type: String,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String,
+    val userId: UUID,
 
     @Column(name = "enabled", nullable = false)
     val enabled: Boolean

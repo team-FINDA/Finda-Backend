@@ -21,6 +21,6 @@ data class CreateNoticeWebRequest(
     @AssertTrue(message = "날짜와 시간은 함께 입력하거나 둘 다 비워야 합니다.")
     fun isDateTimeValid(): Boolean {
         return (noticeDate == null && noticeTime == null) ||
-                (noticeDate != null && noticeTime != null)
+            (noticeDate != null && noticeTime != null)
     }
 }

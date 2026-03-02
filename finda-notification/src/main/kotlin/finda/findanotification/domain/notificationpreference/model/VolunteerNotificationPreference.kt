@@ -1,8 +1,10 @@
 package finda.findanotification.domain.notificationpreference.model
 
+import java.util.UUID
+
 data class VolunteerNotificationPreference(
-    val id: String,
+    val id: UUID,
     val volunteerId: String,
-    val userId: String,
+    val userId: UUID,
     val enabled: Boolean
 )

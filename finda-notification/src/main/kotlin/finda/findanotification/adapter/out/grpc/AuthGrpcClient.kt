@@ -1,31 +1,60 @@
 package finda.findanotification.adapter.out.grpc
 
+import finda.findanotification.application.port.`in`.devicetoken.DeviceTokenInfo
+import io.grpc.StatusRuntimeException
 import net.devh.boot.grpc.client.inject.GrpcClient
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 /**
  * Auth 서버에서 deviceToken을 조회하는 gRPC Client
  */
 @Component
 class AuthGrpcClient {
+
+    private val log = LoggerFactory.getLogger(javaClass)
+
     @GrpcClient("auth-service")
     private lateinit var authServiceStub: AuthServiceGrpc.AuthServiceBlockingStub
 
-    fun getDeviceToken(userId: String): String {
-        val response = authServiceStub.getDeviceToken(
-            UserRequest.newBuilder()
-                .setUserId(userId)
-                .build()
-        )
-        return response.deviceToken
+    fun getDeviceToken(userId: UUID): DeviceTokenInfo? {
+        return try {
+            val response = authServiceStub.getDeviceToken(
+                UserRequest.newBuilder()
+                    .setUserId(userId.toString())
+                    .build()
+            )
+
+            DeviceTokenInfo(
+                token = response.deviceToken,
+                os = response.os
+            )
+        } catch (e: StatusRuntimeException) {
+            log.error("gRPC getDeviceToken failed")
+            null
+        }
     }
 
-    fun getDeviceTokens(userIds: List<String>): List<String> {
-        val response = authServiceStub.getDeviceTokens(
-            UserListRequest.newBuilder()
-                .addAllUserIds(userIds)
-                .build()
-        )
-        return response.tokensList.map { it.deviceToken }
+    fun getDeviceTokens(userIds: List<UUID>): List<DeviceTokenInfo> {
+        if (userIds.isEmpty()) return emptyList()
+
+        return try {
+            val response = authServiceStub.getDeviceTokens(
+                UserListRequest.newBuilder()
+                    .addAllUserIds(userIds.map { it.toString() })
+                    .build()
+            )
+
+            response.tokensList.map {
+                DeviceTokenInfo(
+                    token = it.deviceToken,
+                    os = it.os
+                )
+            }
+        } catch (e: StatusRuntimeException) {
+            log.error("gRPC getDeviceTokens failed")
+            emptyList()
+        }
     }
 }
