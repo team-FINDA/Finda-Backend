@@ -44,7 +44,7 @@ class KafkaConfig(
         props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
         props[JsonDeserializer.USE_TYPE_INFO_HEADERS] = false
-        props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
+        props[JsonDeserializer.TRUSTED_PACKAGES] = "finda.findanotification"
         return DefaultKafkaConsumerFactory(props)
     }
 
