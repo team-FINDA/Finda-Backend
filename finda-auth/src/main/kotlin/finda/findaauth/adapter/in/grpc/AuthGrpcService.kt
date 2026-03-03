@@ -47,6 +47,7 @@ class AuthGrpcService(
         } catch (e: IllegalArgumentException) {
             throw Status.INVALID_ARGUMENT
                 .withDescription("Invalid UUID format")
+                .withCause(e)
                 .asRuntimeException()
         }
 
