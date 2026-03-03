@@ -20,6 +20,7 @@ class StudentMapper {
 
     fun toEntity(domain: Student, user: UserJpaEntity): StudentJpaEntity =
         StudentJpaEntity(
+            id = domain.id,
             user = user,
             grade = domain.grade,
             classNum = domain.classNum,

@@ -26,6 +26,7 @@ class DeviceTokenMapper(
             ?: throw UserNotFoundException
 
         return DeviceTokenJpaEntity(
+            id = domain.id,
             user = user,
             deviceToken = domain.deviceToken,
             os = domain.os
