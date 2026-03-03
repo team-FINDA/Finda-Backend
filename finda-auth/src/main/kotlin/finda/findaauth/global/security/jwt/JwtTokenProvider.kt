@@ -4,68 +4,41 @@ import finda.findaauth.adapter.out.persistence.auth.entity.RefreshToken
 import finda.findaauth.adapter.out.persistence.auth.repository.RefreshTokenRepository
 import finda.findaauth.application.port.`in`.auth.dto.response.TokenResult
 import finda.findaauth.domain.user.model.UserType
-import finda.findaauth.global.security.jwt.exception.ExpiredTokenException
 import finda.findaauth.global.security.jwt.exception.InvalidTokenException
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
-import io.jsonwebtoken.security.Keys
+import finda.security.jwt.JwtProvider
 import jakarta.servlet.http.HttpServletRequest
-import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
-import java.util.Date
 import java.util.UUID
-import javax.crypto.SecretKey
+import finda.security.jwt.exception.ExpiredTokenException as CommonExpiredTokenException
+import finda.security.jwt.exception.InvalidTokenException as CommonInvalidTokenException
 
 @Component
 class JwtTokenProvider(
+    private val jwtProvider: JwtProvider,
     private val jwtProperties: JwtProperties,
     private val refreshTokenRepository: RefreshTokenRepository
 ) {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
-    private val secretKey: SecretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray())
-
-    companion object {
-        private const val CLAIM_TYPE = "type"
-        private const val TOKEN_TYPE_ACCESS = "access"
-        private const val TOKEN_TYPE_REFRESH = "refresh"
-
-        private const val CLAIM_USER_TYPE = "userType"
-
-        private const val MILLIS_PER_SECOND = 1000L
-    }
-
     fun generateTokens(userId: UUID, userType: UserType) = TokenResult(
-        accessToken = generateAccessToken(userId, userType),
+        accessToken = jwtProvider.generateAccessToken(
+            userId = userId,
+            userType = userType.name,
+            expirationSeconds = jwtProperties.accessExp
+        ),
         accessExp = LocalDateTime.now().plusSeconds(jwtProperties.accessExp),
-        refreshToken = generateRefreshToken(userId, userType),
+        refreshToken = generateAndSaveRefreshToken(userId, userType),
         refreshExp = LocalDateTime.now().plusSeconds(jwtProperties.refreshExp)
     )
 
-    private fun generateAccessToken(userId: UUID, userType: UserType): String =
-        Jwts.builder()
-            .setSubject(userId.toString())
-            .claim(CLAIM_TYPE, TOKEN_TYPE_ACCESS)
-            .claim(CLAIM_USER_TYPE, userType.name)
-            .setIssuedAt(Date())
-            .setExpiration(Date(System.currentTimeMillis() + jwtProperties.accessExp * MILLIS_PER_SECOND))
-            .signWith(secretKey, SignatureAlgorithm.HS512)
-            .compact()
-
-    private fun generateRefreshToken(userId: UUID, userType: UserType): String {
-        val token = Jwts.builder()
-            .setSubject(userId.toString())
-            .claim(CLAIM_TYPE, TOKEN_TYPE_REFRESH)
-            .claim(CLAIM_USER_TYPE, userType.name)
-            .setIssuedAt(Date())
-            .setExpiration(Date(System.currentTimeMillis() + jwtProperties.refreshExp * MILLIS_PER_SECOND))
-            .signWith(secretKey, SignatureAlgorithm.HS512)
-            .compact()
+    private fun generateAndSaveRefreshToken(userId: UUID, userType: UserType): String {
+        val token = jwtProvider.generateRefreshToken(
+            userId = userId,
+            userType = userType.name,
+            expirationSeconds = jwtProperties.refreshExp
+        )
 
         refreshTokenRepository.save(
             RefreshToken(
@@ -79,57 +52,40 @@ class JwtTokenProvider(
     }
 
     fun getAuthentication(token: String): Authentication {
-        val claims = getClaims(token)
-
-        if (claims[CLAIM_TYPE] != TOKEN_TYPE_ACCESS) throw InvalidTokenException
-
-        val userId = parseUserId(claims.subject)
-
-        return UsernamePasswordAuthenticationToken(userId, null, emptyList())
+        val claims = try {
+            jwtProvider.validateAccessToken(token)
+        } catch (e: CommonInvalidTokenException) {
+            throw InvalidTokenException
+        } catch (e: CommonExpiredTokenException) {
+            throw finda.findaauth.global.security.jwt.exception.ExpiredTokenException
+        }
+        return UsernamePasswordAuthenticationToken(claims.userId, null, emptyList())
     }
 
     fun validateRefreshToken(token: String): RefreshTokenClaims {
-        val claims = getClaims(token)
-        if (claims[CLAIM_TYPE] != TOKEN_TYPE_REFRESH) throw InvalidTokenException
-
-        val userId = parseUserId(claims.subject)
-        val userType = UserType.valueOf(claims[CLAIM_USER_TYPE] as String)
+        val claims = try {
+            jwtProvider.validateRefreshToken(token)
+        } catch (e: CommonInvalidTokenException) {
+            throw InvalidTokenException
+        } catch (e: CommonExpiredTokenException) {
+            throw finda.findaauth.global.security.jwt.exception.ExpiredTokenException
+        }
 
         val savedToken = refreshTokenRepository.findById(token)
             .orElseThrow { InvalidTokenException }
 
-        if (savedToken.userId != userId) throw InvalidTokenException
+        if (savedToken.userId != claims.userId) throw InvalidTokenException
 
-        return RefreshTokenClaims(userId, userType)
+        return RefreshTokenClaims(
+            userId = claims.userId,
+            userType = UserType.valueOf(claims.userType)
+        )
     }
-
-    private fun parseUserId(subject: String): UUID =
-        try {
-            UUID.fromString(subject)
-        } catch (e: IllegalArgumentException) {
-            logger.debug("Invalid UUID format: $subject")
-            throw InvalidTokenException
-        }
-
-    private fun getClaims(token: String): Claims =
-        try {
-            Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .body
-        } catch (e: ExpiredJwtException) {
-            throw ExpiredTokenException
-        } catch (e: Exception) {
-            logger.debug("Token validation failed: ${e.message}")
-            throw InvalidTokenException
-        }
 
     fun resolveToken(request: HttpServletRequest): String? =
         request.getHeader(jwtProperties.header)
             ?.takeIf { it.startsWith(jwtProperties.prefix) }
             ?.substring(jwtProperties.prefix.length)
-
             ?.takeIf { it.isNotBlank() }
 
     fun deleteRefreshToken(token: String) {

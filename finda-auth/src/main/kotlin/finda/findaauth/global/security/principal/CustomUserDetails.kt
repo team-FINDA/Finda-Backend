@@ -1,32 +1,26 @@
 package finda.findaauth.global.security.principal
 
-import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
+import finda.findaauth.domain.user.model.User
+import finda.security.passport.model.Authority
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 
 class CustomUserDetails(
-    val user: UserJpaEntity,
+    val user: User,
     private val username: String,
-    private val password: String,
-    isStudent: Boolean,
-    isTeacher: Boolean,
+    private val authority: Authority,
     private val deletedAt: LocalDateTime? = null
 ) : UserDetails {
-
-    private val authorities: List<GrantedAuthority> = when {
-        isStudent && isTeacher -> listOf(
-            SimpleGrantedAuthority("ROLE_STUDENT"),
-            SimpleGrantedAuthority("ROLE_TEACHER")
-        )
-        isStudent -> listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
-        isTeacher -> listOf(SimpleGrantedAuthority("ROLE_TEACHER"))
+    private val authorities: List<GrantedAuthority> = when (authority) {
+        Authority.TEACHER -> listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
+        Authority.STUDENT -> listOf(SimpleGrantedAuthority("ROLE_TEACHER"))
         else -> emptyList()
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> = authorities
-    override fun getPassword(): String = password
+    override fun getPassword(): String? = null
     override fun getUsername(): String = username
     override fun isAccountNonExpired(): Boolean = true
     override fun isAccountNonLocked(): Boolean = true
