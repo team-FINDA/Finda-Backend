@@ -69,5 +69,8 @@ jwt:
   header: Authorization
   prefix: "Bearer "
 
+passport:
+  secret-key: ${PASSPORT_SECRET_KEY}
+
 teacher:
   signup-secret: ${TEACHER_SIGNUP_SECRET}
