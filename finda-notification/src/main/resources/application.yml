@@ -13,6 +13,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${NOTIFICATION_MYSQL_HOST}:${NOTIFICATION_DB_PORT}/${NOTIFICATION_DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: ${NOTIFICATION_MYSQL_USERNAME}
+    password: ${NOTIFICATION_MYSQL_PASSWORD}
 
   jpa:
     hibernate:
@@ -31,3 +34,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog-notification/master.xml
+
+passport:
+  secret-key: ${PASSPORT_SECRET_KEY}

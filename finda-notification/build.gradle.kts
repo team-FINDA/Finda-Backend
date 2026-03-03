@@ -27,6 +27,17 @@ dependencies {
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.SPRING_WEB)
     implementation(Dependencies.LIQUIBASE)
+
+    // Spring Security
+    implementation(Dependencies.SPRING_SECURITY)
+
+    // JWT
+    implementation(Dependencies.JWT_API)
+    runtimeOnly(Dependencies.JWT_IMPL)
+    runtimeOnly(Dependencies.JWT_JACKSON)
+
+    // Security Common
+    implementation(project(":finda-security-common"))
 }
 
 kotlin {
