@@ -28,4 +28,7 @@ object Dependencies {
     const val SPRING_MAIL = "org.springframework.boot:spring-boot-starter-mail"
 
     const val LIQUIBASE = "org.liquibase:liquibase-core"
+
+    // Netty DNS resolver for MacOS
+    const val NETTY_DNS_MACOS = "io.netty:netty-resolver-dns-native-macos:${DependencyVersions.NETTY_DNS}"
 }
