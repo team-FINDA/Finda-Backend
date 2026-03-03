@@ -2,9 +2,6 @@ package finda.security.jwt
 
 import finda.security.jwt.exception.ExpiredTokenException
 import finda.security.jwt.exception.InvalidTokenException
-import finda.security.passport.model.Authority
-import finda.security.passport.model.Passport
-import finda.security.passport.util.PassportIntegrityUtil
 import finda.security.properties.SecurityObject
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -17,6 +14,7 @@ import javax.crypto.SecretKey
 
 /**
  * JWT 토큰 생성 및 검증을 담당하는 공통 Provider
+ * auth 모듈의 JwtTokenProvider와 동일한 순수 JWT 로직
  */
 class JwtProvider(
     private val secretKey: SecretKey
@@ -26,8 +24,7 @@ class JwtProvider(
     fun generateAccessToken(
         userId: UUID,
         userType: String,
-        expirationSeconds: Long,
-        additionalClaims: Map<String, Any> = emptyMap()
+        expirationSeconds: Long
     ): String {
         val now = Date()
         val expiration = Date(System.currentTimeMillis() + expirationSeconds * SecurityObject.MILLIS_PER_SECOND)
@@ -36,11 +33,6 @@ class JwtProvider(
             .setSubject(userId.toString())
             .claim(SecurityObject.CLAIM_TYPE, SecurityObject.TOKEN_TYPE_ACCESS)
             .claim(SecurityObject.CLAIM_USER_TYPE, userType)
-            .apply {
-                additionalClaims.forEach { (key, value) ->
-                    claim(key, value)
-                }
-            }
             .setIssuedAt(now)
             .setExpiration(expiration)
             .signWith(secretKey, SignatureAlgorithm.HS512)
@@ -116,33 +108,6 @@ class JwtProvider(
             userId = userId,
             userType = userType,
             claims = claims
-        )
-    }
-
-    fun generatePassportFromToken(token: String, passportSecretKey: SecretKey): Passport {
-        // JWT 토큰 검증
-        val jwtClaims = validateAccessToken(token)
-
-        // Authority 변환
-        val authority = try {
-            Authority.valueOf(jwtClaims.userType)
-        } catch (e: IllegalArgumentException) {
-            logger.debug("Invalid authority: ${jwtClaims.userType}")
-            throw InvalidTokenException
-        }
-
-        // Passport Integrity 생성
-        val userIntegrity = PassportIntegrityUtil.generate(
-            userId = jwtClaims.userId,
-            authority = authority,
-            secretKey = passportSecretKey
-        )
-
-        // Passport 생성
-        return Passport(
-            userId = jwtClaims.userId,
-            authority = authority,
-            userIntegrity = userIntegrity
         )
     }
 }
