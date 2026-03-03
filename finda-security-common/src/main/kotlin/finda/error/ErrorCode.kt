@@ -11,6 +11,12 @@ enum class ErrorCode(
     EXPIRED_TOKEN(401, "Expired Token", 2),
     UNEXPECTED_TOKEN(401, "Unexpected Token", 3),
 
+    // passport
+    INVALID_PASSPORT(401, "Invalid Passport", 4),
+    INVALID_PASSPORT_INTEGRITY(401, "Invalid Passport Integrity", 5),
+    PASSPORT_ISSUED_IN_FUTURE(401, "Passport Issued In Future", 6),
+    PASSPORT_EXPIRED(401, "Passport Expired", 7),
+
     FORBIDDEN(403, "Can Not Access", 1);
 
     override fun status(): Int = status
