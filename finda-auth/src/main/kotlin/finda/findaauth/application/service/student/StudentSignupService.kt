@@ -14,6 +14,7 @@ import finda.findaauth.domain.student.vo.StudentNumber
 import finda.findaauth.domain.user.model.User
 import finda.findaauth.global.mail.EmailVerificationStore
 import finda.findaauth.global.mail.util.StudentEmailUtils
+import finda.security.passport.model.Authority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -37,16 +38,15 @@ class StudentSignupService(
 
         val user = userCommandPort.save(
             User(
-                id = null,
                 email = email,
                 name = name,
-                password = passwordEncoder.encode(command.password)
+                password = passwordEncoder.encode(command.password),
+                authority = Authority.STUDENT
             )
         )
 
         val student = Student(
-            id = null,
-            userId = user.id!!,
+            userId = user.id,
             grade = studentNumber.grade,
             classNum = studentNumber.classNum,
             num = studentNumber.num

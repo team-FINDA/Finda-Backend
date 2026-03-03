@@ -13,6 +13,7 @@ import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.teacher.model.Teacher
 import finda.findaauth.domain.user.model.User
 import finda.findaauth.global.mail.EmailVerificationStore
+import finda.security.passport.model.Authority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -47,15 +48,15 @@ class TeacherSignupService(
         }
 
         val user = User(
-            id = null,
             email = email,
             name = command.name,
-            password = passwordEncoder.encode(command.password)
+            password = passwordEncoder.encode(command.password),
+            authority = Authority.TEACHER
         )
 
         val savedUser = userCommandPort.save(user)
 
-        teacherCommandPort.save(Teacher(id = null, userId = savedUser.id!!))
+        teacherCommandPort.save(Teacher(userId = savedUser.id))
 
         teacherPreAuthCommandPort.delete(command.preAuthToken)
     }
