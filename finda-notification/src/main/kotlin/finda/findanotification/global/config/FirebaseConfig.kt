@@ -15,10 +15,13 @@ class FirebaseConfig {
 
     @PostConstruct
     fun initialize() {
-        val serviceAccount = ClassPathResource("firebase-service-account.json").inputStream
-        val options = FirebaseOptions.builder()
-            .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .build()
-        FirebaseApp.initializeApp(options)
+        if (FirebaseApp.getApps().isEmpty()) {
+            ClassPathResource("firebase-service-account.json").inputStream.use { serviceAccount ->
+                val options = FirebaseOptions.builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build()
+                FirebaseApp.initializeApp(options)
+            }
+        }
     }
 }
