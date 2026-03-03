@@ -5,7 +5,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 data class Notice(
-    val id: UUID,
+    val id: UUID = UUID(0, 0),
     val title: String,
     val body: String,
     val adminId: String,
