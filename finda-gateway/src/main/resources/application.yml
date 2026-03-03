@@ -32,3 +32,13 @@ jwt:
   refresh-exp: 604800
   header: Authorization
   prefix: "Bearer "
+
+passport:
+  secret-key: ${PASSPORT_SECRET_KEY}
+
+app:
+  services:
+    volunteer: ${VOLUNTEER_SERVICE_URL}
+    notification: ${NOTIFICATION_SERVICE_URL}
+    auth: ${AUTH_SERVICE_URL}
+
