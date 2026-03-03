@@ -15,8 +15,7 @@ class StudentMapper {
             grade = entity.grade,
             classNum = entity.classNum,
             num = entity.num,
-            totalVolunteerTime = entity.totalVolunteerTime,
-            deletedAt = entity.deletedAt
+            totalVolunteerTime = entity.totalVolunteerTime
         )
 
     fun toEntity(domain: Student, user: UserJpaEntity): StudentJpaEntity =
@@ -25,7 +24,6 @@ class StudentMapper {
             grade = domain.grade,
             classNum = domain.classNum,
             num = domain.num,
-            totalVolunteerTime = domain.totalVolunteerTime,
-            deletedAt = domain.deletedAt
+            totalVolunteerTime = domain.totalVolunteerTime
         )
 }

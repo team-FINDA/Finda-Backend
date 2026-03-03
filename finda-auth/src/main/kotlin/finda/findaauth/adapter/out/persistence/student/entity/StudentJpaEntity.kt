@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
-import java.time.LocalDateTime
 
 @Entity
 @Table(
@@ -23,6 +22,8 @@ import java.time.LocalDateTime
     ]
 )
 class StudentJpaEntity(
+    id: java.util.UUID? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     val user: UserJpaEntity?,
@@ -37,8 +38,5 @@ class StudentJpaEntity(
     val num: Int,
 
     @Column(name = "total_volunteer_time", nullable = false)
-    val totalVolunteerTime: Int,
-
-    @Column(name = "deleted_at", nullable = true)
-    val deletedAt: LocalDateTime? = null
-) : BaseEntity()
+    val totalVolunteerTime: Int
+) : BaseEntity(id)

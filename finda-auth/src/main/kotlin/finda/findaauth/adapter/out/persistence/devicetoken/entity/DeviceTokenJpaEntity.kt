@@ -15,6 +15,8 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "tbl_device_token")
 class DeviceTokenJpaEntity(
+    id: java.util.UUID? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: UserJpaEntity?,
@@ -25,4 +27,4 @@ class DeviceTokenJpaEntity(
     @Enumerated(EnumType.STRING)
     @Column(name = "os", nullable = false)
     val os: DeviceOs
-) : BaseEntity()
+) : BaseEntity(id)
