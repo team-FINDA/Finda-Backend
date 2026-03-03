@@ -16,17 +16,31 @@ buildscript {
 	}
 
 allprojects {
-	apply(plugin = "org.jetbrains.kotlin.jvm")
-	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-	apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
-	apply(plugin = "org.springframework.boot")
-	apply(plugin = "io.spring.dependency-management")
-
 	group = "finda"
 	version = "0.0.1-SNAPSHOT"
 
 	repositories {
 		mavenCentral()
+	}
+
+	if (project.name != "finda-security-common") {
+		apply(plugin = "org.jetbrains.kotlin.jvm")
+		apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+		apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+		apply(plugin = "org.springframework.boot")
+		apply(plugin = "io.spring.dependency-management")
+
+		dependencies {
+			implementation("org.springframework.boot:spring-boot-starter")
+			implementation("org.jetbrains.kotlin:kotlin-reflect")
+			testImplementation("org.springframework.boot:spring-boot-starter-test")
+			testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+			testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+		}
+	} else {
+		// finda-security-common: java-library 모듈 설정
+		apply(plugin = "org.jetbrains.kotlin.jvm")
+		apply(plugin = "java-library")
 	}
 
 	java {
@@ -35,17 +49,10 @@ allprojects {
 		}
 	}
 
-	dependencies {
-		implementation("org.springframework.boot:spring-boot-starter")
-		implementation("org.jetbrains.kotlin:kotlin-reflect")
-		testImplementation("org.springframework.boot:spring-boot-starter-test")
-		testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-		testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	}
-
 	kotlin {
 		compilerOptions {
 			freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+			jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
 		}
 	}
 
