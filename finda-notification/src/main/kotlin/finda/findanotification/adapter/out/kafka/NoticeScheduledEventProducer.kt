@@ -15,10 +15,15 @@ class NoticeScheduledEventProducer(
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun send(notice: Notice) {
-        kafkaTemplate.send(TOPIC, NoticeScheduledEvent(notice.id))
-            .whenComplete { _, ex ->
-                if (ex != null) log.error("Failed to send NoticeScheduledEvent: $notice", ex)
-            }
+        try {
+            /**
+             * 비동기 전송 시 실패는 로깅만 되고 호출자에게 전파되지 않아 이벤트 누락 가능 → 동기 전송으로 변경
+             */
+            kafkaTemplate.send(TOPIC, NoticeScheduledEvent(notice.id)).get()
+        } catch (ex: Exception) {
+            log.error("Failed to send NoticeScheduledEvent: $notice", ex)
+            throw ex
+        }
     }
 
     companion object {
