@@ -1,6 +1,7 @@
 package finda.findanotification.adapter.out.grpc
 
 import finda.findanotification.application.port.`in`.devicetoken.DeviceTokenInfo
+import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import net.devh.boot.grpc.client.inject.GrpcClient
 import org.slf4j.LoggerFactory
@@ -31,8 +32,16 @@ class AuthGrpcClient {
                 os = response.os
             )
         } catch (e: StatusRuntimeException) {
-            log.error("gRPC getDeviceToken failed")
-            null
+            when (e.status.code) {
+                Status.Code.NOT_FOUND -> {
+                    log.info("DeviceToken not found")
+                    null
+                }
+                else -> {
+                    log.error("gRPC getDeviceToken failed", e)
+                    throw e
+                }
+            }
         }
     }
 
@@ -53,8 +62,16 @@ class AuthGrpcClient {
                 )
             }
         } catch (e: StatusRuntimeException) {
-            log.error("gRPC getDeviceTokens failed")
-            emptyList()
+            when (e.status.code) {
+                Status.Code.NOT_FOUND -> {
+                    log.info("DeviceTokens not found")
+                    emptyList()
+                }
+                else -> {
+                    log.error("gRPC getDeviceTokens failed", e)
+                    throw e
+                }
+            }
         }
     }
 }
