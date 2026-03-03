@@ -8,10 +8,7 @@ enum class ErrorCode(
 
     // jwt
     INVALID_TOKEN(401, "Invalid Token", 1),
-    EXPIRED_TOKEN(401, "Expired Token", 2),
-    UNEXPECTED_TOKEN(401, "Unexpected Token", 3),
-
-    FORBIDDEN(403, "Can Not Access", 1);
+    EXPIRED_TOKEN(401, "Expired Token", 2);
 
     override fun status(): Int = status
     override fun message(): String = message
