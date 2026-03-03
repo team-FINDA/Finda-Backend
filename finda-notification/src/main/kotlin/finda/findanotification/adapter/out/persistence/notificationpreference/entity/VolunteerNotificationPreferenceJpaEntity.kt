@@ -11,7 +11,7 @@ import java.util.UUID
 class VolunteerNotificationPreferenceJpaEntity(
     id: UUID?,
 
-    @Column(name = "volunteer_id", nullable = false)
+    @Column(name = "volunteer_id", nullable = false, unique = true)
     val volunteerId: String,
 
     @Column(name = "user_id", nullable = false)
