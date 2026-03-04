@@ -1,7 +1,7 @@
 package finda.findanotification.application.port.`in`.kafka
 
-import finda.findanotification.adapter.`in`.kafka.dto.NoticeScheduledFiredEvent
+import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
 
 interface SendNoticeNotificationUseCase {
-    fun send(event: NoticeScheduledFiredEvent)
+    fun send(event: NoticeScheduledEvent)
 }

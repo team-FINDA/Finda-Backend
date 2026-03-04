@@ -1,11 +1,11 @@
 package finda.findanotification.application.service.kafka
 
-import finda.findanotification.adapter.`in`.kafka.dto.NoticeScheduledFiredEvent
 import finda.findanotification.adapter.out.fcm.FcmClient
 import finda.findanotification.adapter.out.grpc.AuthGrpcClient
 import finda.findanotification.adapter.out.persistence.notice.repository.NoticeRepository
 import finda.findanotification.adapter.out.persistence.notificationpreference.repository.NotificationPreferenceRepository
 import finda.findanotification.application.port.`in`.kafka.SendNoticeNotificationUseCase
+import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
 import finda.findanotification.application.port.out.notification.SaveNotificationPort
 import finda.findanotification.domain.notice.model.Notice
 import finda.findanotification.domain.notification.enum.NotificationType
@@ -24,9 +24,8 @@ class NoticeNotificationService(
     private val noticeRepository: NoticeRepository
 ) : SendNoticeNotificationUseCase {
 
+    override fun send(event: NoticeScheduledEvent) {
     private val log = LoggerFactory.getLogger(javaClass)
-
-    override fun send(event: NoticeScheduledFiredEvent) {
         val notice = noticeRepository.findByIdOrNull(event.noticeId) ?: return
         sendToAllUsers(notice.title, notice.body)
     }
