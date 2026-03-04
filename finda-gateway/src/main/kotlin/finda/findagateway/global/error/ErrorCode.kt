@@ -10,7 +10,7 @@ enum class ErrorCode(
     INVALID_TOKEN(401, "Invalid Token", 1),
     EXPIRED_TOKEN(401, "Expired Token", 2),
 
-    INTERNAL_SERVER_ERROR(500, "Internal Server",1);
+    INTERNAL_SERVER_ERROR(500, "Internal Server", 1);
 
     override fun status(): Int = status
     override fun message(): String = message
