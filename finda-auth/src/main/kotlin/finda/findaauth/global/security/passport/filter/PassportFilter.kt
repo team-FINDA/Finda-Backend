@@ -66,7 +66,7 @@ class PassportFilter(
     }
 
     private fun createAuthentication(passport: Passport): UsernamePasswordAuthenticationToken {
-        val authorities = listOf(SimpleGrantedAuthority(passport.userId.toString()))
+        val authorities = listOf(SimpleGrantedAuthority(passport.authority.name))
         val user = userQueryPort.findById(passport.userId) ?: throw UserNotFoundException
 
         val details = when (passport.authority) {
