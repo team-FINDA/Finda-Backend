@@ -24,8 +24,9 @@ class NoticeNotificationService(
     private val noticeRepository: NoticeRepository
 ) : SendNoticeNotificationUseCase {
 
-    override fun send(event: NoticeScheduledEvent) {
     private val log = LoggerFactory.getLogger(javaClass)
+
+    override fun send(event: NoticeScheduledEvent) {
         val notice = noticeRepository.findByIdOrNull(event.noticeId) ?: return
         sendToAllUsers(notice.title, notice.body)
     }
