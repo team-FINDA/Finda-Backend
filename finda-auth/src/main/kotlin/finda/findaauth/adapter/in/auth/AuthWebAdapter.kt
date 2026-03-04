@@ -17,7 +17,8 @@ class AuthWebAdapter(
 ) {
     @PostMapping("/reissue")
     fun reissue(
-        @NotBlank @RequestHeader("Refresh-Token")
+        @NotBlank
+        @RequestHeader("Refresh-Token")
         token: String
     ): TokenWebResponse {
         return TokenWebResponse.from(

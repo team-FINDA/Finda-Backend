@@ -5,4 +5,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <include file="db/changelog-notification/schema/001-change-userid-volunteerid-to-uuid.sql"/>
+    <include file="db/changelog-notification/schema/002-add-unique-volunteer-id.sql"/>
+
 </databaseChangeLog>

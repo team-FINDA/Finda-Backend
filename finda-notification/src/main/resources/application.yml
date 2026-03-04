@@ -2,6 +2,12 @@ server:
   port: 8083
   shutdown: graceful # 처리 중인 요청을 중간에 끊지 않고 안전하게 마무리하기 위함
 
+grpc:
+  client:
+    auth-service:
+      address: ${AUTH_GRPC_ADDRESS} # auth는 서버 역할이라 포트만 열면 되고 notification은 gRPC 클라이언트 역할이라 어디로 연결할지 주소를 알아야 하기 때문에 환경변수 분리
+      negotiation-type: plaintext
+
 spring:
   profiles:
     active: ${PROFILE:local}
@@ -11,6 +17,11 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: finda-notification
 
   jpa:
     hibernate:

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface NotificationPreferenceRepository : CrudRepository<NotificationPreferenceJpaEntity, UUID>
+interface NotificationPreferenceRepository : CrudRepository<NotificationPreferenceJpaEntity, UUID> {
+    fun findAllByEnabledTrue(): List<NotificationPreferenceJpaEntity>
+}
