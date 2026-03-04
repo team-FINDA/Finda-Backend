@@ -11,11 +11,11 @@ import finda.security.passport.util.PassportIntegrityUtil
 import finda.security.path.SecurityPath
 import org.springframework.cloud.gateway.filter.GatewayFilter
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
-import java.rmi.ServerError
 
 @Component
 class PassportGatewayFilterFactory(
@@ -30,44 +30,59 @@ class PassportGatewayFilterFactory(
     override fun apply(config: Config): GatewayFilter {
         return GatewayFilter { exchange, chain ->
             val requestPath = exchange.request.uri.path
-            // /finda-auth/students/login -> /students/login (첫 번째 세그먼트 제거)
-            val pathWithoutPrefix = requestPath.substringAfter("/", "").let {
-                it.substringAfter("/", "").let { path -> if (path.isEmpty()) "/" else "/$path" }
-            }
+            val pathWithoutPrefix = stripFirstPathSegment(requestPath)
 
             val isPermitAllPath = SecurityPath.PERMIT_ALL_PATHS.any { pathMatcher.match(it, pathWithoutPrefix) }
+            if (isPermitAllPath) return@GatewayFilter chain.filter(exchange)
 
-            if (isPermitAllPath) {
-                return@GatewayFilter chain.filter(exchange)
+            authenticate(exchange)
+                .map { passport -> serializePassport(passport) }
+                .flatMap { serializedPassport ->
+                    val modifiedExchange = exchange.mutate()
+                        .request { it.header(PassportSecurityProperties.PASSPORT_HEADER, serializedPassport) }
+                        .build()
+                    chain.filter(modifiedExchange)
+                }
+                .onErrorResume { error ->
+                    log.warn("Authentication failed for path {}: {}", requestPath, error.message)
+                    exchange.response.statusCode = HttpStatus.UNAUTHORIZED
+                    exchange.response.setComplete()
+                }
+        }
+    }
+
+    private fun stripFirstPathSegment(path: String): String {
+        // e.g. "/finda-auth/students/login" -> "/students/login"
+        val withoutLeadingSlash = path.removePrefix("/")
+        val rest = withoutLeadingSlash.substringAfter("/", "")
+        return if (rest.isBlank()) "/" else "/$rest"
+    }
+
+    private fun authenticate(exchange: ServerWebExchange): Mono<Passport> {
+        return Mono.defer {
+            val token = resolveToken(exchange)
+            val jwtClaims = jwtProvider.validateAccessToken(token)
+
+            val authority = try {
+                Authority.valueOf(jwtClaims.userType)
+            } catch (e: IllegalArgumentException) {
+                log.debug("Invalid authority: {}", jwtClaims.userType)
+                throw InvalidTokenException
+            } catch (e: Exception) {
+                log.debug("Authority 파싱 오류: {}", jwtClaims.userType)
+                throw InternalServerException
             }
 
-            Mono.fromCallable {
-                val token = resolveToken(exchange)
-                val jwtClaims = jwtProvider.validateAccessToken(token)
+            val now = System.currentTimeMillis()
+            val expiresAt = now + 60_000 // 1분 유효
 
-                // Authority 변환
-                val authority = try {
-                    Authority.valueOf(jwtClaims.userType)
-                } catch (e: IllegalArgumentException) {
-                    log.debug("Invalid authority: ${jwtClaims.userType}")
-                    throw InvalidTokenException
-                } catch (e: Exception) {
-                    log.debug("Authority 파싱 오류: ${jwtClaims.userType}")
-                    throw InternalServerException
-                }
+            val userIntegrity = PassportIntegrityUtil.generate(
+                userId = jwtClaims.userId,
+                authority = authority,
+                secretKey = passportProperties.key
+            )
 
-                // 타임스탬프 생성
-                val now = System.currentTimeMillis()
-                val expiresAt = now + 60_000 // 1분 유효 (60초)
-
-                // Passport Integrity 생성
-                val userIntegrity = PassportIntegrityUtil.generate(
-                    userId = jwtClaims.userId,
-                    authority = authority,
-                    secretKey = passportProperties.key
-                )
-
-                // Passport 생성
+            Mono.just(
                 Passport(
                     userId = jwtClaims.userId,
                     authority = authority,
@@ -75,27 +90,7 @@ class PassportGatewayFilterFactory(
                     issuedAt = now,
                     expiresAt = expiresAt
                 )
-            }
-                .flatMap { passport ->
-                    Mono.fromCallable { serializePassport(passport) }
-                        .map { serializedPassport ->
-                            val modifiedExchange = exchange.mutate()
-                                .request {
-                                    it.header(PassportSecurityProperties.PASSPORT_HEADER, serializedPassport)
-                                }
-                                .build()
-                            modifiedExchange
-                        }
-                        .flatMap { modifiedExchange ->
-                            chain.filter(modifiedExchange)
-                        }
-                }
-                .onErrorResume { error ->
-                    log.warn("Authentication failed for path {}: {}", requestPath, error.message)
-                    val response = exchange.response
-                    response.statusCode = org.springframework.http.HttpStatus.UNAUTHORIZED
-                    response.setComplete()
-                }
+            )
         }
     }
 
