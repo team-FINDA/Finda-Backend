@@ -60,10 +60,7 @@ class PassportFilter(
     }
 
     private fun createAuthentication(passport: Passport): UsernamePasswordAuthenticationToken {
-        val authorities = listOf(
-            SimpleGrantedAuthority(passport.authority.name),
-            SimpleGrantedAuthority("USER")
-        )
+        val authorities = listOf(SimpleGrantedAuthority(passport.authority.name))
 
         // Passport 정보를 Principal로 사용
         return UsernamePasswordAuthenticationToken(passport, null, authorities)
