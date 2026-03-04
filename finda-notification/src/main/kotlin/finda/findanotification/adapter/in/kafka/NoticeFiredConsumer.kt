@@ -1,7 +1,7 @@
 package finda.findanotification.adapter.`in`.kafka
 
-import finda.findanotification.adapter.`in`.kafka.dto.NoticeScheduledFiredEvent
 import finda.findanotification.application.port.`in`.kafka.SendNoticeNotificationUseCase
+import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.messaging.handler.annotation.Payload
@@ -14,7 +14,7 @@ class NoticeFiredConsumer(
 
     @KafkaListener(topics = ["NOTICE-FIRED"])
     fun consumeNoticeFired(
-        @Payload event: NoticeScheduledFiredEvent,
+        @Payload event: NoticeScheduledEvent,
         acknowledgment: Acknowledgment
     ) {
         sendNoticeNotificationUseCase.send(event)
