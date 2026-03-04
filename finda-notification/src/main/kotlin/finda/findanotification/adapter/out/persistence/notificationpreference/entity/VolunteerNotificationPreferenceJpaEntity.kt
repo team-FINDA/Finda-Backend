@@ -12,7 +12,7 @@ class VolunteerNotificationPreferenceJpaEntity(
     id: UUID?,
 
     @Column(name = "volunteer_id", nullable = false, unique = true)
-    val volunteerId: String,
+    val volunteerId: UUID,
 
     @Column(name = "user_id", nullable = false)
     val userId: UUID,

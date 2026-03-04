@@ -25,7 +25,7 @@ class VolunteerNotificationService(
 
     override fun sendStatusChanged(event: VolunteerStatusChangedFiredEvent) {
         val preference = volunteerNotificationPreferenceRepository
-            .findByVolunteerId(event.volunteerId.toString())
+            .findByVolunteerId(event.volunteerId)
             ?: return
 
         if (!preference.enabled) return
@@ -53,7 +53,7 @@ class VolunteerNotificationService(
 
     override fun sendRemind(event: VolunteerRemindFiredEvent) {
         val preference = volunteerNotificationPreferenceRepository
-            .findByVolunteerId(event.volunteerId.toString())
+            .findByVolunteerId(event.volunteerId)
             ?: return
 
         if (!preference.enabled) return

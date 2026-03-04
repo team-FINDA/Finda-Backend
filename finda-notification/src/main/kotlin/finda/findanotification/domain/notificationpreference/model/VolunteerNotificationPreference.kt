@@ -4,7 +4,7 @@ import java.util.UUID
 
 data class VolunteerNotificationPreference(
     val id: UUID,
-    val volunteerId: String,
+    val volunteerId: UUID,
     val userId: UUID,
     val enabled: Boolean
 )
