@@ -11,7 +11,7 @@ class JwtConfig {
 
     @Bean
     fun jwtProvider(jwtProperties: JwtProperties): JwtProvider {
-        val secretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray())
+        val secretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray(Charsets.UTF_8))
         return JwtProvider(secretKey)
     }
 }
