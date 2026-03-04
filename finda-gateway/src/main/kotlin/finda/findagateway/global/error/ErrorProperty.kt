@@ -1,4 +1,4 @@
-package finda.findagateway.global.error.exception
+package finda.findagateway.global.error
 
 interface ErrorProperty {
 
