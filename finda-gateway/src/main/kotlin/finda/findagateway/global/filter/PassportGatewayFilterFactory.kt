@@ -1,5 +1,6 @@
 package finda.findagateway.global.filter
 
+import finda.findagateway.global.error.exception.InternalServerException
 import finda.findagateway.global.security.jwt.JwtProperties
 import finda.findagateway.global.security.jwt.exception.InvalidTokenException
 import finda.security.passport.PassportParser
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
+import java.rmi.ServerError
 
 @Component
 class PassportGatewayFilterFactory(
@@ -49,6 +51,9 @@ class PassportGatewayFilterFactory(
                 } catch (e: IllegalArgumentException) {
                     log.debug("Invalid authority: ${jwtClaims.userType}")
                     throw InvalidTokenException
+                } catch (e: Exception) {
+                    log.debug("Authority 파싱 오류: ${jwtClaims.userType}")
+                    throw InternalServerException
                 }
 
                 // 타임스탬프 생성
