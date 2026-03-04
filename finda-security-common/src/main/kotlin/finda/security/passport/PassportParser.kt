@@ -7,6 +7,7 @@ import finda.security.passport.exception.PassportExpiredException
 import finda.security.passport.exception.PassportIssuedInFutureException
 import finda.security.passport.model.Passport
 import finda.security.passport.util.PassportIntegrityUtil
+import java.nio.charset.StandardCharsets
 import java.util.Base64
 import javax.crypto.SecretKey
 
@@ -33,7 +34,7 @@ object PassportParser {
 
     fun parse(passportHeader: String): Passport {
         return try {
-            val decodedJson = String(Base64.getUrlDecoder().decode(passportHeader))
+            val decodedJson = String(Base64.getUrlDecoder().decode(passportHeader), StandardCharsets.UTF_8)
             objectMapper.readValue(decodedJson, Passport::class.java)
         } catch (e: Exception) {
             throw InvalidPassportException
@@ -42,6 +43,6 @@ object PassportParser {
 
     fun serialize(passport: Passport): String {
         val json = objectMapper.writeValueAsString(passport)
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(json.toByteArray())
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(json.toByteArray(StandardCharsets.UTF_8))
     }
 }
