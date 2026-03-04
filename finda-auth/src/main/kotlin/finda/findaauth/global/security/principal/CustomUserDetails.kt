@@ -14,8 +14,8 @@ class CustomUserDetails(
     private val deletedAt: LocalDateTime? = null
 ) : UserDetails {
     private val authorities: List<GrantedAuthority> = when (authority) {
-        Authority.TEACHER -> listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
-        Authority.STUDENT -> listOf(SimpleGrantedAuthority("ROLE_TEACHER"))
+        Authority.TEACHER -> listOf(SimpleGrantedAuthority("ROLE_TEACHER"))
+        Authority.STUDENT -> listOf(SimpleGrantedAuthority("ROLE_STUDENT"))
         else -> emptyList()
     }
 
