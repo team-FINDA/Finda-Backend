@@ -51,8 +51,9 @@ class PassportGatewayFilterFactory(
         }
     }
 
+    // 첫 번째 세그먼트 삭제
+    // /finda-auth/students/login" -> "/students/login"
     private fun stripFirstPathSegment(path: String): String {
-        // e.g. "/finda-auth/students/login" -> "/students/login"
         val withoutLeadingSlash = path.removePrefix("/")
         val rest = withoutLeadingSlash.substringAfter("/", "")
         return if (rest.isBlank()) "/" else "/$rest"
