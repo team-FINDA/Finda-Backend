@@ -1,6 +1,6 @@
 package finda.findagateway.global.error.response
 
-import finda.findagateway.global.error.exception.ErrorCode
+import finda.findagateway.global.error.ErrorCode
 
 class ErrorResponse(
     val status: Int,

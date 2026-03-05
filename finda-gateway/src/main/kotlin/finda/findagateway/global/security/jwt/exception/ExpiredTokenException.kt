@@ -1,7 +1,8 @@
 package finda.findagateway.global.security.jwt.exception
 
-import finda.findagateway.global.error.exception.ErrorCode
-import finda.findagateway.global.error.exception.JwtAuthenticationException
+import finda.findagateway.global.error.ErrorCode
+import finda.findagateway.global.error.FindaException
 
-object ExpiredTokenException :
-    JwtAuthenticationException(ErrorCode.EXPIRED_TOKEN)
+object ExpiredTokenException : FindaException(
+    ErrorCode.EXPIRED_TOKEN
+)

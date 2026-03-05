@@ -1,6 +1,7 @@
 package finda.findaauth.adapter.out.persistence.teacher.mapper
 
 import finda.findaauth.adapter.out.persistence.teacher.entity.TeacherJpaEntity
+import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
 import finda.findaauth.domain.teacher.model.Teacher
 import org.springframework.stereotype.Component
 
@@ -11,5 +12,11 @@ class TeacherMapper {
         Teacher(
             id = entity.id!!,
             userId = entity.user!!.id!!
+        )
+
+    fun toEntity(domain: Teacher, user: UserJpaEntity): TeacherJpaEntity =
+        TeacherJpaEntity(
+            id = domain.id,
+            user = user
         )
 }

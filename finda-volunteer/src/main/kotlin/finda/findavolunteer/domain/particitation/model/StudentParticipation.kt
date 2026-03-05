@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class StudentParticipation(
-    val id: UUID,
+    val id: UUID = UUID(0, 0),
     val volunteerId: UUID,
     val status: ParticitationStatus,
     val participatedAt: LocalDateTime,

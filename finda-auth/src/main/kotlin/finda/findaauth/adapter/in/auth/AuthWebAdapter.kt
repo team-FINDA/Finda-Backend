@@ -4,6 +4,7 @@ import finda.findaauth.adapter.`in`.auth.dto.response.TokenWebResponse
 import finda.findaauth.application.port.`in`.auth.ReissueUseCase
 import jakarta.validation.constraints.NotBlank
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,4 +26,7 @@ class AuthWebAdapter(
             reissueUseCase.execute(token)
         )
     }
+
+    @GetMapping("/test")
+    fun test() = "test"
 }

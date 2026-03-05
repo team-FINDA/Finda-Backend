@@ -4,6 +4,7 @@ object DependencyVersions {
     const val JACKSON_VERSION = "2.16.1"
     const val JWT = "0.11.5"
     const val SPRING_CLOUD = "2023.0.3"
+    const val NETTY_DNS = "4.1.108.Final"
     const val GRPC_STARTER = "2.15.0.RELEASE"
     const val GRPC = "1.59.0"
     const val PROTOBUF = "3.24.0"

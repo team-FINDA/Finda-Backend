@@ -1,6 +1,8 @@
 server:
   port: 8081
   shutdown: graceful # 처리 중인 요청을 중간에 끊지 않고 안전하게 마무리하기 위함
+  servlet:
+    context-path: /finda-auth
 
 grpc:
   server:
@@ -70,6 +72,9 @@ jwt:
   refresh-exp: 604800
   header: Authorization
   prefix: "Bearer "
+
+passport:
+  secret-key: ${PASSPORT_SECRET_KEY}
 
 teacher:
   signup-secret: ${TEACHER_SIGNUP_SECRET}

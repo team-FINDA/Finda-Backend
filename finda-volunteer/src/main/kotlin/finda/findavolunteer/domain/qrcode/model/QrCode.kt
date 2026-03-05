@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class QrCode(
-    val id: UUID,
+    val id: UUID = UUID(0, 0),
     val volunteerId: UUID,
     val code: String,
     val generatedAt: LocalDateTime,

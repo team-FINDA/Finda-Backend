@@ -5,7 +5,9 @@ import finda.findaauth.adapter.out.persistence.user.repository.UserRepository
 import finda.findaauth.application.port.out.user.UserCommandPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.user.model.User
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class UserPersistenceAdapter(
@@ -24,6 +26,11 @@ class UserPersistenceAdapter(
 
     override fun findByEmail(email: String): User? {
         val userEntity = userRepository.findByEmail(email)
+        return userEntity?.let { userMapper.toDomain(it) }
+    }
+
+    override fun findById(id: UUID): User? {
+        val userEntity = userRepository.findByIdOrNull(id)
         return userEntity?.let { userMapper.toDomain(it) }
     }
 }

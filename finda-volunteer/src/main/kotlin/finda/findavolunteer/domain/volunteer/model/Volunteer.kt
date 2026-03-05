@@ -7,7 +7,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 data class Volunteer(
-    val id: UUID,
+    val id: UUID = UUID(0, 0),
     val status: VolunteerStatus,
     val personnel: Int,
     val title: String,

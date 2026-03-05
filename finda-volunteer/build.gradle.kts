@@ -28,6 +28,14 @@ dependencies {
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.LIQUIBASE)
+
+    // JWT
+    implementation(Dependencies.JWT_API)
+    runtimeOnly(Dependencies.JWT_IMPL)
+    runtimeOnly(Dependencies.JWT_JACKSON)
+
+    // Security Common
+    implementation(project(":finda-security-common"))
 }
 
 kotlin {

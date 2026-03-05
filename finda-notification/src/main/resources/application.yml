@@ -1,6 +1,8 @@
 server:
   port: 8083
   shutdown: graceful # 처리 중인 요청을 중간에 끊지 않고 안전하게 마무리하기 위함
+  servlet:
+    context-path: /finda-notification
 
 grpc:
   client:
@@ -17,6 +19,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${NOTIFICATION_MYSQL_HOST}:${NOTIFICATION_DB_PORT}/${NOTIFICATION_DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: ${NOTIFICATION_MYSQL_USERNAME}
+    password: ${NOTIFICATION_MYSQL_PASSWORD}
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
@@ -40,3 +45,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog-notification/master.xml
+
+passport:
+  secret-key: ${PASSPORT_SECRET_KEY}

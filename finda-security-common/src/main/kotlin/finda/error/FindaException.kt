@@ -1,4 +1,4 @@
-package finda.findagateway.global.error.exception
+package finda.error
 
 abstract class FindaException(
     val errorCode: ErrorCode

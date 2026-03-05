@@ -29,6 +29,8 @@ object Dependencies {
 
     const val LIQUIBASE = "org.liquibase:liquibase-core"
 
+    // Netty DNS resolver for MacOS
+    const val NETTY_DNS_MACOS = "io.netty:netty-resolver-dns-native-macos:${DependencyVersions.NETTY_DNS}"
     const val GRPC_SERVER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
     const val GRPC_PROTOBUF = "io.grpc:grpc-protobuf:${DependencyVersions.GRPC}"
     const val GRPC_STUB = "io.grpc:grpc-stub:${DependencyVersions.GRPC}"

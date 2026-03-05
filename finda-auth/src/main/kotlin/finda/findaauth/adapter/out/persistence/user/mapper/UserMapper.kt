@@ -13,13 +13,16 @@ class UserMapper : GenericMapper<User, UserJpaEntity> {
             id = entity.id!!,
             email = entity.email,
             name = entity.name,
-            password = entity.password
+            password = entity.password,
+            authority = entity.authority
         )
 
     override fun toEntity(domain: User): UserJpaEntity =
         UserJpaEntity(
+            id = domain.id,
             name = domain.name,
             email = domain.email,
-            password = domain.password
+            password = domain.password,
+            authority = domain.authority
         )
 }

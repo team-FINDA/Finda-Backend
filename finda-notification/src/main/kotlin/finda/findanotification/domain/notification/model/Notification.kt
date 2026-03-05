@@ -4,7 +4,7 @@ import finda.findanotification.domain.notification.enum.NotificationType
 import java.util.UUID
 
 data class Notification(
-    val id: UUID,
+    val id: UUID = UUID(0, 0),
     val title: String,
     val body: String,
     val type: NotificationType,

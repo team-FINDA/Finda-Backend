@@ -21,6 +21,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":finda-security-common"))
+
     implementation(Dependencies.SPRING_WEB)
     implementation(Dependencies.MYSQL_CONNECTOR)
     implementation(Dependencies.SPRING_DATA_JPA)

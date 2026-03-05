@@ -11,8 +11,10 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "tbl_teacher")
 class TeacherJpaEntity(
+    id: java.util.UUID? = null,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true)
     val user: UserJpaEntity?
 
-) : BaseEntity()
+) : BaseEntity(id)

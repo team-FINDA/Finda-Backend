@@ -28,6 +28,17 @@ dependencies {
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.SPRING_WEB)
     implementation(Dependencies.LIQUIBASE)
+
+    // Spring Security
+    implementation(Dependencies.SPRING_SECURITY)
+
+    // JWT
+    implementation(Dependencies.JWT_API)
+    runtimeOnly(Dependencies.JWT_IMPL)
+    runtimeOnly(Dependencies.JWT_JACKSON)
+
+    // Security Common
+    implementation(project(":finda-security-common"))
     implementation(Dependencies.GRPC_CLIENT)
     implementation(Dependencies.GRPC_PROTOBUF)
     implementation(Dependencies.GRPC_STUB)
