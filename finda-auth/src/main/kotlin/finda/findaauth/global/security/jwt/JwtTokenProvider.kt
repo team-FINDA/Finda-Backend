@@ -76,10 +76,14 @@ class JwtTokenProvider(
 
         if (savedToken.userId != claims.userId) throw InvalidTokenException
 
-        return RefreshTokenClaims(
-            userId = claims.userId,
-            userType = UserType.valueOf(claims.userType)
-        )
+        return try {
+            RefreshTokenClaims(
+                userId = claims.userId,
+                userType = UserType.valueOf(claims.userType)
+            )
+        } catch (e: IllegalArgumentException) {
+            throw InvalidTokenException
+        }
     }
 
     fun resolveToken(request: HttpServletRequest): String? =
