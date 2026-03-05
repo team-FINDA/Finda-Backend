@@ -17,6 +17,9 @@ import org.springframework.util.AntPathMatcher
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
+/**
+ * Gateway에서 JWT 토큰을 검증하고 Passport로 변환하여 다운스트림 서비스에 전달하는 필터
+ */
 @Component
 class PassportGatewayFilterFactory(
     private val jwtProvider: finda.security.jwt.JwtProvider,
@@ -51,8 +54,6 @@ class PassportGatewayFilterFactory(
         }
     }
 
-    // 첫 번째 세그먼트 삭제
-    // /finda-auth/students/login" -> "/students/login"
     private fun stripFirstPathSegment(path: String): String {
         val withoutLeadingSlash = path.removePrefix("/")
         val rest = withoutLeadingSlash.substringAfter("/", "")
@@ -75,7 +76,7 @@ class PassportGatewayFilterFactory(
             }
 
             val now = System.currentTimeMillis()
-            val expiresAt = now + 60_000 // 1분 유효
+            val expiresAt = now + 60_000
 
             val userIntegrity = PassportIntegrityUtil.generate(
                 userId = jwtClaims.userId,
