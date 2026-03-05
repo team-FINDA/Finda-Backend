@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+// 양쪽 서버가 같은 인터페이스로 통신해야하기에 controller 명세
+package auth;
+
+option java_package = "finda.findanotification.adapter.out.grpc";
+option java_multiple_files = true;
+
+service AuthService {
+  rpc GetDeviceToken (UserRequest) returns (DeviceTokenResponse);
+  rpc GetDeviceTokens (UserListRequest) returns (DeviceTokenListResponse);
+}
+
+message UserRequest {
+  string user_id = 1;
+}
+
+message UserListRequest {
+  repeated string user_ids = 1;
+}
+
+message DeviceTokenResponse {
+  string device_token = 1;
+  string os = 2;
+}
+
+message DeviceTokenListResponse {
+  repeated DeviceTokenResponse tokens = 1;
+}

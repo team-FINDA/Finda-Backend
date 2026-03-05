@@ -31,4 +31,12 @@ object Dependencies {
 
     // Netty DNS resolver for MacOS
     const val NETTY_DNS_MACOS = "io.netty:netty-resolver-dns-native-macos:${DependencyVersions.NETTY_DNS}"
+    const val GRPC_SERVER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
+    const val GRPC_PROTOBUF = "io.grpc:grpc-protobuf:${DependencyVersions.GRPC}"
+    const val GRPC_STUB = "io.grpc:grpc-stub:${DependencyVersions.GRPC}"
+    const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-java:${DependencyVersions.PROTOBUF}"
+    const val JAVAX_ANNOTATION = "javax.annotation:javax.annotation-api:${DependencyVersions.JAVAX_ANNOTATION}"
+    const val GRPC_CLIENT = "net.devh:grpc-client-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
+
+    const val FIRE_BASE = "com.google.firebase:firebase-admin:${DependencyVersions.FIRE_BASE}"
 }

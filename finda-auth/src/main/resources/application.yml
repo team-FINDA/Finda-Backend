@@ -4,6 +4,10 @@ server:
   servlet:
     context-path: /finda-auth
 
+grpc:
+  server:
+    port: 9090
+
 spring:
   profiles:
     active: ${PROFILE:local}

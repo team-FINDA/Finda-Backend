@@ -26,7 +26,7 @@ class NoticeMapper : GenericMapper<Notice, NoticeJpaEntity> {
             id = domain.id,
             title = domain.title,
             body = domain.body,
-            adminId = domain.adminId,
+            adminId = domain.adminId!!, // 추후 !! 제거
             noticeDate = domain.noticeDate,
             noticeTime = domain.noticeTime
         )

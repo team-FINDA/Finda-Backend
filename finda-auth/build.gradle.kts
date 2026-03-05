@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.spring")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+    id("com.google.protobuf") version "0.9.4"
 }
 
 group = "finda"
@@ -36,14 +37,43 @@ dependencies {
     implementation(Dependencies.SPRING_MAIL)
     implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
+    implementation(Dependencies.GRPC_SERVER)
+    implementation(Dependencies.GRPC_PROTOBUF)
+    implementation(Dependencies.GRPC_STUB)
+    implementation(Dependencies.PROTOBUF_JAVA)
+    compileOnly(Dependencies.JAVAX_ANNOTATION)
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.24.0"
+    }
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
+        }
+    }
+    generateProtoTasks {
+        all().forEach {
+            it.plugins {
+                create("grpc")
+            }
+        }
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+
+        freeCompilerArgs.addAll(
+            "-Xjsr305=strict",
+            "-Xjvm-default=all",
+            "-opt-in=kotlin.RequiresOptIn"
+        )
+    }
 }

@@ -62,3 +62,6 @@ logs/
 **/application-local.properties
 **/application-secret.yml
 **/application-secret.properties
+
+### Firebase ###
+**/firebase-service-account.json

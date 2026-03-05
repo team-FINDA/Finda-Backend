@@ -8,6 +8,13 @@ spring:
     username: ${BATCH_MYSQL_USERNAME}
     password: ${BATCH_MYSQL_PASSWORD}
 
+  kafka:
+    enabled: true
+
+  quartz:
+    jdbc:
+      initialize-schema: never
+
   jpa:
     properties:
       hibernate:

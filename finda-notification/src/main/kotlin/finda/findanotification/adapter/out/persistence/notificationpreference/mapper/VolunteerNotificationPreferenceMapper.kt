@@ -11,7 +11,7 @@ class VolunteerNotificationPreferenceMapper : GenericMapper<VolunteerNotificatio
     override fun toDomain(entity: VolunteerNotificationPreferenceJpaEntity?): VolunteerNotificationPreference? {
         return entity?.let {
             VolunteerNotificationPreference(
-                id = it.id,
+                id = it.id!!,
                 volunteerId = it.volunteerId,
                 userId = it.userId,
                 enabled = it.enabled
