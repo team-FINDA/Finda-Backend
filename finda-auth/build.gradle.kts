@@ -38,10 +38,11 @@ dependencies {
     implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
     implementation(Dependencies.GRPC_SERVER)
-    implementation(Dependencies.GRPC_PROTOBUF)
-    implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.PROTOBUF_JAVA)
     compileOnly(Dependencies.JAVAX_ANNOTATION)
+    implementation(Dependencies.GRPC_CLIENT)
+    implementation(Dependencies.GRPC_PROTOBUF)
+    implementation(Dependencies.GRPC_STUB)
 }
 
 protobuf {
