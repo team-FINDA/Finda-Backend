@@ -20,7 +20,8 @@ enum class ErrorCode(
     FORBIDDEN(403, "Can Not Access", 1),
 
     USER_NOT_FOUND(404, "User not found", 1),
-    TEACHER_NOT_FOUND(404, "Teacher not found", 2);
+    TEACHER_NOT_FOUND(404, "Teacher not found", 2),
+    STUDENT_NOT_FOUND(404, "Student not found", 3),;
 
     override fun status(): Int = status
     override fun message(): String = message
