@@ -26,7 +26,4 @@ class AuthWebAdapter(
             reissueUseCase.execute(token)
         )
     }
-
-    @GetMapping("/test")
-    fun test() = "test"
 }
