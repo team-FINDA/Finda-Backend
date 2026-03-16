@@ -17,7 +17,10 @@ enum class ErrorCode(
     PASSPORT_ISSUED_IN_FUTURE(401, "Passport Issued In Future", 6),
     PASSPORT_EXPIRED(401, "Passport Expired", 7),
 
-    FORBIDDEN(403, "Can Not Access", 1);
+    FORBIDDEN(403, "Can Not Access", 1),
+
+    USER_NOT_FOUND(404, "User not found", 1),
+    TEACHER_NOT_FOUND(404, "Teacher not found", 2);
 
     override fun status(): Int = status
     override fun message(): String = message
