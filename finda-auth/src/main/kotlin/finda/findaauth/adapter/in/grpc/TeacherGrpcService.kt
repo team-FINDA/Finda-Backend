@@ -40,10 +40,10 @@ class TeacherGrpcService(
         responseObserver: StreamObserver<UserIdAndUserInfo>
     ) = handleGrpc(responseObserver) {
         val userId = parseUUID(request.userId)
-        val teacher = teacherQueryPort.findTeacherByUserId(userId)
-            ?: throw TeacherNotFoundException
         val user = userQueryPort.findById(userId)
             ?: throw UserNotFoundException
+        val teacher = teacherQueryPort.findTeacherByUserId(userId)
+            ?: throw TeacherNotFoundException
 
         mapTeacherInfo(user, teacher)
     }
