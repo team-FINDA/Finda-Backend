@@ -6,6 +6,7 @@ import finda.findaauth.adapter.out.persistence.user.repository.UserRepository
 import finda.findaauth.application.port.out.student.StudentCommandPort
 import finda.findaauth.application.port.out.student.StudentQueryPort
 import finda.findaauth.domain.student.model.Student
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -31,5 +32,19 @@ class StudentPersistenceAdapter(
 
     override fun existsByStudentNumber(grade: Int, classNum: Int, num: Int): Boolean {
         return studentRepository.existsByGradeAndClassNumAndNum(grade, classNum, num)
+    }
+
+    override fun findStudentByUserId(userId: UUID): Student? {
+        val userEntity = userRepository.findByIdOrNull(userId) ?: return null
+        val student = studentRepository.findByUser(userEntity).orElse(null) ?: return null
+        return studentMapper.toDomain(student)
+    }
+
+    override fun findAllByUserIds(userIds: List<UUID>): List<Student?> {
+        return userIds.map { findStudentByUserId(it) }
+    }
+
+    override fun findAll(): List<Student> {
+        return studentRepository.findAll().map(studentMapper::toDomain).toList()
     }
 }

@@ -4,7 +4,7 @@ import finda.findaauth.adapter.out.persistence.student.entity.StudentJpaEntity
 import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
 interface StudentRepository : CrudRepository<StudentJpaEntity, UUID> {
@@ -13,4 +13,6 @@ interface StudentRepository : CrudRepository<StudentJpaEntity, UUID> {
     fun existsByUserId(userId: UUID): Boolean
 
     fun existsByGradeAndClassNumAndNum(grade: Int, classNum: Int, num: Int): Boolean
+
+    fun findByUser(user: UserJpaEntity): Optional<StudentJpaEntity>
 }
