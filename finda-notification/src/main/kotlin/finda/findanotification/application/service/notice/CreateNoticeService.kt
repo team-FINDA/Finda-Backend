@@ -1,7 +1,7 @@
 package finda.findanotification.application.service.notice
 
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
-import finda.findanotification.application.port.`in`.notice.dto.request.CreateNoticeCommand
+import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
 import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
 import finda.findanotification.application.service.kafka.NoticeNotificationService
@@ -18,7 +18,7 @@ class CreateNoticeService(
     private val noticeNotificationService: NoticeNotificationService
 ) : CreateNoticeUseCase {
 
-    override fun execute(request: CreateNoticeCommand) {
+    override fun execute(request: NoticeCommand) {
         val notice = Notice(
             id = UUID.randomUUID(),
             title = request.title,
