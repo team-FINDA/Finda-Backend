@@ -4,7 +4,8 @@ import finda.findaauth.adapter.out.persistence.student.entity.StudentJpaEntity
 import finda.findaauth.adapter.out.persistence.user.entity.UserJpaEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
+import java.util.Optional
 
 @Repository
 interface StudentRepository : CrudRepository<StudentJpaEntity, UUID> {
