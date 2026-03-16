@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package auth;
+
+import "auth.proto";
+import "google/protobuf/empty.proto";
+import "student.proto";
+
+option java_package = "finda.findaauth.adapter.in.grpc";
+option java_multiple_files = true;
+
+service TeacherService {
+  rpc GetTeachersInfo(UserListRequest) returns (TeachersInfoResponse);
+  rpc GetTeacherInfo(UserRequest) returns (UserIdAndUserInfo);
+  rpc GetTeachersAllInfo(google.protobuf.Empty) returns (TeachersInfoResponse);
+}
+
+message TeachersInfoResponse {
+  repeated UserIdAndUserInfo teachers_info = 1;
+}
