@@ -1,6 +1,7 @@
 package finda.findaauth.adapter.`in`.grpc
 
 import com.google.protobuf.Empty
+import finda.error.FindaException
 import finda.findaauth.application.exception.student.StudentNotFoundException
 import finda.findaauth.application.exception.user.UserNotFoundException
 import finda.findaauth.application.port.out.student.StudentQueryPort
@@ -105,6 +106,8 @@ class StudentGrpcService(
             observer.onNext(block())
             observer.onCompleted()
         } catch (e: StatusRuntimeException) {
+            observer.onError(e)
+        } catch (e: FindaException){
             observer.onError(e)
         } catch (e: Exception) {
             observer.onError(
