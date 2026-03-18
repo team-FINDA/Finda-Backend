@@ -36,7 +36,8 @@ class NoticeWebAdapter(
 
     @PostMapping
     fun createNotice(
-        @RequestBody @Valid request: NoticeWebRequest,
+        @RequestBody @Valid
+        request: NoticeWebRequest,
         @AuthenticationPrincipal passport: Passport
     ) {
         createNoticeUseCase.execute(
@@ -72,8 +73,9 @@ class NoticeWebAdapter(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateNotice(
         @PathVariable id: UUID,
-        passport: Passport,
-        @Valid @RequestBody request: NoticeWebRequest
+        @AuthenticationPrincipal passport: Passport,
+        @Valid @RequestBody
+        request: NoticeWebRequest
     ) {
         updateNoticeUseCase.execute(
             id,
