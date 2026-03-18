@@ -12,6 +12,7 @@ import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCo
 import finda.security.passport.model.Passport
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -35,8 +36,8 @@ class NoticeWebAdapter(
 
     @PostMapping
     fun createNotice(
-        @RequestBody request: NoticeWebRequest,
-        passport: Passport
+        @RequestBody @Valid request: NoticeWebRequest,
+        @AuthenticationPrincipal passport: Passport
     ) {
         createNoticeUseCase.execute(
             NoticeCommand(
@@ -72,8 +73,7 @@ class NoticeWebAdapter(
     fun updateNotice(
         @PathVariable id: UUID,
         passport: Passport,
-        @Valid @RequestBody
-        request: NoticeWebRequest
+        @Valid @RequestBody request: NoticeWebRequest
     ) {
         updateNoticeUseCase.execute(
             id,
@@ -91,7 +91,7 @@ class NoticeWebAdapter(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteNotice(
         @PathVariable id: UUID,
-        passport: Passport
+        @AuthenticationPrincipal passport: Passport
     ) {
         deleteNoticeUseCase.execute(id, passport)
     }
