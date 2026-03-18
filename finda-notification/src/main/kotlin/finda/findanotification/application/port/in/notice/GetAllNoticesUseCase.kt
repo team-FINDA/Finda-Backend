@@ -1,7 +1,7 @@
 package finda.findanotification.application.port.`in`.notice
 
-import finda.findanotification.adapter.`in`.notice.dto.request.NoticeWebRequest
+import finda.findanotification.application.port.`in`.notice.dto.response.GetAllNoticesResult
 
 interface GetAllNoticesUseCase {
-    fun execute(): List<NoticeWebRequest>
+    fun execute(): List<GetAllNoticesResult>
 }

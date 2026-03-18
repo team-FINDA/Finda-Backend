@@ -1,28 +1,98 @@
 package finda.findanotification.adapter.`in`.notice
 
-import finda.findanotification.adapter.`in`.notice.dto.request.CreateNoticeWebRequest
+import finda.findanotification.adapter.`in`.notice.dto.request.NoticeWebRequest
+import finda.findanotification.adapter.`in`.notice.dto.response.GetAllNoticesWebResponse
+import finda.findanotification.adapter.`in`.notice.dto.response.GetNoticeWebResponse
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
-import finda.findanotification.application.port.`in`.notice.dto.request.CreateNoticeCommand
+import finda.findanotification.application.port.`in`.notice.DeleteNoticeUseCase
+import finda.findanotification.application.port.`in`.notice.GetAllNoticesUseCase
+import finda.findanotification.application.port.`in`.notice.GetNoticeUseCase
+import finda.findanotification.application.port.`in`.notice.UpdateNoticeUseCase
+import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
+import finda.security.passport.model.Passport
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/notice")
 class NoticeWebAdapter(
-    private val createNoticeUseCase: CreateNoticeUseCase
+    private val createNoticeUseCase: CreateNoticeUseCase,
+    private val getNoticeUseCase: GetNoticeUseCase,
+    private val getAllNoticesUseCase: GetAllNoticesUseCase,
+    private val updateNoticeUseCase: UpdateNoticeUseCase,
+    private val deleteNoticeUseCase: DeleteNoticeUseCase
 ) {
 
     @PostMapping
-    fun createNotice(@RequestBody request: CreateNoticeWebRequest) {
+    fun createNotice(
+        @RequestBody request: NoticeWebRequest,
+        passport: Passport
+    ) {
         createNoticeUseCase.execute(
-            CreateNoticeCommand(
+            NoticeCommand(
                 title = request.title,
                 body = request.body,
+                userId = passport.userId,
+                noticeDate = request.noticeDate,
+                noticeTime = request.noticeTime
+            ),
+            passport
+        )
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getNotice(
+        @PathVariable id: UUID
+    ): GetNoticeWebResponse {
+        return GetNoticeWebResponse.from(
+            getNoticeUseCase.execute(id)
+        )
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun getAllNotices(): List<GetAllNoticesWebResponse> {
+        return getAllNoticesUseCase.execute()
+            .map(GetAllNoticesWebResponse::from)
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateNotice(
+        @PathVariable id: UUID,
+        passport: Passport,
+        @Valid @RequestBody
+        request: NoticeWebRequest
+    ) {
+        updateNoticeUseCase.execute(
+            id,
+            NoticeCommand(
+                title = request.title,
+                body = request.body,
+                userId = passport.userId,
                 noticeDate = request.noticeDate,
                 noticeTime = request.noticeTime
             )
         )
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteNotice(
+        @PathVariable id: UUID,
+        passport: Passport
+    ) {
+        deleteNoticeUseCase.execute(id, passport)
     }
 }

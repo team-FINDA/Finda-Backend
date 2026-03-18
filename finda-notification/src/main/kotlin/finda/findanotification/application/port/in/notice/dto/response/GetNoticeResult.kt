@@ -6,7 +6,7 @@ import java.time.LocalTime
 data class GetNoticeResult(
     val userName: String,
     val title: String,
-    val content: String,
+    val body: String,
     val noticeDate: LocalDate?,
     val noticeTime: LocalTime?
 )

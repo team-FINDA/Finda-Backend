@@ -4,35 +4,31 @@ import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
 import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
-import finda.findanotification.application.service.kafka.NoticeNotificationService
 import finda.findanotification.domain.notice.model.Notice
+import finda.findanotification.domain.notice.type.Status
+import finda.security.passport.model.Passport
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.time.LocalTime
 import java.util.UUID
 
 @Service
 class CreateNoticeService(
     private val saveNoticePort: SaveNoticePort,
-    private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort,
-    private val noticeNotificationService: NoticeNotificationService
+    private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort
 ) : CreateNoticeUseCase {
 
-    override fun execute(request: NoticeCommand) {
+    override fun execute(request: NoticeCommand, passport: Passport) {
         val notice = Notice(
             id = UUID.randomUUID(),
             title = request.title,
             body = request.body,
-            noticeDate = request.noticeDate ?: LocalDate.now(),
-            noticeTime = request.noticeTime ?: LocalTime.now()
+            userId = passport.userId,
+            status = Status.RECEIVED,
+            noticeDate = request.noticeDate,
+            noticeTime = request.noticeTime
         )
 
         saveNoticePort.save(notice)
 
-        if (request.noticeDate == null && request.noticeTime == null) {
-            noticeNotificationService.sendImmediate(notice)
-        } else {
-            sendNoticeScheduledEventPort.send(notice)
-        }
+        sendNoticeScheduledEventPort.send(notice)
     }
 }

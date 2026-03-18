@@ -41,6 +41,20 @@ class AuthGrpcService(
             .build()
     }
 
+    override fun getUserName(
+        request: UserRequest,
+        responseObserver: StreamObserver<UserNameResponse>
+    ) = handleGrpc(responseObserver) {
+
+        val userId = parseUUID(request.userId)
+
+        val user = getUserService.getById(userId)
+
+        UserNameResponse.newBuilder()
+            .setUserName(user.name)
+            .build()
+    }
+
     private fun parseUUID(value: String): UUID =
         try {
             UUID.fromString(value)

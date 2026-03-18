@@ -1,11 +1,26 @@
 package finda.findanotification.application.port.`in`.notice.dto.request
 
+import finda.findanotification.domain.notice.model.Notice
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.UUID
 
 data class NoticeCommand(
     val title: String,
     val body: String,
-    val noticeDate: LocalDate?,
-    val noticeTime: LocalTime?
-)
+    val userId: UUID,
+    val noticeDate: LocalDate,
+    val noticeTime: LocalTime
+) {
+    companion object {
+        fun from(notice: Notice): NoticeCommand {
+            return NoticeCommand(
+                title = notice.title,
+                body = notice.body,
+                userId = notice.userId,
+                noticeDate = notice.noticeDate,
+                noticeTime = notice.noticeTime
+            )
+        }
+    }
+}
