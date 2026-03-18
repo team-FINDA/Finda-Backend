@@ -7,6 +7,7 @@ import finda.findanotification.application.port.out.notice.GetNoticePort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
 import finda.findanotification.application.port.out.notice.UpdateNoticePort
 import finda.findanotification.domain.notice.model.Notice
+import finda.findanotification.domain.notice.type.Status
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -41,5 +42,13 @@ class NoticePersistenceAdapter(
         val entity = noticeMapper.toEntity(notice)
         val saved = noticeRepository.save(entity)
         return noticeMapper.toDomain(saved)!!
+    }
+
+    override fun updateStatus(noticeId: UUID, status: Status) {
+        val notice = findById(noticeId) ?: return
+        val entity = noticeMapper.toEntity(
+            notice.copy(status = status)
+        )
+        noticeRepository.save(entity)
     }
 }

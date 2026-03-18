@@ -6,8 +6,9 @@ import finda.findanotification.adapter.out.persistence.notice.repository.NoticeR
 import finda.findanotification.adapter.out.persistence.notificationpreference.repository.NotificationPreferenceRepository
 import finda.findanotification.application.port.`in`.kafka.SendNoticeNotificationUseCase
 import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
+import finda.findanotification.application.port.out.notice.UpdateNoticePort
 import finda.findanotification.application.port.out.notification.SaveNotificationPort
-import finda.findanotification.domain.notice.model.Notice
+import finda.findanotification.domain.notice.type.Status
 import finda.findanotification.domain.notification.enum.NotificationType
 import finda.findanotification.domain.notification.model.Notification
 import org.slf4j.LoggerFactory
@@ -21,7 +22,8 @@ class NoticeNotificationService(
     private val fcmClient: FcmClient,
     private val notificationPreferenceRepository: NotificationPreferenceRepository,
     private val saveNotificationPort: SaveNotificationPort,
-    private val noticeRepository: NoticeRepository
+    private val noticeRepository: NoticeRepository,
+    private val updateNoticePort: UpdateNoticePort
 ) : SendNoticeNotificationUseCase {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -29,6 +31,7 @@ class NoticeNotificationService(
     override fun send(event: NoticeScheduledEvent) {
         val notice = noticeRepository.findByIdOrNull(event.noticeId) ?: return
         sendToAllUsers(notice.title, notice.body)
+        updateNoticePort.updateStatus(event.noticeId, Status.SENT)
     }
 
     private fun sendToAllUsers(title: String, body: String) {

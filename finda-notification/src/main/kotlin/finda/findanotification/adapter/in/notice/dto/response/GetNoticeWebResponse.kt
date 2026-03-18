@@ -6,7 +6,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 data class GetNoticeWebResponse(
-    val userName: UUID,
+    val userName: String,
     val title: String,
     val body: String,
     val noticeDate: LocalDate?,
