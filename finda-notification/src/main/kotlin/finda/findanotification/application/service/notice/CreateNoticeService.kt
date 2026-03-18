@@ -8,6 +8,7 @@ import finda.findanotification.domain.notice.model.Notice
 import finda.findanotification.domain.notice.type.Status
 import finda.security.passport.model.Passport
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -17,6 +18,12 @@ class CreateNoticeService(
 ) : CreateNoticeUseCase {
 
     override fun execute(request: NoticeCommand, passport: Passport) {
+
+        val scheduledAt = LocalDateTime.of(request.noticeDate, request.noticeTime)
+        require(scheduledAt.isAfter(LocalDateTime.now())) {
+            "예약 시간은 현재 시간 이후여야 합니다."
+        }
+
         val notice = Notice(
             id = UUID.randomUUID(),
             title = request.title,

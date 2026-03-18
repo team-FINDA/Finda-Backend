@@ -31,13 +31,6 @@ class NoticeNotificationService(
         sendToAllUsers(notice.title, notice.body)
     }
 
-    fun sendImmediate(notice: Notice) {
-        sendToAllUsers(
-            title = notice.title,
-            body = notice.body
-        )
-    }
-
     private fun sendToAllUsers(title: String, body: String) {
         val userIds = notificationPreferenceRepository.findAllByEnabledTrue()
             .map { it.userId }
