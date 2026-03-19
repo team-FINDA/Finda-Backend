@@ -16,7 +16,7 @@ data class Volunteer(
     val applicationEndDate: LocalDate,
     val workStartDate: LocalDate,
     val workEndDate: LocalDate,
-    val cycleType: CycleType?,
+    val cycleType: CycleType,
     val userId: String,
     val remindTime: LocalTime
 )

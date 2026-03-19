@@ -44,7 +44,7 @@ class VolunteerJpaEntity(
 
     @Column(name = "cycle_type", nullable = true)
     @Enumerated(EnumType.STRING)
-    val cycleType: CycleType?,
+    val cycleType: CycleType,
 
     @Column(name = "user_id", nullable = false)
     val userId: String,
