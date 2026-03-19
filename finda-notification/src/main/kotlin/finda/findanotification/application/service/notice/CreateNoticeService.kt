@@ -6,7 +6,6 @@ import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEve
 import finda.findanotification.application.port.out.notice.SaveNoticePort
 import finda.findanotification.domain.notice.model.Notice
 import finda.findanotification.domain.notice.type.Status
-import finda.security.passport.model.Passport
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
@@ -17,21 +16,21 @@ class CreateNoticeService(
     private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort
 ) : CreateNoticeUseCase {
 
-    override fun execute(request: NoticeCommand, passport: Passport) {
+    override fun execute(noticeCommand: NoticeCommand) {
 
-        val scheduledAt = LocalDateTime.of(request.noticeDate, request.noticeTime)
+        val scheduledAt = LocalDateTime.of(noticeCommand.noticeDate, noticeCommand.noticeTime)
         require(scheduledAt.isAfter(LocalDateTime.now())) {
             "예약 시간은 현재 시간 이후여야 합니다."
         }
 
         val notice = Notice(
             id = UUID.randomUUID(),
-            title = request.title,
-            body = request.body,
-            userId = passport.userId,
+            title = noticeCommand.title,
+            body = noticeCommand.body,
+            userId = noticeCommand.userId,
             status = Status.RECEIVED,
-            noticeDate = request.noticeDate,
-            noticeTime = request.noticeTime
+            noticeDate = noticeCommand.noticeDate,
+            noticeTime = noticeCommand.noticeTime
         )
 
         saveNoticePort.save(notice)
