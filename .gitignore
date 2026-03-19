@@ -4,6 +4,9 @@
 # Gradle
 .gradle/
 **/build/
+.gradle-local/
+**/*.lck
+**/*.part
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

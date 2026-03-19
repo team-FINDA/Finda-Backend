@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-// 양쪽 서버가 같은 인터페이스로 통신해야하기에 controller 명세
 package auth;
 
 option java_package = "finda.findaauth.adapter.in.grpc";
@@ -31,4 +30,12 @@ message DeviceTokenListResponse {
 
 message UserNameResponse {
   string user_name = 1;
+
+message UserDevice {
+  string user_id = 1;
+  repeated DeviceTokenResponse devices = 2;
+}
+
+message UserDeviceListResponse {
+  repeated UserDevice users = 1;
 }
