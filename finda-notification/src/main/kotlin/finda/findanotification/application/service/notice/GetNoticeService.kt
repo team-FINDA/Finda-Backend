@@ -21,6 +21,7 @@ class GetNoticeService(
         val userName = userGrpcClient.getUserName(notice.userId) ?: "Unknown User"
 
         return GetNoticeResult(
+            id = notice.id,
             userName = userName,
             title = notice.title,
             body = notice.body,
