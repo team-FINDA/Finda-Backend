@@ -30,6 +30,7 @@ message DeviceTokenListResponse {
 
 message UserNameResponse {
   string user_name = 1;
+}
 
 message UserDevice {
   string user_id = 1;
