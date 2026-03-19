@@ -1,8 +1,7 @@
 package finda.findanotification.application.port.`in`.notice
 
-import finda.security.passport.model.Passport
-import java.util.UUID
+import finda.findanotification.application.port.`in`.notice.dto.request.DeleteNoticeCommand
 
 interface DeleteNoticeUseCase {
-    fun execute(id: UUID, passport: Passport)
+    fun execute(deleteNoticeCommand: DeleteNoticeCommand)
 }
