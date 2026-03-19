@@ -4,8 +4,10 @@ import finda.findanotification.application.port.`in`.notice.dto.response.GetAllN
 import finda.findanotification.domain.notice.type.Status
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.UUID
 
 data class GetAllNoticesWebResponse(
+    val id: UUID,
     val title: String,
     val body: String,
     val status: Status,
@@ -15,6 +17,7 @@ data class GetAllNoticesWebResponse(
     companion object {
         fun from(result: GetAllNoticesResult): GetAllNoticesWebResponse {
             return GetAllNoticesWebResponse(
+                id = result.id,
                 title = result.title,
                 body = result.body,
                 status = result.status,

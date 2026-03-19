@@ -6,6 +6,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 data class GetNoticeWebResponse(
+    val id: UUID,
     val userName: String,
     val title: String,
     val body: String,
@@ -15,6 +16,7 @@ data class GetNoticeWebResponse(
     companion object {
         fun from(result: GetNoticeResult): GetNoticeWebResponse {
             return GetNoticeWebResponse(
+                id = result.id,
                 userName = result.userName,
                 title = result.title,
                 body = result.body,
