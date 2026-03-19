@@ -16,21 +16,21 @@ class CreateNoticeService(
     private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort
 ) : CreateNoticeUseCase {
 
-    override fun execute(noticeCommand: NoticeCommand) {
+    override fun execute(command: NoticeCommand) {
 
-        val scheduledAt = LocalDateTime.of(noticeCommand.noticeDate, noticeCommand.noticeTime)
+        val scheduledAt = LocalDateTime.of(command.noticeDate, command.noticeTime)
         require(scheduledAt.isAfter(LocalDateTime.now())) {
             "예약 시간은 현재 시간 이후여야 합니다."
         }
 
         val notice = Notice(
             id = UUID.randomUUID(),
-            title = noticeCommand.title,
-            body = noticeCommand.body,
-            userId = noticeCommand.userId,
+            title = command.title,
+            body = command.body,
+            userId = command.userId,
             status = Status.RECEIVED,
-            noticeDate = noticeCommand.noticeDate,
-            noticeTime = noticeCommand.noticeTime
+            noticeDate = command.noticeDate,
+            noticeTime = command.noticeTime
         )
 
         saveNoticePort.save(notice)

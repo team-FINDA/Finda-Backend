@@ -13,11 +13,11 @@ class DeleteNoticeService(
     private val deleteNoticePort: DeleteNoticePort,
     private val getNoticePort: GetNoticePort
 ) : DeleteNoticeUseCase {
-    override fun execute(deleteNoticeCommand: DeleteNoticeCommand) {
-        val notice = getNoticePort.findById(deleteNoticeCommand.noticeId)
+    override fun execute(command: DeleteNoticeCommand) {
+        val notice = getNoticePort.findById(command.noticeId)
             ?: throw NoticeNotFoundException
 
-        if (notice.userId != deleteNoticeCommand.userId) {
+        if (notice.userId != command.userId) {
             throw ForbiddenNoticeException
         }
         deleteNoticePort.delete(notice)
