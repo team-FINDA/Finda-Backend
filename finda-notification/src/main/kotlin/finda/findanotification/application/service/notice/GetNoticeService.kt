@@ -3,7 +3,7 @@ package finda.findanotification.application.service.notice
 import finda.findanotification.adapter.out.grpc.UserGrpcClient
 import finda.findanotification.application.exception.notice.NoticeNotFoundException
 import finda.findanotification.application.port.`in`.notice.GetNoticeUseCase
-import finda.findanotification.application.port.`in`.notice.dto.response.GetNoticeResult
+import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
 import finda.findanotification.application.port.out.notice.GetNoticePort
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -14,13 +14,13 @@ class GetNoticeService(
     private val userGrpcClient: UserGrpcClient
 ) : GetNoticeUseCase {
 
-    override fun execute(id: UUID): GetNoticeResult {
+    override fun execute(id: UUID): NoticeResult {
         val notice = getNoticePort.findById(id)
             ?: throw NoticeNotFoundException
 
         val userName = userGrpcClient.getUserName(notice.userId) ?: "Unknown User"
 
-        return GetNoticeResult(
+        return NoticeResult(
             id = notice.id,
             userName = userName,
             title = notice.title,

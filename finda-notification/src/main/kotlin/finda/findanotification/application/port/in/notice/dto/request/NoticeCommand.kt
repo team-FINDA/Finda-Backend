@@ -11,16 +11,4 @@ data class NoticeCommand(
     val userId: UUID,
     val noticeDate: LocalDate,
     val noticeTime: LocalTime
-) {
-    companion object {
-        fun from(notice: Notice): NoticeCommand {
-            return NoticeCommand(
-                title = notice.title,
-                body = notice.body,
-                userId = notice.userId,
-                noticeDate = notice.noticeDate,
-                noticeTime = notice.noticeTime
-            )
-        }
-    }
-}
+)

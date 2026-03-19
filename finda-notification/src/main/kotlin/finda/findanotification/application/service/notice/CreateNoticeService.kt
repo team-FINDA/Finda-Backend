@@ -1,7 +1,9 @@
 package finda.findanotification.application.service.notice
 
+import finda.findanotification.adapter.out.grpc.UserGrpcClient
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
+import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
 import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
 import finda.findanotification.domain.notice.model.Notice
@@ -13,10 +15,11 @@ import java.util.UUID
 @Service
 class CreateNoticeService(
     private val saveNoticePort: SaveNoticePort,
-    private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort
+    private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort,
+    private val userGrpcClient: UserGrpcClient
 ) : CreateNoticeUseCase {
 
-    override fun execute(command: NoticeCommand) {
+    override fun execute(command: NoticeCommand): NoticeResult {
 
         val scheduledAt = LocalDateTime.of(command.noticeDate, command.noticeTime)
         require(scheduledAt.isAfter(LocalDateTime.now())) {
@@ -24,7 +27,6 @@ class CreateNoticeService(
         }
 
         val notice = Notice(
-            id = UUID.randomUUID(),
             title = command.title,
             body = command.body,
             userId = command.userId,
@@ -33,8 +35,19 @@ class CreateNoticeService(
             noticeTime = command.noticeTime
         )
 
-        saveNoticePort.save(notice)
+        val savedNotice = saveNoticePort.save(notice)
 
-        sendNoticeScheduledEventPort.send(notice)
+        sendNoticeScheduledEventPort.send(savedNotice)
+
+        val userName = userGrpcClient.getUserName(savedNotice.userId) ?: "Unknown User"
+
+        return NoticeResult(
+            id = savedNotice.id,
+            userName = userName,
+            title = savedNotice.title,
+            body = savedNotice.body,
+            noticeDate = savedNotice.noticeDate,
+            noticeTime = savedNotice.noticeTime
+        )
     }
 }

@@ -1,8 +1,10 @@
 package finda.findanotification.application.service.notice
 
+import finda.findanotification.adapter.out.grpc.UserGrpcClient
 import finda.findanotification.application.exception.notice.NoticeNotFoundException
 import finda.findanotification.application.port.`in`.notice.UpdateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
+import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
 import finda.findanotification.application.port.out.notice.GetNoticePort
 import finda.findanotification.application.port.out.notice.UpdateNoticePort
 import org.springframework.stereotype.Service
@@ -12,10 +14,11 @@ import java.util.UUID
 @Service
 class UpdateNoticeService(
     private val getNoticePort: GetNoticePort,
-    private val updateNoticePort: UpdateNoticePort
+    private val updateNoticePort: UpdateNoticePort,
+    private val userGrpcClient: UserGrpcClient
 ) : UpdateNoticeUseCase {
 
-    override fun execute(id: UUID, command: NoticeCommand): NoticeCommand {
+    override fun execute(id: UUID, command: NoticeCommand): NoticeResult {
         val notice = getNoticePort.findById(id)
             ?: throw NoticeNotFoundException
 
@@ -31,8 +34,17 @@ class UpdateNoticeService(
             noticeTime = command.noticeTime
         )
 
-        val updated = updateNoticePort.update(notice)
+        updateNoticePort.update(notice)
 
-        return NoticeCommand.from(updated)
+        val userName = userGrpcClient.getUserName(notice.userId) ?: "Unknown User"
+
+        return NoticeResult(
+            id = notice.id,
+            userName = userName,
+            title = notice.title,
+            body = notice.body,
+            noticeDate = notice.noticeDate,
+            noticeTime = notice.noticeTime
+        )
     }
 }

@@ -2,7 +2,7 @@ package finda.findanotification.adapter.`in`.notice
 
 import finda.findanotification.adapter.`in`.notice.dto.request.NoticeWebRequest
 import finda.findanotification.adapter.`in`.notice.dto.response.GetAllNoticesWebResponse
-import finda.findanotification.adapter.`in`.notice.dto.response.GetNoticeWebResponse
+import finda.findanotification.adapter.`in`.notice.dto.response.NoticeWebResponse
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.DeleteNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.GetAllNoticesUseCase
@@ -39,14 +39,16 @@ class NoticeWebAdapter(
     fun createNotice(
         @RequestBody @Valid
         request: NoticeWebRequest
-    ) {
-        createNoticeUseCase.execute(
-            NoticeCommand(
-                title = request.title,
-                body = request.body,
-                userId = userFacade.getCurrentUserId(),
-                noticeDate = request.noticeDate,
-                noticeTime = request.noticeTime
+    ): NoticeWebResponse {
+        return NoticeWebResponse.from(
+            createNoticeUseCase.execute(
+                NoticeCommand(
+                    title = request.title,
+                    body = request.body,
+                    userId = userFacade.getCurrentUserId(),
+                    noticeDate = request.noticeDate,
+                    noticeTime = request.noticeTime
+                )
             )
         )
     }
@@ -55,8 +57,8 @@ class NoticeWebAdapter(
     @ResponseStatus(HttpStatus.OK)
     fun getNotice(
         @PathVariable id: UUID
-    ): GetNoticeWebResponse {
-        return GetNoticeWebResponse.from(
+    ): NoticeWebResponse {
+        return NoticeWebResponse.from(
             getNoticeUseCase.execute(id)
         )
     }
@@ -69,20 +71,22 @@ class NoticeWebAdapter(
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     fun updateNotice(
         @PathVariable id: UUID,
         @Valid @RequestBody
         request: NoticeWebRequest
-    ) {
-        updateNoticeUseCase.execute(
-            id,
-            NoticeCommand(
-                title = request.title,
-                body = request.body,
-                userId = userFacade.getCurrentUserId(),
-                noticeDate = request.noticeDate,
-                noticeTime = request.noticeTime
+    ): NoticeWebResponse {
+        return NoticeWebResponse.from(
+            updateNoticeUseCase.execute(
+                id,
+                NoticeCommand(
+                    title = request.title,
+                    body = request.body,
+                    userId = userFacade.getCurrentUserId(),
+                    noticeDate = request.noticeDate,
+                    noticeTime = request.noticeTime
+                )
             )
         )
     }

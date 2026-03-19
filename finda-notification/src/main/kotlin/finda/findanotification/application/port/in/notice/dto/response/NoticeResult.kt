@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
 
-data class GetNoticeResult(
+data class NoticeResult(
     val id: UUID,
     val userName: String,
     val title: String,
