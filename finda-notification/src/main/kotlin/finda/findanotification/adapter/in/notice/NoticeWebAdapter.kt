@@ -8,11 +8,11 @@ import finda.findanotification.application.port.`in`.notice.DeleteNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.GetAllNoticesUseCase
 import finda.findanotification.application.port.`in`.notice.GetNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.UpdateNoticeUseCase
+import finda.findanotification.application.port.`in`.notice.dto.request.DeleteNoticeCommand
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
-import finda.security.passport.model.Passport
+import finda.findanotification.application.service.user.facade.UserFacade
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -31,24 +31,23 @@ class NoticeWebAdapter(
     private val getNoticeUseCase: GetNoticeUseCase,
     private val getAllNoticesUseCase: GetAllNoticesUseCase,
     private val updateNoticeUseCase: UpdateNoticeUseCase,
-    private val deleteNoticeUseCase: DeleteNoticeUseCase
+    private val deleteNoticeUseCase: DeleteNoticeUseCase,
+    private val userFacade: UserFacade
 ) {
 
     @PostMapping
     fun createNotice(
         @RequestBody @Valid
-        request: NoticeWebRequest,
-        @AuthenticationPrincipal passport: Passport
+        request: NoticeWebRequest
     ) {
         createNoticeUseCase.execute(
             NoticeCommand(
                 title = request.title,
                 body = request.body,
-                userId = passport.userId,
+                userId = userFacade.getCurrentUserId(),
                 noticeDate = request.noticeDate,
                 noticeTime = request.noticeTime
-            ),
-            passport
+            )
         )
     }
 
@@ -73,7 +72,6 @@ class NoticeWebAdapter(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateNotice(
         @PathVariable id: UUID,
-        @AuthenticationPrincipal passport: Passport,
         @Valid @RequestBody
         request: NoticeWebRequest
     ) {
@@ -82,7 +80,7 @@ class NoticeWebAdapter(
             NoticeCommand(
                 title = request.title,
                 body = request.body,
-                userId = passport.userId,
+                userId = userFacade.getCurrentUserId(),
                 noticeDate = request.noticeDate,
                 noticeTime = request.noticeTime
             )
@@ -92,9 +90,13 @@ class NoticeWebAdapter(
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteNotice(
-        @PathVariable id: UUID,
-        @AuthenticationPrincipal passport: Passport
+        @PathVariable id: UUID
     ) {
-        deleteNoticeUseCase.execute(id, passport)
+        deleteNoticeUseCase.execute(
+            DeleteNoticeCommand(
+                noticeId = id,
+                userId = userFacade.getCurrentUserId(),
+            )
+        )
     }
 }
