@@ -14,7 +14,7 @@ enum class ErrorCode(
 
     // notice
     NOTICE_NOT_FOUND(404, "Notice not found", 1),
-    FORBIDDEN_NOTICE(409, "Forbidden notice", 1);
+    FORBIDDEN_NOTICE(403, "Forbidden notice", 1);
 
     override fun status(): Int = status
     override fun message(): String = message
