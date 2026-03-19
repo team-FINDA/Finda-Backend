@@ -36,6 +36,7 @@ class NoticeWebAdapter(
 ) {
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun createNotice(
         @RequestBody @Valid
         request: NoticeWebRequest
