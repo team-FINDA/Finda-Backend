@@ -29,7 +29,16 @@ class NoticeNotificationService(
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun send(event: NoticeScheduledEvent) {
-        val notice = noticeRepository.findByIdOrNull(event.noticeId) ?: return
+        val notice = noticeRepository.findByIdOrNull(event.noticeId) ?: run {
+            log.warn("Notice not found, skipping. noticeId=${event.noticeId}")
+            return
+        }
+
+        if (notice.status == Status.SENT) {
+            log.info("Notice already sent, skipping duplicate event. noticeId=${event.noticeId}")
+            return
+        }
+
         sendToAllUsers(notice.title, notice.body)
         updateNoticePort.updateStatus(event.noticeId, Status.SENT)
     }
@@ -42,28 +51,21 @@ class NoticeNotificationService(
             return
         }
 
-        try {
-            val deviceTokens = authGrpcClient.getDeviceTokens(userIds)
-            if (deviceTokens.isEmpty()) {
-                return
-            }
-
-            fcmClient.sendNotifications(deviceTokens, title, body)
-
-            saveNotificationPort.save(
-                Notification(
-                    id = UUID.randomUUID(),
-                    title = title,
-                    body = body,
-                    type = NotificationType.NOTIFICATION,
-                    volunteerId = null
-                )
-            )
-        } catch (e: Exception) {
-            /**
-             * 추후 재시도 로직 추가
-             */
-            log.error("Notice Notification 전송 중 오류 발생: ${e.message}", e)
+        val deviceTokens = authGrpcClient.getDeviceTokens(userIds)
+        if (deviceTokens.isEmpty()) {
+            return
         }
+
+        fcmClient.sendNotifications(deviceTokens, title, body)
+
+        saveNotificationPort.save(
+            Notification(
+                id = UUID.randomUUID(),
+                title = title,
+                body = body,
+                type = NotificationType.NOTIFICATION,
+                volunteerId = null
+            )
+        )
     }
 }
