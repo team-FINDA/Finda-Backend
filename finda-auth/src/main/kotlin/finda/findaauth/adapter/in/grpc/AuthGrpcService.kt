@@ -2,6 +2,7 @@ package finda.findaauth.adapter.`in`.grpc
 
 import finda.findaauth.application.exception.devicetoken.DeviceTokenNotFoundException
 import finda.findaauth.application.service.devicetoken.GetDeviceTokenService
+import finda.findaauth.application.service.user.GetUserService
 import finda.findaauth.domain.devicetoken.model.DeviceToken
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -14,7 +15,8 @@ import java.util.UUID
  */
 @GrpcService
 class AuthGrpcService(
-    private val getDeviceTokenService: GetDeviceTokenService
+    private val getDeviceTokenService: GetDeviceTokenService,
+    private val getUserService: GetUserService
 ) : AuthServiceGrpc.AuthServiceImplBase() {
 
     override fun getDeviceToken(
