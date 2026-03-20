@@ -46,7 +46,10 @@ class NoticeScheduledJobScheduler(
         }
     }
 
-    fun delete(noticeId: UUID) {
-        scheduler.deleteJob(JobKey.jobKey(noticeId.toString(), "notice-scheduled"))
+    fun cancel(noticeId: UUID) {
+        val jobKey = JobKey.jobKey(noticeId.toString(), "notice-scheduled")
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.deleteJob(jobKey)
+        }
     }
 }

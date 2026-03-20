@@ -1,38 +1,51 @@
 package finda.findanotification.application.service.notice
 
+import finda.findanotification.adapter.out.grpc.UserGrpcClient
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
-import finda.findanotification.application.port.`in`.notice.dto.request.CreateNoticeCommand
+import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
+import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
 import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
-import finda.findanotification.application.service.kafka.NoticeNotificationService
 import finda.findanotification.domain.notice.model.Notice
+import finda.findanotification.domain.notice.type.Status
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.time.LocalTime
-import java.util.UUID
+import java.time.LocalDateTime
 
 @Service
 class CreateNoticeService(
     private val saveNoticePort: SaveNoticePort,
     private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort,
-    private val noticeNotificationService: NoticeNotificationService
+    private val userGrpcClient: UserGrpcClient
 ) : CreateNoticeUseCase {
 
-    override fun execute(request: CreateNoticeCommand) {
+    override fun execute(command: NoticeCommand): NoticeResult {
+        val scheduledAt = LocalDateTime.of(command.noticeDate, command.noticeTime)
+        require(scheduledAt.isAfter(LocalDateTime.now())) {
+            "예약 시간은 현재 시간 이후여야 합니다."
+        }
+
         val notice = Notice(
-            id = UUID.randomUUID(),
-            title = request.title,
-            body = request.body,
-            noticeDate = request.noticeDate ?: LocalDate.now(),
-            noticeTime = request.noticeTime ?: LocalTime.now()
+            title = command.title,
+            body = command.body,
+            userId = command.userId,
+            status = Status.RECEIVED,
+            noticeDate = command.noticeDate,
+            noticeTime = command.noticeTime
         )
 
-        saveNoticePort.save(notice)
+        val savedNotice = saveNoticePort.save(notice)
 
-        if (request.noticeDate == null && request.noticeTime == null) {
-            noticeNotificationService.sendImmediate(notice)
-        } else {
-            sendNoticeScheduledEventPort.send(notice)
-        }
+        sendNoticeScheduledEventPort.send(savedNotice)
+
+        val userName = userGrpcClient.getUserName(savedNotice.userId) ?: "Unknown User"
+
+        return NoticeResult(
+            id = savedNotice.id,
+            userName = userName,
+            title = savedNotice.title,
+            body = savedNotice.body,
+            noticeDate = savedNotice.noticeDate,
+            noticeTime = savedNotice.noticeTime
+        )
     }
 }

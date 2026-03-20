@@ -8,6 +8,7 @@ option java_multiple_files = true;
 service AuthService {
   rpc GetDeviceToken (UserRequest) returns (DeviceTokenResponse);
   rpc GetDeviceTokens (UserListRequest) returns (DeviceTokenListResponse);
+  rpc GetUserName (UserRequest) returns (UserNameResponse);
 }
 
 message UserRequest {
@@ -25,6 +26,10 @@ message DeviceTokenResponse {
 
 message DeviceTokenListResponse {
   repeated DeviceTokenResponse tokens = 1;
+}
+
+message UserNameResponse {
+  string user_name = 1;
 }
 
 message UserDevice {
