@@ -4,5 +4,5 @@ import java.util.UUID
 
 data class DeleteNoticeCommand(
     val noticeId: UUID,
-    val userId: UUID,
+    val userId: UUID
 )

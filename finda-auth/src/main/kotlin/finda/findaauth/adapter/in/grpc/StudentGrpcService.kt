@@ -107,7 +107,7 @@ class StudentGrpcService(
             observer.onCompleted()
         } catch (e: StatusRuntimeException) {
             observer.onError(e)
-        } catch (e: FindaException){
+        } catch (e: FindaException) {
             observer.onError(e)
         } catch (e: Exception) {
             observer.onError(

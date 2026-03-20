@@ -4,5 +4,5 @@ import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCo
 import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
 
 interface CreateNoticeUseCase {
-    fun execute(command: NoticeCommand) : NoticeResult
+    fun execute(command: NoticeCommand): NoticeResult
 }

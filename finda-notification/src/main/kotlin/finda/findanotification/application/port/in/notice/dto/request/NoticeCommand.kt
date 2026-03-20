@@ -1,6 +1,5 @@
 package finda.findanotification.application.port.`in`.notice.dto.request
 
-import finda.findanotification.domain.notice.model.Notice
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID

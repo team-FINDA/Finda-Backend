@@ -82,24 +82,20 @@ class AuthGrpcService(
         try {
             observer.onNext(block())
             observer.onCompleted()
-
         } catch (e: UserNotFoundException) {
             observer.onError(
                 Status.NOT_FOUND
                     .withDescription(e.message)
                     .asRuntimeException()
             )
-
         } catch (e: DeviceTokenNotFoundException) {
             observer.onError(
                 Status.NOT_FOUND
                     .withDescription(e.message)
                     .asRuntimeException()
             )
-
         } catch (e: StatusRuntimeException) {
             observer.onError(e)
-
         } catch (e: Exception) {
             observer.onError(
                 Status.INTERNAL

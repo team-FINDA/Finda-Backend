@@ -100,7 +100,7 @@ class NoticeWebAdapter(
         deleteNoticeUseCase.execute(
             DeleteNoticeCommand(
                 noticeId = id,
-                userId = userFacade.getCurrentUserId(),
+                userId = userFacade.getCurrentUserId()
             )
         )
     }

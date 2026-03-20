@@ -5,8 +5,8 @@ import finda.findanotification.application.exception.notice.NoticeNotFoundExcept
 import finda.findanotification.application.port.`in`.notice.UpdateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
 import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
-import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.kafka.CancelNoticeScheduledEventPort
+import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.GetNoticePort
 import finda.findanotification.application.port.out.notice.UpdateNoticePort
 import org.springframework.stereotype.Service
