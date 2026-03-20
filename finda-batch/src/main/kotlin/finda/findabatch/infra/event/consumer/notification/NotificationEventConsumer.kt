@@ -1,5 +1,6 @@
 package finda.findabatch.infra.event.consumer.notification
 
+import finda.findabatch.infra.event.dto.notification.NoticeCancelEvent
 import finda.findabatch.infra.event.dto.notification.NoticeScheduledEvent
 import finda.findabatch.infra.schedule.job.notification.NoticeScheduledJobScheduler
 import org.springframework.kafka.annotation.KafkaListener
@@ -18,6 +19,15 @@ class NotificationEventConsumer(
         acknowledgment: Acknowledgment
     ) {
         noticeScheduledJobScheduler.schedule(event)
+        acknowledgment.acknowledge()
+    }
+
+    @KafkaListener(topics = ["NOTIFICATION-CANCEL"])
+    fun consumeNoticeCanceled(
+        @Payload event: NoticeCancelEvent,
+        acknowledgment: Acknowledgment
+    ) {
+        noticeScheduledJobScheduler.cancel(event.noticeId)
         acknowledgment.acknowledge()
     }
 }

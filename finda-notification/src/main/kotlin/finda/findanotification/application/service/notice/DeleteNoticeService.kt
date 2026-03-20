@@ -4,6 +4,7 @@ import finda.findanotification.application.exception.notice.ForbiddenNoticeExcep
 import finda.findanotification.application.exception.notice.NoticeNotFoundException
 import finda.findanotification.application.port.`in`.notice.DeleteNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.DeleteNoticeCommand
+import finda.findanotification.application.port.out.kafka.CancelNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.DeleteNoticePort
 import finda.findanotification.application.port.out.notice.GetNoticePort
 import org.springframework.stereotype.Service
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service
 @Service
 class DeleteNoticeService(
     private val deleteNoticePort: DeleteNoticePort,
-    private val getNoticePort: GetNoticePort
+    private val getNoticePort: GetNoticePort,
+    private val cancelNoticeScheduledEventPort: CancelNoticeScheduledEventPort
 ) : DeleteNoticeUseCase {
     override fun execute(command: DeleteNoticeCommand) {
         val notice = getNoticePort.findById(command.noticeId)
@@ -20,6 +22,8 @@ class DeleteNoticeService(
         if (notice.userId != command.userId) {
             throw ForbiddenNoticeException
         }
+
+        cancelNoticeScheduledEventPort.cancel(notice.id)
         deleteNoticePort.delete(notice)
     }
 }
