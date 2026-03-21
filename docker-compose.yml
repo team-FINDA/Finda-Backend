@@ -39,25 +39,44 @@ services:
     depends_on:
       - kafka-connect
     restart: "no"
-    entrypoint: >
-      sh -c "
+    entrypoint:
+      - sh
+      - -c
+      - |
         sleep 15 &&
-        curl -X POST http://kafka-connect:8083/connectors
-        -H 'Content-Type: application/json'
-        -d '{
-          \"name\": \"volunteer-mysql-connector\",
-          \"config\": {
-            \"connector.class\": \"io.debezium.connector.mysql.MySqlConnector\",
-            \"database.hostname\": \"host.docker.internal\",
-            \"database.port\": \"3306\",
-            \"database.user\": \"debezium\",
-            \"database.password\": \"debezium1234\",
-            \"database.server.id\": \"1\",
-            \"topic.prefix\": \"volunteer\",
-            \"database.include.list\": \"finda_volunteer\",
-            \"schema.history.internal.kafka.bootstrap.servers\": \"kafka:9092\",
-            \"schema.history.internal.kafka.topic\": \"schema-changes.volunteer\",
-            \"database.connectionTimeZone\": \"Asia/Seoul\"
-          }
-        }'
-      "
+        curl -X POST http://kafka-connect:8083/connectors \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "name": "volunteer-mysql-connector",
+            "config": {
+              "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+              "database.hostname": "host.docker.internal",
+              "database.port": "3306",
+              "database.user": "debezium",
+              "database.password": "debezium1234",
+              "database.server.id": "1",
+              "topic.prefix": "volunteer",
+              "database.include.list": "finda_volunteer",
+              "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+              "schema.history.internal.kafka.topic": "schema-changes.volunteer",
+              "database.connectionTimeZone": "Asia/Seoul"
+            }
+          }' &&
+        curl -X POST http://kafka-connect:8083/connectors \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "name": "notification-mysql-connector",
+            "config": {
+              "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+              "database.hostname": "host.docker.internal",
+              "database.port": "3306",
+              "database.user": "debezium",
+              "database.password": "debezium1234",
+              "database.server.id": "2",
+              "topic.prefix": "notification",
+              "database.include.list": "finda_notification",
+              "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+              "schema.history.internal.kafka.topic": "schema-changes.notification",
+              "database.connectionTimeZone": "Asia/Seoul"
+            }
+          }'
