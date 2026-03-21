@@ -4,7 +4,6 @@ import finda.findanotification.adapter.out.grpc.UserGrpcClient
 import finda.findanotification.application.port.`in`.notice.CreateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
 import finda.findanotification.application.port.`in`.notice.dto.response.NoticeResult
-import finda.findanotification.application.port.out.kafka.SendNoticeScheduledEventPort
 import finda.findanotification.application.port.out.notice.SaveNoticePort
 import finda.findanotification.domain.notice.model.Notice
 import finda.findanotification.domain.notice.type.Status
@@ -14,7 +13,6 @@ import java.time.LocalDateTime
 @Service
 class CreateNoticeService(
     private val saveNoticePort: SaveNoticePort,
-    private val sendNoticeScheduledEventPort: SendNoticeScheduledEventPort,
     private val userGrpcClient: UserGrpcClient
 ) : CreateNoticeUseCase {
 
@@ -34,8 +32,6 @@ class CreateNoticeService(
         )
 
         val savedNotice = saveNoticePort.save(notice)
-
-        sendNoticeScheduledEventPort.send(savedNotice)
 
         val userName = userGrpcClient.getUserName(savedNotice.userId) ?: "Unknown User"
 
