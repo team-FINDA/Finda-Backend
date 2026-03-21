@@ -1,7 +1,6 @@
 package finda.findabatch.infra.event.consumer.notification
 
-import finda.findabatch.infra.event.dto.notification.NoticeCancelEvent
-import finda.findabatch.infra.event.dto.notification.NoticeScheduledEvent
+import finda.findabatch.infra.event.dto.notification.NoticeCdcEvent
 import finda.findabatch.infra.schedule.job.notification.NoticeScheduledJobScheduler
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
@@ -13,21 +12,17 @@ class NotificationEventConsumer(
     private val noticeScheduledJobScheduler: NoticeScheduledJobScheduler
 ) {
 
-    @KafkaListener(topics = ["NOTIFICATION-SCHEDULED"])
-    fun consumeNoticeScheduled(
-        @Payload event: NoticeScheduledEvent,
+    @KafkaListener(topics = ["notification.finda_notification.tbl_notice"])
+    fun consumeNotice(
+        @Payload event: NoticeCdcEvent,
         acknowledgment: Acknowledgment
     ) {
-        noticeScheduledJobScheduler.schedule(event)
-        acknowledgment.acknowledge()
-    }
-
-    @KafkaListener(topics = ["NOTIFICATION-CANCEL"])
-    fun consumeNoticeCanceled(
-        @Payload event: NoticeCancelEvent,
-        acknowledgment: Acknowledgment
-    ) {
-        noticeScheduledJobScheduler.cancel(event.noticeId)
+        when (event.op) {
+            "c" -> noticeScheduledJobScheduler.schedule(event.after!!)
+            "u" -> noticeScheduledJobScheduler.schedule(event.after!!)
+            "d" -> noticeScheduledJobScheduler.cancel(event.before!!.id)
+            else -> return
+        }
         acknowledgment.acknowledge()
     }
 }
