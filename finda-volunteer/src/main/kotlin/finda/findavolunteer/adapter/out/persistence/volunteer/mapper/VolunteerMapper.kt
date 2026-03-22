@@ -22,7 +22,9 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             cycleType = entity.cycleType,
             userId = entity.userId,
             remindTime = entity.remindTime,
-            description = entity.description
+            description = entity.description,
+            volunteerType = entity.volunteerType,
+            groupVolunteerType = entity.groupVolunteerType
         )
     }
 
@@ -40,7 +42,9 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             cycleType = domain.cycleType,
             userId = domain.userId,
             remindTime = domain.remindTime,
-            description = domain.description
+            description = domain.description,
+            volunteerType = domain.volunteerType,
+            groupVolunteerType = domain.groupVolunteerType
         )
     }
 }

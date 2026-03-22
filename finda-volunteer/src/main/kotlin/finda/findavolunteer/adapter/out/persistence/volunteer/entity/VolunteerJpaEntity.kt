@@ -2,7 +2,9 @@ package finda.findavolunteer.adapter.out.persistence.volunteer.entity
 
 import finda.findavolunteer.adapter.out.persistence.BaseEntity
 import finda.findavolunteer.domain.volunteer.enum.CycleType
+import finda.findavolunteer.domain.volunteer.enum.GroupVolunteerType
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
+import finda.findavolunteer.domain.volunteer.enum.VolunteerType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -53,5 +55,13 @@ class VolunteerJpaEntity(
     val userId: String,
 
     @Column(name = "remind_time", nullable = false)
-    val remindTime: LocalTime
+    val remindTime: LocalTime,
+
+    @Column(name = "group_volunteer_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    val groupVolunteerType: GroupVolunteerType,
+
+    @Column(name = "volunteer_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    val volunteerType: VolunteerType
 ) : BaseEntity(id)

@@ -1,7 +1,9 @@
 package finda.findavolunteer.domain.volunteer.model
 
 import finda.findavolunteer.domain.volunteer.enum.CycleType
+import finda.findavolunteer.domain.volunteer.enum.GroupVolunteerType
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
+import finda.findavolunteer.domain.volunteer.enum.VolunteerType
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -19,5 +21,7 @@ data class Volunteer(
     val workEndDate: LocalDate,
     val cycleType: CycleType,
     val userId: String,
-    val remindTime: LocalTime
+    val remindTime: LocalTime,
+    val groupVolunteerType: GroupVolunteerType,
+    val volunteerType: VolunteerType
 )
