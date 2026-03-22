@@ -11,6 +11,7 @@ data class Volunteer(
     val status: VolunteerStatus,
     val personnel: Int,
     val title: String,
+    val description: String,
     val unitVolunteerHours: Float,
     val applicationStartDate: LocalDate,
     val applicationEndDate: LocalDate,

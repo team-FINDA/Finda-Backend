@@ -21,7 +21,8 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             workEndDate = entity.workEndDate,
             cycleType = entity.cycleType,
             userId = entity.userId,
-            remindTime = entity.remindTime
+            remindTime = entity.remindTime,
+            description = entity.description
         )
     }
 
@@ -38,7 +39,8 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             workEndDate = domain.workEndDate,
             cycleType = domain.cycleType,
             userId = domain.userId,
-            remindTime = domain.remindTime
+            remindTime = domain.remindTime,
+            description = domain.description
         )
     }
 }

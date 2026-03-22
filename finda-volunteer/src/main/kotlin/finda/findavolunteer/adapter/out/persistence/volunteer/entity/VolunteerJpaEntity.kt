@@ -27,6 +27,9 @@ class VolunteerJpaEntity(
     @Column(name = "title", nullable = false)
     val title: String,
 
+    @Column(name = "description", nullable = false)
+    val description: String,
+
     @Column(name = "unit_volunteer_hours", nullable = false)
     val unitVolunteerHours: Float,
 
