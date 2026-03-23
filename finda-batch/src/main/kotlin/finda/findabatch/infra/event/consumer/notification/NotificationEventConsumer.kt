@@ -17,12 +17,14 @@ class NotificationEventConsumer(
         @Payload event: NoticeCdcEvent,
         acknowledgment: Acknowledgment
     ) {
-        when (event.op) {
-            "c" -> noticeScheduledJobScheduler.schedule(event.after!!)
-            "u" -> noticeScheduledJobScheduler.schedule(event.after!!)
-            "d" -> noticeScheduledJobScheduler.cancel(event.before!!.id)
-            else -> return
+        try {
+            when (event.op) {
+                "c", "u" -> event.after?.let { noticeScheduledJobScheduler.schedule(it) }
+                "d" -> event.before?.let { noticeScheduledJobScheduler.cancel(it.id) }
+                else -> {}
+            }
+        } finally {
+            acknowledgment.acknowledge()
         }
-        acknowledgment.acknowledge()
     }
 }
