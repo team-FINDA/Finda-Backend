@@ -1,4 +1,4 @@
-package finda.findavolunteer.adapter.out.persistence.studentparticipation.entity
+package finda.findavolunteer.adapter.out.persistence.participation.entity
 
 import finda.findavolunteer.adapter.out.persistence.BaseEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity

@@ -1,6 +1,6 @@
-package finda.findavolunteer.adapter.out.persistence.studentparticipation.repository
+package finda.findavolunteer.adapter.out.persistence.participation.repository
 
-import finda.findavolunteer.adapter.out.persistence.studentparticipation.entity.StudentParticipationJpaEntity
+import finda.findavolunteer.adapter.out.persistence.participation.entity.StudentParticipationJpaEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
