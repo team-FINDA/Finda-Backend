@@ -21,9 +21,15 @@ class NotificationEventConsumer(
         containerFactory = "cdcKafkaListenerContainerFactory"
     )
     fun consumeNotice(
-        message: String,
+        message: String?,
         acknowledgment: Acknowledgment
     ) {
+        if (message.isNullOrBlank()) {
+            log.warn("Received empty or null CDC message, skipping")
+            acknowledgment.acknowledge()
+            return
+        }
+
         try {
             val root = objectMapper.readTree(message)
             val payload = root["payload"]
@@ -33,14 +39,12 @@ class NotificationEventConsumer(
                 return
             }
 
-            val event =
-                objectMapper.treeToValue(payload, NoticeCdcEvent::class.java)
+            val event = objectMapper.treeToValue(payload, NoticeCdcEvent::class.java)
 
             when (event.op) {
                 "c", "u" -> event.after?.let {
                     noticeScheduledJobScheduler.schedule(it)
                 }
-
                 "d" -> event.before?.let {
                     noticeScheduledJobScheduler.cancel(it.id)
                 }
@@ -49,6 +53,7 @@ class NotificationEventConsumer(
             acknowledgment.acknowledge()
         } catch (e: Exception) {
             log.error("CDC notice processing failed", e)
+            acknowledgment.acknowledge()
         }
     }
 }
