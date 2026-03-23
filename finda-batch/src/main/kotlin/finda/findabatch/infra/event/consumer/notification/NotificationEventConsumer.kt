@@ -26,7 +26,12 @@ class NotificationEventConsumer(
     ) {
         try {
             val root = objectMapper.readTree(message)
-            val payload = root["payload"] ?: return
+            val payload = root["payload"]
+
+            if (payload == null || payload.isNull) {
+                acknowledgment.acknowledge()
+                return
+            }
 
             val event =
                 objectMapper.treeToValue(payload, NoticeCdcEvent::class.java)
