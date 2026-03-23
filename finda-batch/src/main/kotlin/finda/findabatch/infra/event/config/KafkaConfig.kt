@@ -25,7 +25,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
     prefix = "spring.kafka",
     name = ["enabled"],
     havingValue = "true",
-    matchIfMissing = false
+    matchIfMissing = true
 )
 class KafkaConfig(
     @Value("\${spring.kafka.bootstrap-servers}")
