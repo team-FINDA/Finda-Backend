@@ -2,6 +2,7 @@ package finda.findavolunteer.application.service.volunteer
 
 import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRequest
 import finda.findavolunteer.application.facade.UserFacade
+import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.out.activity.ActivityCommandPort
 import finda.findavolunteer.application.port.out.participation.StudentParticipationCommandPort
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationCommandPort
@@ -29,9 +30,9 @@ class CreateVolunteerService(
     val activityCommandPort: ActivityCommandPort,
     val studentParticipationCommandPort: StudentParticipationCommandPort,
     val teacherParticipationCommandPort: TeacherParticipationCommandPort
-) {
+) : CreateVolunteerUseCase {
     @Transactional
-    fun execute(request: CreateVolunteerRequest) {
+    override fun execute(request: CreateVolunteerRequest) {
         val userId = userFacade.currentUserId()
 
         val volunteer = volunteerCommandPort.save(
