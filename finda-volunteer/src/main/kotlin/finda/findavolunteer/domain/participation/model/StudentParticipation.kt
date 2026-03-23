@@ -1,6 +1,6 @@
-package finda.findavolunteer.domain.particitation.model
+package finda.findavolunteer.domain.participation.model
 
-import finda.findavolunteer.domain.particitation.enum.ParticitationStatus
+import finda.findavolunteer.domain.participation.enum.ParticitationStatus
 import java.time.LocalDateTime
 import java.util.UUID
 
