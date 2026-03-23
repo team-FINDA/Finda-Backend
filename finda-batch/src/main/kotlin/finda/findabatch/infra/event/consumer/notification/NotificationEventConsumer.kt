@@ -3,6 +3,7 @@ package finda.findabatch.infra.event.consumer.notification
 import com.fasterxml.jackson.databind.ObjectMapper
 import finda.findabatch.infra.event.dto.notification.NoticeCdcEvent
 import finda.findabatch.infra.schedule.job.notification.NoticeScheduledJobScheduler
+import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
@@ -13,14 +14,19 @@ class NotificationEventConsumer(
     private val objectMapper: ObjectMapper
 ) {
 
-    @KafkaListener(topics = ["notification.finda_notification.tbl_notice"])
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    @KafkaListener(
+        topics = ["notification.finda_notification.tbl_notice"],
+        containerFactory = "cdcKafkaListenerContainerFactory"
+    )
     fun consumeNotice(
         message: String,
         acknowledgment: Acknowledgment
     ) {
         try {
             val root = objectMapper.readTree(message)
-            val payload = root["payload"]
+            val payload = root["payload"] ?: return
 
             val event =
                 objectMapper.treeToValue(payload, NoticeCdcEvent::class.java)
@@ -34,8 +40,11 @@ class NotificationEventConsumer(
                     noticeScheduledJobScheduler.cancel(it.id)
                 }
             }
-        } finally {
+
             acknowledgment.acknowledge()
+
+        } catch (e: Exception) {
+            log.error("CDC notice processing failed", e)
         }
     }
 }
