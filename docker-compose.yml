@@ -10,12 +10,13 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+      - "9093:9093"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_HOST_NAME: kafka
-      KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:9092,PLAINTEXT_EXTERNAL://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:9092,PLAINTEXT_EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
     depends_on:
       - zookeeper
 
@@ -28,8 +29,11 @@ services:
       BOOTSTRAP_SERVERS: kafka:9092
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: debezium-configs
+      CONFIG_STORAGE_REPLICATION_FACTOR: 1
       OFFSET_STORAGE_TOPIC: debezium-offsets
+      OFFSET_STORAGE_REPLICATION_FACTOR: 1
       STATUS_STORAGE_TOPIC: debezium-status
+      STATUS_STORAGE_REPLICATION_FACTOR: 1
     depends_on:
       - kafka
 
@@ -43,40 +47,37 @@ services:
       - sh
       - -c
       - |
-        sleep 15 &&
-        curl -X POST http://kafka-connect:8083/connectors \
+        until curl -sf http://kafka-connect:8083/health; do
+          echo "Waiting for Kafka Connect..."
+          sleep 3
+        done &&
+        curl -X PUT http://kafka-connect:8083/connectors/volunteer-mysql-connector/config \
           -H 'Content-Type: application/json' \
           -d '{
-            "name": "volunteer-mysql-connector",
-            "config": {
-              "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-              "database.hostname": "host.docker.internal",
-              "database.port": "3306",
-              "database.user": "debezium",
-              "database.password": "debezium1234",
-              "database.server.id": "1",
-              "topic.prefix": "volunteer",
-              "database.include.list": "finda_volunteer",
-              "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
-              "schema.history.internal.kafka.topic": "schema-changes.volunteer",
-              "database.connectionTimeZone": "Asia/Seoul"
-            }
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "host.docker.internal",
+            "database.port": "3306",
+            "database.user": "debezium",
+            "database.password": "debezium1234",
+            "database.server.id": "1",
+            "topic.prefix": "volunteer",
+            "database.include.list": "finda_volunteer",
+            "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+            "schema.history.internal.kafka.topic": "schema-changes.volunteer",
+            "database.connectionTimeZone": "Asia/Seoul"
           }' &&
-        curl -X POST http://kafka-connect:8083/connectors \
+        curl -X PUT http://kafka-connect:8083/connectors/notification-mysql-connector/config \
           -H 'Content-Type: application/json' \
           -d '{
-            "name": "notification-mysql-connector",
-            "config": {
-              "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-              "database.hostname": "host.docker.internal",
-              "database.port": "3306",
-              "database.user": "debezium",
-              "database.password": "debezium1234",
-              "database.server.id": "2",
-              "topic.prefix": "notification",
-              "database.include.list": "finda_notification",
-              "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
-              "schema.history.internal.kafka.topic": "schema-changes.notification",
-              "database.connectionTimeZone": "Asia/Seoul"
-            }
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "host.docker.internal",
+            "database.port": "3306",
+            "database.user": "debezium",
+            "database.password": "debezium1234",
+            "database.server.id": "2",
+            "topic.prefix": "notification",
+            "database.include.list": "finda_notification",
+            "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+            "schema.history.internal.kafka.topic": "schema-changes.notification",
+            "database.connectionTimeZone": "Asia/Seoul"
           }'
