@@ -22,13 +22,9 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             cycleType = entity.cycleType,
             userId = entity.userId,
             remindTime = entity.remindTime,
-<<<<<<< HEAD
             description = entity.description,
             volunteerType = entity.volunteerType,
             groupVolunteerType = entity.groupVolunteerType,
-=======
-            description = entity.description
->>>>>>> origin/feat/(#33)-봉사-crud
         )
     }
 
