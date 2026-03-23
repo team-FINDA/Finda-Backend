@@ -11,8 +11,8 @@ import jakarta.persistence.Table
 import java.util.UUID
 
 @Entity
-@Table(name = "tbl_volunteer_teachers")
-class VolunteerTeachersJpaEntity(
+@Table(name = "tbl_teacher_participation")
+class TeacherParticipationJpaEntity(
     id: UUID?,
 
     @Column(name = "user_id", nullable = false)

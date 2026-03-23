@@ -1,29 +1,29 @@
 package finda.findavolunteer.adapter.out.persistence.participation.mapper
 
 import finda.findavolunteer.adapter.out.persistence.GenericMapper
-import finda.findavolunteer.adapter.out.persistence.participation.entity.VolunteerTeachersJpaEntity
+import finda.findavolunteer.adapter.out.persistence.participation.entity.TeacherParticipationJpaEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
-import finda.findavolunteer.domain.particitation.model.VolunteerTeachers
+import finda.findavolunteer.domain.participation.model.TeacherParticipation
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
-class VolunteerTeachersMapper(
+class TeacherParticipationMapper(
     private val volunteerRepository: VolunteerRepository
-) : GenericMapper<VolunteerTeachers, VolunteerTeachersJpaEntity> {
+) : GenericMapper<TeacherParticipation, TeacherParticipationJpaEntity> {
 
-    override fun toDomain(entity: VolunteerTeachersJpaEntity): VolunteerTeachers {
-        return VolunteerTeachers(
+    override fun toDomain(entity: TeacherParticipationJpaEntity): TeacherParticipation {
+        return TeacherParticipation(
             id = entity.id!!,
             userId = entity.userId,
             volunteerId = entity.volunteer!!.id!!
         )
     }
 
-    override fun toEntity(domain: VolunteerTeachers): VolunteerTeachersJpaEntity {
+    override fun toEntity(domain: TeacherParticipation): TeacherParticipationJpaEntity {
         val volunteer = volunteerRepository.findByIdOrNull(domain.volunteerId)
 
-        return VolunteerTeachersJpaEntity(
+        return TeacherParticipationJpaEntity(
             id = domain.id,
             userId = domain.userId,
             volunteer = volunteer

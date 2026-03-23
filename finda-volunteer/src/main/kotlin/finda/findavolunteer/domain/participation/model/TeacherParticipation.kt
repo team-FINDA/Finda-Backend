@@ -1,8 +1,8 @@
-package finda.findavolunteer.domain.particitation.model
+package finda.findavolunteer.domain.participation.model
 
 import java.util.UUID
 
-data class VolunteerTeachers(
+data class TeacherParticipation(
     val id: UUID = UUID(0, 0),
     val volunteerId: UUID,
     val userId: UUID
