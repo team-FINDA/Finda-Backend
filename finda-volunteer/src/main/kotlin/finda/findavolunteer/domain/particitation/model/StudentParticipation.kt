@@ -9,5 +9,5 @@ data class StudentParticipation(
     val volunteerId: UUID,
     val status: ParticitationStatus,
     val participatedAt: LocalDateTime,
-    val userId: String
+    val userId: UUID
 )
