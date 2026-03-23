@@ -1,6 +1,6 @@
 package finda.findabatch.infra.schedule.job.notification
 
-import finda.findabatch.infra.event.dto.notification.NoticeScheduledEvent
+import finda.findabatch.infra.event.dto.notification.NoticeSnapshot
 import org.quartz.JobBuilder
 import org.quartz.JobKey
 import org.quartz.Scheduler
@@ -18,17 +18,17 @@ class NoticeScheduledJobScheduler(
     private val scheduler: Scheduler
 ) {
 
-    fun schedule(event: NoticeScheduledEvent) {
-        val identity = event.noticeId.toString()
+    fun schedule(snapshot: NoticeSnapshot) {
+        val identity = snapshot.id.toString()
         val jobKey = JobKey.jobKey(identity, "notice-scheduled")
         val triggerKey = TriggerKey.triggerKey(identity, "notice-scheduled")
 
         val jobDetail = JobBuilder.newJob(NoticeScheduledJob::class.java)
             .withIdentity(jobKey)
-            .usingJobData("noticeId", event.noticeId.toString())
+            .usingJobData("noticeId", snapshot.id.toString())
             .build()
 
-        val triggerTime = LocalDateTime.of(event.noticeDate, event.noticeTime)
+        val triggerTime = LocalDateTime.of(snapshot.noticeDate, snapshot.noticeTime)
             .atZone(ZoneId.of("Asia/Seoul"))
             .toInstant()
 
