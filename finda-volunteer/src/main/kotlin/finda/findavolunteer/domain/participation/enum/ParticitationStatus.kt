@@ -1,4 +1,4 @@
-package finda.findavolunteer.domain.particitation.enum
+package finda.findavolunteer.domain.participation.enum
 
 enum class ParticitationStatus {
     APPLIED,

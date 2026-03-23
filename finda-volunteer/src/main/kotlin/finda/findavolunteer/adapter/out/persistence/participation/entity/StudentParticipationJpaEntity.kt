@@ -2,7 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.participation.entity
 
 import finda.findavolunteer.adapter.out.persistence.BaseEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
-import finda.findavolunteer.domain.particitation.enum.ParticitationStatus
+import finda.findavolunteer.domain.participation.enum.ParticitationStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

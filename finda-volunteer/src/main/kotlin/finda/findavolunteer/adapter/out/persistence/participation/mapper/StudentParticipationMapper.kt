@@ -3,7 +3,7 @@ package finda.findavolunteer.adapter.out.persistence.participation.mapper
 import finda.findavolunteer.adapter.out.persistence.GenericMapper
 import finda.findavolunteer.adapter.out.persistence.participation.entity.StudentParticipationJpaEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
-import finda.findavolunteer.domain.particitation.model.StudentParticipation
+import finda.findavolunteer.domain.participation.model.StudentParticipation
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
