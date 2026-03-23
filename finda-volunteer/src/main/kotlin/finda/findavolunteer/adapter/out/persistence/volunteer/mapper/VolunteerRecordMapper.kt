@@ -12,16 +12,14 @@ class VolunteerRecordMapper(
     private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<VolunteerRecord, VolunteerRecordJpaEntity> {
 
-    override fun toDomain(entity: VolunteerRecordJpaEntity?): VolunteerRecord? {
-        return entity?.let {
-            VolunteerRecord(
-                id = it.id!!,
-                userId = it.userId,
-                volunteerTime = it.volunteerTime,
-                title = it.title,
-                volunteerId = it.volunteer!!.id!!
-            )
-        }
+    override fun toDomain(entity: VolunteerRecordJpaEntity): VolunteerRecord {
+        return VolunteerRecord(
+            id = entity.id!!,
+            userId = entity.userId,
+            volunteerTime = entity.volunteerTime,
+            title = entity.title,
+            volunteerId = entity.volunteer!!.id!!
+        )
     }
 
     override fun toEntity(domain: VolunteerRecord): VolunteerRecordJpaEntity {
