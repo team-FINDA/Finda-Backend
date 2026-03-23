@@ -28,7 +28,7 @@ class CreateVolunteerService(
     val volunteerScheduleCommandPort: VolunteerScheduleCommandPort,
     val activityCommandPort: ActivityCommandPort,
     val studentParticipationCommandPort: StudentParticipationCommandPort,
-    val teacherParticipationCommandPort: TeacherParticipationCommandPort,
+    val teacherParticipationCommandPort: TeacherParticipationCommandPort
 ) {
     @Transactional
     fun execute(request: CreateVolunteerRequest) {

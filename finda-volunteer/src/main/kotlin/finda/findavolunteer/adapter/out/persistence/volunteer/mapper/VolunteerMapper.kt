@@ -24,7 +24,7 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             remindTime = entity.remindTime,
             description = entity.description,
             volunteerType = entity.volunteerType,
-            groupVolunteerType = entity.groupVolunteerType,
+            groupVolunteerType = entity.groupVolunteerType
         )
     }
 
