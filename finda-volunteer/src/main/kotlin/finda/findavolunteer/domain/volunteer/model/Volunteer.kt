@@ -20,7 +20,7 @@ data class Volunteer(
     val workStartDate: LocalDate,
     val workEndDate: LocalDate,
     val cycleType: CycleType,
-    val userId: String,
+    val userId: UUID,
     val remindTime: LocalTime,
     val groupVolunteerType: GroupVolunteerType,
     val volunteerType: VolunteerType

@@ -52,7 +52,7 @@ class VolunteerJpaEntity(
     val cycleType: CycleType,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String,
+    val userId: UUID,
 
     @Column(name = "remind_time", nullable = false)
     val remindTime: LocalTime,
