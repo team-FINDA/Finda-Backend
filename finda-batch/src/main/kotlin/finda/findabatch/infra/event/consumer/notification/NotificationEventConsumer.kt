@@ -47,7 +47,6 @@ class NotificationEventConsumer(
             }
 
             acknowledgment.acknowledge()
-
         } catch (e: Exception) {
             log.error("CDC notice processing failed", e)
         }
