@@ -32,7 +32,7 @@ class StudentLoginService(
             throw InvalidCredentialsException
         }
 
-        if (!studentQueryPort.existsByUserId(user.id!!)) {
+        if (!studentQueryPort.existsByUserId(user.id)) {
             throw InvalidCredentialsException
         }
 

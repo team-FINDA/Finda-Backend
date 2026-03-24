@@ -49,7 +49,8 @@ class StudentSignupService(
             userId = user.id,
             grade = studentNumber.grade,
             classNum = studentNumber.classNum,
-            num = studentNumber.num
+            num = studentNumber.num,
+            name = name
         )
 
         studentCommandPort.save(student)
