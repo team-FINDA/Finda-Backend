@@ -7,5 +7,6 @@ data class Student(
     val grade: Int,
     val classNum: Int,
     val num: Int,
+    val name: String,
     val totalVolunteerTime: Int = 0
 )

@@ -6,6 +6,7 @@ import finda.findaauth.global.error.filter.ExceptionFilter
 import finda.findaauth.global.security.passport.filter.PassportFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -46,6 +47,7 @@ class SecurityConfig(
                     "/students/verify-email",
                     "/email/**"
                 ).permitAll()
+                it.requestMatchers(HttpMethod.GET,"/students").hasAuthority("TEACHER")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(PassportFilter(passportProperties, userQueryPort), UsernamePasswordAuthenticationFilter::class.java)
