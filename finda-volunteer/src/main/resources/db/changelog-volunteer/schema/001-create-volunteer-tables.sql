@@ -32,7 +32,7 @@ CREATE TABLE tbl_activity
     modified_at   DATETIME(6)  NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_activity_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_volunteer_schedule
@@ -44,7 +44,7 @@ CREATE TABLE tbl_volunteer_schedule
     modified_at   DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_volunteer_schedule_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_volunteer_record
@@ -58,7 +58,7 @@ CREATE TABLE tbl_volunteer_record
     modified_at    DATETIME(6)  NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_volunteer_record_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_student_particitation
@@ -72,7 +72,7 @@ CREATE TABLE tbl_student_particitation
     modified_at    DATETIME(6)  NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_student_particitation_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_teacher_participation
@@ -84,7 +84,7 @@ CREATE TABLE tbl_teacher_participation
     modified_at  DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_teacher_participation_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_qr_code
@@ -101,7 +101,7 @@ CREATE TABLE tbl_qr_code
     modified_at  DATETIME(6)  NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_qr_code_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE activity_recurrence_month
@@ -113,7 +113,7 @@ CREATE TABLE activity_recurrence_month
     modified_at  DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_activity_recurrence_month_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE activity_recurrence_week
@@ -125,7 +125,7 @@ CREATE TABLE activity_recurrence_week
     modified_at  DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_activity_recurrence_week_volunteer
-        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id)
+        FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE tbl_user_activity
