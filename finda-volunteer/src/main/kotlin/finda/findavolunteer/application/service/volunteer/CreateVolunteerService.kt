@@ -38,7 +38,7 @@ class CreateVolunteerService(
         val volunteer = volunteerCommandPort.save(
             Volunteer(
                 status = VolunteerStatus.APPLICATION,
-                personnel = request.personal,
+                personnel = request.personnal,
                 title = request.title,
                 description = request.description,
                 unitVolunteerHours = request.unitVolunteerTime,

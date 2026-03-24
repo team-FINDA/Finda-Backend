@@ -9,7 +9,7 @@ import java.time.LocalTime
 import java.util.UUID
 
 data class CreateVolunteerRequest(
-    val personal: Int,
+    val personnal: Int,
     val title: String,
     val description: String,
     val unitVolunteerTime: Float,
