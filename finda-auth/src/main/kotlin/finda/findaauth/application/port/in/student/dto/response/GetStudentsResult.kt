@@ -7,7 +7,7 @@ data class GetStudentsResult(
     val students: List<StudentResult>
 ) {
     data class StudentResult(
-        val userId: UUID,
+        val id: UUID,
         val gcn: Int,
         val name: String
     )
@@ -16,7 +16,7 @@ data class GetStudentsResult(
         fun from(students: List<Student>) = GetStudentsResult(
             students = students.map { student ->
                 StudentResult(
-                    userId = student.userId,
+                    id = student.userId,
                     gcn = student.grade * 1000 + student.classNum * 100 + student.num,
                     name = student.name
                 )
