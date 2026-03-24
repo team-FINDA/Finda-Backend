@@ -24,5 +24,6 @@ class DeleteVolunteerService(
 
     private fun checkUser(userId: UUID, volunteerUserId: UUID) = userId == volunteerUserId
 
-
+    // TODO("outbox로 활동시간, 모집기간 -> 배치에 삭제 이벤트로 보내기")
+    // TODO("outbox로 활동일, remind time 배치에 삭제 이벤트로 보내기")
 }
