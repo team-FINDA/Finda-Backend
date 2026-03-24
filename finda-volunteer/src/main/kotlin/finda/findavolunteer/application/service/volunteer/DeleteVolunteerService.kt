@@ -13,7 +13,7 @@ class DeleteVolunteerService(
     private val userFacade: UserFacade,
     private val volunteerQueryPort: VolunteerQueryPort,
     private val volunteerCommandPort: VolunteerCommandPort
-): DeleteVolunteerUseCase {
+) : DeleteVolunteerUseCase {
     override fun execute(volunteerId: UUID) {
         val userId = userFacade.currentUserId()
         val volunteer = volunteerQueryPort.findByIdOrThrow(volunteerId)

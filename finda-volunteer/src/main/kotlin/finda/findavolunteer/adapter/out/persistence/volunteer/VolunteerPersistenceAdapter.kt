@@ -15,7 +15,6 @@ import finda.findavolunteer.domain.volunteer.model.recurrence.ActivityRecurrence
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 @Component
 class VolunteerPersistenceAdapter(
@@ -47,7 +46,7 @@ class VolunteerPersistenceAdapter(
 
     override fun findById(id: UUID): Volunteer? {
         val entity = volunteerRepository.findByIdOrNull(id)
-        return entity?.let{ volunteerMapper.toDomain(entity) }
+        return entity?.let { volunteerMapper.toDomain(entity) }
     }
 
     override fun findByIdOrThrow(id: UUID): Volunteer {

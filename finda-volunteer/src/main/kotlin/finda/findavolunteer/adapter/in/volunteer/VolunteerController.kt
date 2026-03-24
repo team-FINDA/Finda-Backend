@@ -17,7 +17,7 @@ import java.util.*
 @RequestMapping("/volunteer")
 class VolunteerController(
     val createVolunteerUseCase: CreateVolunteerUseCase,
-    val deleteVolunteerUseCase: DeleteVolunteerUseCase,
+    val deleteVolunteerUseCase: DeleteVolunteerUseCase
 ) {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
