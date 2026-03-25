@@ -40,8 +40,9 @@ class VolunteerPersistenceAdapter(
         return activityRecurrenceMonthMapper.toDomain(entity)
     }
 
-    override fun findByUserId(userId: UUID): List<Volunteer> {
-        TODO("Not yet implemented")
+    override fun findAllByUserId(userId: UUID): List<Volunteer> {
+        val entities = volunteerRepository.findAllByUserId(userId)
+        return entities.map { volunteerMapper.toDomain(it) }
     }
 
     override fun findById(id: UUID): Volunteer? {
