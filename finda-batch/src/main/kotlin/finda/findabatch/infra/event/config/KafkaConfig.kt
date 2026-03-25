@@ -25,7 +25,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
     prefix = "spring.kafka",
     name = ["enabled"],
     havingValue = "true",
-    matchIfMissing = false
+    matchIfMissing = true
 )
 class KafkaConfig(
     @Value("\${spring.kafka.bootstrap-servers}")
@@ -34,13 +34,16 @@ class KafkaConfig(
     @Value("\${spring.kafka.consumer.group-id}")
     private val groupId: String
 ) {
+
+    /**
+     * 기본 DTO Consumer
+     */
     @Bean
     fun kafkaListenerContainerFactory(): KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Any>> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
         factory.consumerFactory = consumerFactory()
         factory.setConcurrency(2)
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
-
         return factory
     }
 
@@ -57,8 +60,33 @@ class KafkaConfig(
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = JsonDeserializer::class.java
         props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         props[JsonDeserializer.USE_TYPE_INFO_HEADERS] = false
+        props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
 
         return props
+    }
+
+    /**
+     * Debezium CDC 전용 Consumer
+     */
+    @Bean
+    fun cdcKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
+        factory.consumerFactory = cdcConsumerFactory()
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        return factory
+    }
+
+    @Bean
+    fun cdcConsumerFactory(): ConsumerFactory<String, String> {
+        val props: MutableMap<String, Any> = HashMap()
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "$groupId-cdc"
+        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
+        props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
+
+        return DefaultKafkaConsumerFactory(props)
     }
 
     @Bean

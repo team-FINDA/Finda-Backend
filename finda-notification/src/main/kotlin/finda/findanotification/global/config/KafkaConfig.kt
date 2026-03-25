@@ -21,10 +21,14 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 class KafkaConfig(
     @Value("\${spring.kafka.bootstrap-servers}")
     private val bootstrapServers: String,
+
     @Value("\${spring.kafka.consumer.group-id}")
     private val groupId: String
 ) {
 
+    /**
+     * 기본 Kafka Listener
+     */
     @Bean
     fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, Any> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
@@ -43,8 +47,32 @@ class KafkaConfig(
         props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = JsonDeserializer::class.java
         props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
-        props[JsonDeserializer.USE_TYPE_INFO_HEADERS] = false
-        props[JsonDeserializer.TRUSTED_PACKAGES] = "finda.findanotification"
+        props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
+
+        return DefaultKafkaConsumerFactory(props)
+    }
+
+    /**
+     * Debezium CDC 전용 Listener
+     */
+    @Bean
+    fun cdcKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
+        factory.consumerFactory = cdcConsumerFactory()
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        return factory
+    }
+
+    @Bean
+    fun cdcConsumerFactory(): ConsumerFactory<String, String> {
+        val props: MutableMap<String, Any> = HashMap()
+        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
+        props[ConsumerConfig.GROUP_ID_CONFIG] = groupId + "-cdc"
+        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
+        props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
+        props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
+
         return DefaultKafkaConsumerFactory(props)
     }
 

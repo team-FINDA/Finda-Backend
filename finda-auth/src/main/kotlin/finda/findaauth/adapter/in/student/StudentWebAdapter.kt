@@ -6,6 +6,8 @@ import finda.findaauth.adapter.`in`.student.dto.request.SendEmailVerificationWeb
 import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginWebRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupWebRequest
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeWebRequest
+import finda.findaauth.adapter.`in`.student.dto.response.GetStudentsResponse
+import finda.findaauth.application.port.`in`.student.GetStudentsUseCase
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
 import finda.findaauth.application.port.`in`.student.StudentSignupUseCase
@@ -15,9 +17,11 @@ import finda.findaauth.application.port.`in`.student.dto.request.StudentLoginCom
 import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
 import finda.findaauth.application.port.`in`.student.dto.request.VerifyEmailCodeCommand
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -26,7 +30,8 @@ class StudentWebAdapter(
     private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
     private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
     private val studentSignupUseCase: StudentSignupUseCase,
-    private val studentLoginUseCase: StudentLoginUseCase
+    private val studentLoginUseCase: StudentLoginUseCase,
+    private val getStudentsUseCase: GetStudentsUseCase
 ) {
 
     @PostMapping("/send-verification")
@@ -83,6 +88,19 @@ class StudentWebAdapter(
                     accountId = request.accountId,
                     password = request.password
                 )
+            )
+        )
+    }
+
+    @GetMapping
+    fun getStudents(
+        @RequestParam(required = false) grade: Int?,
+        @RequestParam(required = false) classNum: Int?
+    ): GetStudentsResponse {
+        return GetStudentsResponse.from(
+            getStudentsUseCase.execute(
+                grade,
+                classNum
             )
         )
     }

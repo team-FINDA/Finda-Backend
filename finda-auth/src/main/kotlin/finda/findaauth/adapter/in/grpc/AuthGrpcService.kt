@@ -1,7 +1,9 @@
 package finda.findaauth.adapter.`in`.grpc
 
 import finda.findaauth.application.exception.devicetoken.DeviceTokenNotFoundException
+import finda.findaauth.application.exception.user.UserNotFoundException
 import finda.findaauth.application.service.devicetoken.GetDeviceTokenService
+import finda.findaauth.application.service.user.GetUserService
 import finda.findaauth.domain.devicetoken.model.DeviceToken
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -14,7 +16,8 @@ import java.util.UUID
  */
 @GrpcService
 class AuthGrpcService(
-    private val getDeviceTokenService: GetDeviceTokenService
+    private val getDeviceTokenService: GetDeviceTokenService,
+    private val getUserService: GetUserService
 ) : AuthServiceGrpc.AuthServiceImplBase() {
 
     override fun getDeviceToken(
@@ -22,9 +25,7 @@ class AuthGrpcService(
         responseObserver: StreamObserver<DeviceTokenResponse>
     ) = handleGrpc(responseObserver) {
         val userId = parseUUID(request.userId)
-
         val token = getDeviceTokenService.getByUserId(userId)
-
         mapToken(token)
     }
 
@@ -33,11 +34,22 @@ class AuthGrpcService(
         responseObserver: StreamObserver<DeviceTokenListResponse>
     ) = handleGrpc(responseObserver) {
         val userIds = request.userIdsList.map(::parseUUID)
-
         val tokens = getDeviceTokenService.getAllByUserIds(userIds)
 
         DeviceTokenListResponse.newBuilder()
             .addAllTokens(tokens.map(::mapToken))
+            .build()
+    }
+
+    override fun getUserName(
+        request: UserRequest,
+        responseObserver: StreamObserver<UserNameResponse>
+    ) = handleGrpc(responseObserver) {
+        val userId = parseUUID(request.userId)
+        val user = getUserService.getById(userId)
+
+        UserNameResponse.newBuilder()
+            .setUserName(user.name)
             .build()
     }
 
@@ -70,6 +82,12 @@ class AuthGrpcService(
         try {
             observer.onNext(block())
             observer.onCompleted()
+        } catch (e: UserNotFoundException) {
+            observer.onError(
+                Status.NOT_FOUND
+                    .withDescription(e.message)
+                    .asRuntimeException()
+            )
         } catch (e: DeviceTokenNotFoundException) {
             observer.onError(
                 Status.NOT_FOUND

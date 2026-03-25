@@ -7,5 +7,7 @@
 
     <include file="db/changelog-notification/schema/001-change-userid-volunteerid-to-uuid.sql"/>
     <include file="db/changelog-notification/schema/002-add-unique-volunteer-id.sql"/>
+    <include file="db/changelog-notification/schema/003-add-status-column.sql"/>
+    <include file="db/changelog-notification/schema/004-change-adminid-to-userid-uuid.sql"/>
 
 </databaseChangeLog>

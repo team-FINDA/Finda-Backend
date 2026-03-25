@@ -15,6 +15,7 @@ class StudentMapper {
             grade = entity.grade,
             classNum = entity.classNum,
             num = entity.num,
+            name = entity.user.name,
             totalVolunteerTime = entity.totalVolunteerTime
         )
 

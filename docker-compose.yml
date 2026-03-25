@@ -4,15 +4,94 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+    volumes:
+      - zookeeper-data:/data
 
   kafka:
     image: wurstmeister/kafka
     container_name: kafka
     ports:
       - "9092:9092"
+      - "9093:9093"
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LISTENERS: PLAINTEXT_INTERNAL://0.0.0.0:9092,PLAINTEXT_EXTERNAL://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT_INTERNAL://kafka:9092,PLAINTEXT_EXTERNAL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_INTERNAL:PLAINTEXT,PLAINTEXT_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
     depends_on:
       - zookeeper
+    volumes:
+      - kafka-data:/kafka
+
+  kafka-connect:
+    image: quay.io/debezium/connect:3.0
+    container_name: kafka-connect
+    ports:
+      - "8085:8083"
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: debezium-configs
+      CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      OFFSET_STORAGE_TOPIC: debezium-offsets
+      OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      STATUS_STORAGE_TOPIC: debezium-status
+      STATUS_STORAGE_REPLICATION_FACTOR: 1
+    depends_on:
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8083/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  kafka-connect-init:
+    image: curlimages/curl
+    container_name: kafka-connect-init
+    depends_on:
+      kafka-connect:
+        condition: service_healthy
+    restart: on-failure
+    entrypoint:
+      - sh
+      - -c
+      - |
+        until curl -sf http://kafka-connect:8083/health; do
+          sleep 3
+        done
+        curl -sf -o /dev/null -X PUT http://kafka-connect:8083/connectors/volunteer-mysql-connector/config \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "host.docker.internal",
+            "database.port": "3306",
+            "database.user": "debezium",
+            "database.password": "debezium1234",
+            "database.server.id": "1",
+            "topic.prefix": "volunteer",
+            "database.include.list": "finda_volunteer",
+            "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+            "schema.history.internal.kafka.topic": "schema-changes.volunteer",
+            "database.connectionTimeZone": "Asia/Seoul"
+          }' || exit 1
+        curl -sf -o /dev/null -X PUT http://kafka-connect:8083/connectors/notification-mysql-connector/config \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+            "database.hostname": "host.docker.internal",
+            "database.port": "3306",
+            "database.user": "debezium",
+            "database.password": "debezium1234",
+            "database.server.id": "2",
+            "topic.prefix": "notification",
+            "database.include.list": "finda_notification",
+            "schema.history.internal.kafka.bootstrap.servers": "kafka:9092",
+            "schema.history.internal.kafka.topic": "schema-changes.notification",
+            "database.connectionTimeZone": "Asia/Seoul"
+          }' || exit 1
+
+volumes:
+  zookeeper-data:
+  kafka-data:

@@ -47,4 +47,15 @@ class StudentPersistenceAdapter(
     override fun findAll(): List<Student> {
         return studentRepository.findAll().map(studentMapper::toDomain).toList()
     }
+
+    override fun findAllByGradeAndClassNum(grade: Int?, classNum: Int?): List<Student> {
+        return when {
+            grade != null && classNum != null ->
+                studentRepository.findAllByGradeAndClassNum(grade, classNum)
+            grade != null ->
+                studentRepository.findAllByGrade(grade)
+            else ->
+                studentRepository.findAll()
+        }.map(studentMapper::toDomain)
+    }
 }
