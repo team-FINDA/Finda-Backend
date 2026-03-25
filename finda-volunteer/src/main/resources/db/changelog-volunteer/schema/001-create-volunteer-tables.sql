@@ -53,7 +53,7 @@ CREATE TABLE tbl_volunteer_record
     user_id        BINARY(16)   NOT NULL,
     volunteer_time INT          NOT NULL,
     title          VARCHAR(255) NOT NULL,
-    volunteer_id   BINARY(16)   NULL,
+    volunteer_id   BINARY(16)   NOT NULL,
     created_at     DATETIME(6)  NOT NULL,
     modified_at    DATETIME(6)  NOT NULL,
     PRIMARY KEY (id),

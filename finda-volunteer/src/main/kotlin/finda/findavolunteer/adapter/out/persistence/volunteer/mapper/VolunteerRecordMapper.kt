@@ -2,14 +2,14 @@ package finda.findavolunteer.adapter.out.persistence.volunteer.mapper
 
 import finda.findavolunteer.adapter.out.persistence.GenericMapper
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerRecordJpaEntity
-import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
+import finda.findavolunteer.application.port.out.volunteer.VolunteerQueryPort
 import finda.findavolunteer.domain.volunteer.model.VolunteerRecord
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
 class VolunteerRecordMapper(
-    private val volunteerRepository: VolunteerRepository
+    private val volunteerQueryPort: VolunteerQueryPort,
+    private val volunteerMapper: VolunteerMapper
 ) : GenericMapper<VolunteerRecord, VolunteerRecordJpaEntity> {
 
     override fun toDomain(entity: VolunteerRecordJpaEntity): VolunteerRecord {
@@ -18,12 +18,12 @@ class VolunteerRecordMapper(
             userId = entity.userId,
             volunteerTime = entity.volunteerTime,
             title = entity.title,
-            volunteerId = entity.volunteer!!.id!!
+            volunteerId = entity.volunteer.id!!
         )
     }
 
     override fun toEntity(domain: VolunteerRecord): VolunteerRecordJpaEntity {
-        val volunteer = volunteerRepository.findByIdOrNull(domain.volunteerId)
+        val volunteer = volunteerMapper.toEntity(volunteerQueryPort.findByIdOrThrow(domain.volunteerId))
 
         return VolunteerRecordJpaEntity(
             id = domain.id,
