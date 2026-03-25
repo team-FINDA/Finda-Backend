@@ -12,14 +12,12 @@ class VolunteerScheduleMapper(
     private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<VolunteerSchedule, VolunteerScheduleJpaEntity> {
 
-    override fun toDomain(entity: VolunteerScheduleJpaEntity?): VolunteerSchedule? {
-        return entity?.let {
-            VolunteerSchedule(
-                id = it.id!!,
-                scheduleDate = it.scheduleDate,
-                volunteerId = it.volunteer!!.id!!
-            )
-        }
+    override fun toDomain(entity: VolunteerScheduleJpaEntity): VolunteerSchedule {
+        return VolunteerSchedule(
+            id = entity.id!!,
+            scheduleDate = entity.scheduleDate,
+            volunteerId = entity.volunteer!!.id!!
+        )
     }
 
     override fun toEntity(domain: VolunteerSchedule): VolunteerScheduleJpaEntity {

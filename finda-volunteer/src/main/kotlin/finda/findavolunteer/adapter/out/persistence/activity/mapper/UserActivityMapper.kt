@@ -12,13 +12,11 @@ class UserActivityMapper(
     private val activityRepository: ActivityRepository
 ) : GenericMapper<UserActivity, UserActivityJpaEntity> {
 
-    override fun toDomain(entity: UserActivityJpaEntity?): UserActivity? {
-        return entity?.let {
-            UserActivity(
-                id = it.id!!,
-                activityId = it.activity!!.id!!
-            )
-        }
+    override fun toDomain(entity: UserActivityJpaEntity): UserActivity {
+        return UserActivity(
+            id = entity.id!!,
+            activityId = entity.activity!!.id!!
+        )
     }
 
     override fun toEntity(domain: UserActivity): UserActivityJpaEntity {

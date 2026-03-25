@@ -12,19 +12,17 @@ class QrCodeMapper(
     private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<QrCode, QrCodeJpaEntity> {
 
-    override fun toDomain(entity: QrCodeJpaEntity?): QrCode? {
-        return entity?.let {
-            QrCode(
-                id = it.id!!,
-                volunteerId = it.volunteer!!.id!!,
-                code = it.code,
-                generatedAt = it.generatedAt,
-                isUsed = it.isUsed,
-                usedAt = it.usedAt,
-                studentId = it.studentId,
-                teacherId = it.teacherId
-            )
-        }
+    override fun toDomain(entity: QrCodeJpaEntity): QrCode {
+        return QrCode(
+            id = entity.id!!,
+            volunteerId = entity.volunteer!!.id!!,
+            code = entity.code,
+            generatedAt = entity.generatedAt,
+            isUsed = entity.isUsed,
+            usedAt = entity.usedAt,
+            studentId = entity.studentId,
+            teacherId = entity.teacherId
+        )
     }
 
     override fun toEntity(domain: QrCode): QrCodeJpaEntity {

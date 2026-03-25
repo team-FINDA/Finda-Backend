@@ -12,14 +12,12 @@ class ActivityRecurrenceWeekMapper(
     private val volunteerRepository: VolunteerRepository
 ) : GenericMapper<ActivityRecurrenceWeek, ActivityRecurrenceWeekJpaEntity> {
 
-    override fun toDomain(entity: ActivityRecurrenceWeekJpaEntity?): ActivityRecurrenceWeek? {
-        return entity?.let {
-            ActivityRecurrenceWeek(
-                id = it.id!!,
-                weekday = it.weekday,
-                volunteerId = it.volunteer!!.id!!
-            )
-        }
+    override fun toDomain(entity: ActivityRecurrenceWeekJpaEntity): ActivityRecurrenceWeek {
+        return ActivityRecurrenceWeek(
+            id = entity.id!!,
+            weekday = entity.weekday,
+            volunteerId = entity.volunteer!!.id!!
+        )
     }
 
     override fun toEntity(domain: ActivityRecurrenceWeek): ActivityRecurrenceWeekJpaEntity {

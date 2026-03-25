@@ -1,8 +1,8 @@
-package finda.findavolunteer.adapter.out.persistence.studentparticipation.entity
+package finda.findavolunteer.adapter.out.persistence.participation.entity
 
 import finda.findavolunteer.adapter.out.persistence.BaseEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
-import finda.findavolunteer.domain.particitation.enum.ParticitationStatus
+import finda.findavolunteer.domain.participation.enum.ParticipationStatus
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "tbl_student_particitation")
+@Table(name = "tbl_student_participation")
 class StudentParticipationJpaEntity(
     id: UUID?,
 
@@ -25,11 +25,11 @@ class StudentParticipationJpaEntity(
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    val status: ParticitationStatus,
+    val status: ParticipationStatus,
 
     @Column(name = "participated_at", nullable = false)
     val participatedAt: LocalDateTime,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String
+    val userId: UUID
 ) : BaseEntity(id)

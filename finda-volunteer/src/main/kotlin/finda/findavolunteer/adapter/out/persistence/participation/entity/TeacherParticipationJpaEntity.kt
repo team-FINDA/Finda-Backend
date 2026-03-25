@@ -1,4 +1,4 @@
-package finda.findavolunteer.adapter.out.persistence.volunteer.entity.recurrence
+package finda.findavolunteer.adapter.out.persistence.participation.entity
 
 import finda.findavolunteer.adapter.out.persistence.BaseEntity
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
@@ -11,17 +11,14 @@ import jakarta.persistence.Table
 import java.util.UUID
 
 @Entity
-@Table(name = "activity_recurrence_year")
-class ActivityRecurrenceYearJpaEntity(
+@Table(name = "tbl_teacher_participation")
+class TeacherParticipationJpaEntity(
     id: UUID?,
+
+    @Column(name = "user_id", nullable = false)
+    val userId: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_id")
-    val volunteer: VolunteerJpaEntity?,
-
-    @Column(name = "day", nullable = false)
-    val day: Int,
-
-    @Column(name = "month", nullable = false)
-    val month: Int
+    val volunteer: VolunteerJpaEntity
 ) : BaseEntity(id)

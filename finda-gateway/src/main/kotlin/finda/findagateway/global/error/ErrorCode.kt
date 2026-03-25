@@ -9,6 +9,7 @@ enum class ErrorCode(
     // jwt
     INVALID_TOKEN(401, "Invalid Token", 1),
     EXPIRED_TOKEN(401, "Expired Token", 2),
+    UNEXPECTED_TOKEN(401, "Unexpected Token", 3),
 
     INTERNAL_SERVER_ERROR(500, "Internal Server", 1);
 

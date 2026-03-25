@@ -15,7 +15,7 @@ class VolunteerRecordJpaEntity(
     id: UUID?,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String,
+    val userId: UUID,
 
     @Column(name = "volunteer_time", nullable = false)
     val volunteerTime: Int,
@@ -24,6 +24,6 @@ class VolunteerRecordJpaEntity(
     val title: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "volunteer_id")
-    val volunteer: VolunteerJpaEntity?
+    @JoinColumn(name = "volunteer_id", nullable = false)
+    val volunteer: VolunteerJpaEntity
 ) : BaseEntity(id)
