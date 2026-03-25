@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/volunteer")
+@RequestMapping("/volunteers")
 class VolunteerController(
     val createVolunteerUseCase: CreateVolunteerUseCase,
     val deleteVolunteerUseCase: DeleteVolunteerUseCase
@@ -24,5 +24,6 @@ class VolunteerController(
     fun createVolunteer(@RequestBody request: CreateVolunteerRequest) = createVolunteerUseCase.execute(request)
 
     @DeleteMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)
 }
