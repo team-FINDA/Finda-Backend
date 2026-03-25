@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "tbl_student_particitation")
+@Table(name = "tbl_student_participation")
 class StudentParticipationJpaEntity(
     id: UUID?,
 
