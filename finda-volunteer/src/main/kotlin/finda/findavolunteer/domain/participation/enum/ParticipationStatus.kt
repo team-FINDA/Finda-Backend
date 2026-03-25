@@ -1,6 +1,6 @@
 package finda.findavolunteer.domain.participation.enum
 
-enum class ParticitationStatus {
+enum class ParticipationStatus {
     APPLIED,
     REJECTED,
     PARTICIPATED

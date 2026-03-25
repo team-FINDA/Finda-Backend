@@ -9,7 +9,7 @@ import finda.findavolunteer.application.port.out.participation.TeacherParticipat
 import finda.findavolunteer.application.port.out.volunteer.VolunteerCommandPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerScheduleCommandPort
 import finda.findavolunteer.domain.activity.model.Activity
-import finda.findavolunteer.domain.participation.enum.ParticitationStatus
+import finda.findavolunteer.domain.participation.enum.ParticipationStatus
 import finda.findavolunteer.domain.participation.model.StudentParticipation
 import finda.findavolunteer.domain.participation.model.TeacherParticipation
 import finda.findavolunteer.domain.volunteer.enum.CycleType
@@ -98,7 +98,7 @@ class CreateVolunteerService(
             studentParticipationCommandPort.save(
                 StudentParticipation(
                     volunteerId = volunteer.id,
-                    status = ParticitationStatus.APPLIED,
+                    status = ParticipationStatus.APPLIED,
                     participatedAt = LocalDateTime.now(),
                     userId = it
                 )
