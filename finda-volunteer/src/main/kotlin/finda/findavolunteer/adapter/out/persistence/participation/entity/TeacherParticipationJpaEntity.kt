@@ -20,5 +20,5 @@ class TeacherParticipationJpaEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "volunteer_id")
-    val volunteer: VolunteerJpaEntity?
+    val volunteer: VolunteerJpaEntity
 ) : BaseEntity(id)
