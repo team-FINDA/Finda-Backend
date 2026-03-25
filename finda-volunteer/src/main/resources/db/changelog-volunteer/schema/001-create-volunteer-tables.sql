@@ -61,7 +61,7 @@ CREATE TABLE tbl_volunteer_record
         FOREIGN KEY (volunteer_id) REFERENCES tbl_volunteer (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE tbl_student_particitation
+CREATE TABLE tbl_student_participation
 (
     id             BINARY(16)   NOT NULL,
     volunteer_id   BINARY(16)   NULL,
