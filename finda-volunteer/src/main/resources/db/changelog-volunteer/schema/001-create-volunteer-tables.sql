@@ -136,7 +136,7 @@ CREATE TABLE tbl_user_activity
     modified_at DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_user_activity_activity
-        FOREIGN KEY (activity_id) REFERENCES tbl_activity (id)
+        FOREIGN KEY (activity_id) REFERENCES tbl_activity (id) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE INDEX idx_activity_volunteer_id ON tbl_activity (volunteer_id);
