@@ -15,7 +15,7 @@ class VolunteerRecordJpaEntity(
     id: UUID?,
 
     @Column(name = "user_id", nullable = false)
-    val userId: String,
+    val userId: UUID,
 
     @Column(name = "volunteer_time", nullable = false)
     val volunteerTime: Int,

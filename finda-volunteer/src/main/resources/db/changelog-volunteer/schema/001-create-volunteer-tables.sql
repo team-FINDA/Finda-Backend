@@ -50,7 +50,7 @@ CREATE TABLE tbl_volunteer_schedule
 CREATE TABLE tbl_volunteer_record
 (
     id             BINARY(16)   NOT NULL,
-    user_id        VARCHAR(255) NOT NULL,
+    user_id        BINARY(16)   NOT NULL,
     volunteer_time INT          NOT NULL,
     title          VARCHAR(255) NOT NULL,
     volunteer_id   BINARY(16)   NULL,
