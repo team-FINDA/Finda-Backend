@@ -39,4 +39,7 @@ object Dependencies {
     const val GRPC_CLIENT = "net.devh:grpc-client-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"
 
     const val FIRE_BASE = "com.google.firebase:firebase-admin:${DependencyVersions.FIRE_BASE}"
+
+    // Apache POI
+    const val APACHE_POI = "org.apache.poi:poi-ooxml:${DependencyVersions.APACHE_POI}"
 }

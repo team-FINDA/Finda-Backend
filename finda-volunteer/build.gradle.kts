@@ -36,6 +36,7 @@ dependencies {
     implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.PROTOBUF_JAVA)
     compileOnly(Dependencies.JAVAX_ANNOTATION)
+    implementation(Dependencies.JAVAX_ANNOTATION)
 
     // JWT
     implementation(Dependencies.JWT_API)
@@ -44,6 +45,15 @@ dependencies {
 
     // Security Common
     implementation(project(":finda-security-common"))
+
+    // gRPC
+    implementation(Dependencies.GRPC_CLIENT)
+    implementation(Dependencies.GRPC_PROTOBUF)
+    implementation(Dependencies.GRPC_STUB)
+    implementation(Dependencies.PROTOBUF_JAVA)
+
+    // Apache POI
+    implementation(Dependencies.APACHE_POI)
 }
 
 protobuf {
@@ -72,4 +82,33 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.24.0"
+    }
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
+        }
+    }
+    generateProtoTasks {
+        all().forEach {
+            it.plugins {
+                create("grpc")
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs(
+                "build/generated/source/proto/main/java",
+                "build/generated/source/proto/main/grpc"
+            )
+        }
+    }
 }

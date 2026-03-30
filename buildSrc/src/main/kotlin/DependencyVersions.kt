@@ -10,4 +10,5 @@ object DependencyVersions {
     const val PROTOBUF = "3.24.0"
     const val JAVAX_ANNOTATION = "1.3.2"
     const val FIRE_BASE = "9.5.0"
+    const val APACHE_POI = "5.3.0"
 }
