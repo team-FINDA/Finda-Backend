@@ -47,7 +47,7 @@ class SecurityConfig(
                     "/students/verify-email",
                     "/email/**"
                 ).permitAll()
-                it.requestMatchers(HttpMethod.GET,"/students").hasAuthority("TEACHER")
+                it.requestMatchers(HttpMethod.GET, "/students").hasAuthority("TEACHER")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(PassportFilter(passportProperties, userQueryPort), UsernamePasswordAuthenticationFilter::class.java)

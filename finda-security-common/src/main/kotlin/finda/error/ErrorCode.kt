@@ -23,7 +23,6 @@ enum class ErrorCode(
     TEACHER_NOT_FOUND(404, "Teacher not found", 2),
     STUDENT_NOT_FOUND(404, "Student not found", 3);
 
-
     override fun status(): Int = status
     override fun message(): String = message
     override fun code(): String = "SECURITY-$status-$sequence"
