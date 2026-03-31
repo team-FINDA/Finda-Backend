@@ -21,10 +21,6 @@ import java.net.URLEncoder
 import java.util.UUID
 import kotlin.text.Charsets.UTF_8
 
-private val DOCX = MediaType.parseMediaType(
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-)
-
 @RestController
 @RequestMapping("/volunteers")
 class VolunteerController(
@@ -42,14 +38,14 @@ class VolunteerController(
     fun deleteVolunteer(@RequestParam volunteerId: UUID) =
         deleteVolunteerUseCase.execute(volunteerId)
 
-    @GetMapping("/{volunteerId}/export", produces = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
+    @GetMapping("/{volunteerId}/export", produces = ["application/pdf"])
     fun exportDocument(@PathVariable volunteerId: UUID): ResponseEntity<ByteArray> {
         val bytes = exportVolunteerDocumentUseCase.export(volunteerId)
-        val encodedName = URLEncoder.encode("봉사활동확인서_$volunteerId.docx", UTF_8).replace("+", "%20")
+        val encodedName = URLEncoder.encode("봉사활동확인서_$volunteerId.pdf", UTF_8).replace("+", "%20")
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"volunteer.docx\"; filename*=UTF-8''$encodedName")
-            .contentType(DOCX)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"volunteer.pdf\"; filename*=UTF-8''$encodedName")
+            .contentType(MediaType.APPLICATION_PDF)
             .contentLength(bytes.size.toLong())
             .body(bytes)
     }
