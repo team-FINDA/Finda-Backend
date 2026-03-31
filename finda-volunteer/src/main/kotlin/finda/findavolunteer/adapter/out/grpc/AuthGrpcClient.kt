@@ -1,7 +1,6 @@
 package finda.findavolunteer.adapter.out.grpc
 
 import finda.findaauth.adapter.`in`.grpc.AuthServiceGrpc
-import finda.findaauth.adapter.`in`.grpc.UserNameResponse
 import finda.findaauth.adapter.`in`.grpc.UserRequest
 import finda.findavolunteer.application.exception.grpc.UserNotFoundException
 import io.grpc.Status
@@ -31,7 +30,6 @@ class AuthGrpcClient {
                         .setUserId(userId.toString())
                         .build()
                 ).userName
-
         } catch (e: StatusRuntimeException) {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> {
