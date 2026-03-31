@@ -40,6 +40,7 @@ object Dependencies {
 
     const val FIRE_BASE = "com.google.firebase:firebase-admin:${DependencyVersions.FIRE_BASE}"
 
-    // Apache POI
+    // Apache
     const val APACHE_POI = "org.apache.poi:poi-ooxml:${DependencyVersions.APACHE_POI}"
+    const val PDF_BOX = "org.apache.pdfbox:pdfbox:${DependencyVersions.PDF_BOX}"
 }
