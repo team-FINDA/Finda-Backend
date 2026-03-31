@@ -5,6 +5,7 @@ import finda.findaauth.adapter.`in`.grpc.StudentsInfoResponse
 import finda.findaauth.adapter.`in`.grpc.UserIdAndUserInfo
 import finda.findaauth.adapter.`in`.grpc.UserListRequest
 import finda.findaauth.adapter.`in`.grpc.UserRequest
+import finda.findavolunteer.application.exception.grpc.StudentInfoNotFoundException
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import net.devh.boot.grpc.client.inject.GrpcClient
@@ -13,9 +14,6 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
-/**
- * Auth 서버에서 학생 정보를 조회하는 gRPC Client
- */
 @Component
 class StudentGrpcClient {
 
@@ -29,7 +27,7 @@ class StudentGrpcClient {
     /**
      * userId 목록으로 학생 정보 일괄 조회
      */
-    fun getStudentsInfo(userIds: List<UUID>): StudentsInfoResponse? {
+    fun getStudentsInfo(userIds: List<UUID>): StudentsInfoResponse {
         return try {
             studentServiceStub
                 .withDeadlineAfter(callTimeoutSeconds, TimeUnit.SECONDS)
@@ -41,8 +39,8 @@ class StudentGrpcClient {
         } catch (e: StatusRuntimeException) {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> {
-                    log.info("Students not found for ids=$userIds")
-                    null
+                    log.error("Students not found for ids=$userIds")
+                    throw StudentInfoNotFoundException
                 }
                 Status.Code.DEADLINE_EXCEEDED -> {
                     log.error("gRPC getStudentsInfo timeout")
