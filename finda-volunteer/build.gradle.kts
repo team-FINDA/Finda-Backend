@@ -45,8 +45,9 @@ dependencies {
     implementation(Dependencies.GRPC_STUB)
     implementation(Dependencies.PROTOBUF_JAVA)
 
-    // Apache POI
+    // Apache
     implementation(Dependencies.APACHE_POI)
+    implementation(Dependencies.PDF_BOX)
 }
 
 kotlin {
