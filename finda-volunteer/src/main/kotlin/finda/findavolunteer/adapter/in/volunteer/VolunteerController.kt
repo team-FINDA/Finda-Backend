@@ -4,7 +4,6 @@ import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRe
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.ExportVolunteerDocumentUseCase
-import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -18,7 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.net.URLEncoder
+import java.util.UUID
+import kotlin.text.Charsets.UTF_8
+
+private val DOCX = MediaType.parseMediaType(
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+)
 
 @RestController
 @RequestMapping("/volunteers")
@@ -28,26 +33,24 @@ class VolunteerController(
     private val exportVolunteerDocumentUseCase: ExportVolunteerDocumentUseCase
 ) {
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    fun createVolunteer(@RequestBody request: CreateVolunteerRequest) = createVolunteerUseCase.execute(request)
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createVolunteer(@RequestBody request: CreateVolunteerRequest) =
+        createVolunteerUseCase.execute(request)
 
     @DeleteMapping
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteVolunteer(@RequestParam volunteerId: UUID) =
+        deleteVolunteerUseCase.execute(volunteerId)
 
-    @GetMapping("/{volunteerId}/export")
+    @GetMapping("/{volunteerId}/export", produces = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
     fun exportDocument(@PathVariable volunteerId: UUID): ResponseEntity<ByteArray> {
         val bytes = exportVolunteerDocumentUseCase.export(volunteerId)
-
-        val headers = HttpHeaders().apply {
-            contentType = MediaType.APPLICATION_OCTET_STREAM
-            contentDisposition = ContentDisposition.attachment()
-                .filename("봉사활동확인서_$volunteerId.docx")
-                .build()
-        }
+        val encodedName = URLEncoder.encode("봉사활동확인서_$volunteerId.docx", UTF_8).replace("+", "%20")
 
         return ResponseEntity.ok()
-            .headers(headers)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"volunteer.docx\"; filename*=UTF-8''$encodedName")
+            .contentType(DOCX)
+            .contentLength(bytes.size.toLong())
             .body(bytes)
     }
 }
