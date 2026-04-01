@@ -1,0 +1,9 @@
+package finda.findanotification.application.port.out.notificationpreference
+
+import finda.findanotification.domain.notificationpreference.model.NotificationPreference
+import finda.findanotification.domain.notificationpreference.model.VolunteerNotificationPreference
+
+interface NotificationPreferenceCommandPort {
+    fun save(notificationPreference: NotificationPreference): NotificationPreference
+    fun saveVolunteerPreference(volunteerNotificationPreference: VolunteerNotificationPreference): VolunteerNotificationPreference
+}

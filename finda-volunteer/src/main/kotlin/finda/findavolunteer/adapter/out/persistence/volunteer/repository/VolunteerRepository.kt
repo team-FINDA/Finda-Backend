@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID>
+interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
+    fun findAllByUserId(userId: UUID): List<VolunteerJpaEntity>
+}

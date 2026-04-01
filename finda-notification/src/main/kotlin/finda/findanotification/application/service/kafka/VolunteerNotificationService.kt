@@ -4,9 +4,9 @@ import finda.findanotification.adapter.`in`.kafka.dto.VolunteerRemindFiredEvent
 import finda.findanotification.adapter.`in`.kafka.dto.VolunteerStatusChangedFiredEvent
 import finda.findanotification.adapter.out.fcm.FcmClient
 import finda.findanotification.adapter.out.grpc.AuthGrpcClient
-import finda.findanotification.adapter.out.persistence.notificationpreference.repository.VolunteerNotificationPreferenceRepository
 import finda.findanotification.application.port.`in`.kafka.SendVolunteerNotificationUseCase
 import finda.findanotification.application.port.out.notification.SaveNotificationPort
+import finda.findanotification.application.port.out.notificationpreference.NotificationPreferenceQueryPort
 import finda.findanotification.domain.notification.enum.NotificationType
 import finda.findanotification.domain.notification.model.Notification
 import org.slf4j.LoggerFactory
@@ -17,14 +17,14 @@ import java.util.UUID
 class VolunteerNotificationService(
     private val authGrpcClient: AuthGrpcClient,
     private val fcmClient: FcmClient,
-    private val volunteerNotificationPreferenceRepository: VolunteerNotificationPreferenceRepository,
+    private val notificationPreferenceQueryPort: NotificationPreferenceQueryPort,
     private val saveNotificationPort: SaveNotificationPort
 ) : SendVolunteerNotificationUseCase {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun sendStatusChanged(event: VolunteerStatusChangedFiredEvent) {
-        val preference = volunteerNotificationPreferenceRepository
+        val preference = notificationPreferenceQueryPort
             .findByVolunteerId(event.volunteerId)
             ?: return
 
@@ -52,7 +52,7 @@ class VolunteerNotificationService(
     }
 
     override fun sendRemind(event: VolunteerRemindFiredEvent) {
-        val preference = volunteerNotificationPreferenceRepository
+        val preference = notificationPreferenceQueryPort
             .findByVolunteerId(event.volunteerId)
             ?: return
 

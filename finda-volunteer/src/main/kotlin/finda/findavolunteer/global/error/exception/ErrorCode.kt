@@ -14,7 +14,8 @@ enum class ErrorCode(
 
     VOLUNTEER_FORBIDDEN(403, "Volunteer Forbidden", 1),
 
-    VOLUNTEER_NOT_FOUND(404, "Volunteer Not Found", 1);
+    VOLUNTEER_NOT_FOUND(404, "Volunteer Not Found", 1),
+    TEACHER_PARTICIPATION_NOT_FOUND(404, "Teacher Participation Not Found", 2);
 
     override fun status(): Int = status
     override fun message(): String = message

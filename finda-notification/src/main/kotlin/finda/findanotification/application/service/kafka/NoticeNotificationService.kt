@@ -3,11 +3,11 @@ package finda.findanotification.application.service.kafka
 import finda.findanotification.adapter.out.fcm.FcmClient
 import finda.findanotification.adapter.out.grpc.AuthGrpcClient
 import finda.findanotification.adapter.out.persistence.notice.repository.NoticeRepository
-import finda.findanotification.adapter.out.persistence.notificationpreference.repository.NotificationPreferenceRepository
 import finda.findanotification.application.port.`in`.kafka.SendNoticeNotificationUseCase
 import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
 import finda.findanotification.application.port.out.notice.UpdateNoticePort
 import finda.findanotification.application.port.out.notification.SaveNotificationPort
+import finda.findanotification.application.port.out.notificationpreference.NotificationPreferenceQueryPort
 import finda.findanotification.domain.notice.type.Status
 import finda.findanotification.domain.notification.enum.NotificationType
 import finda.findanotification.domain.notification.model.Notification
@@ -20,7 +20,7 @@ import java.util.UUID
 class NoticeNotificationService(
     private val authGrpcClient: AuthGrpcClient,
     private val fcmClient: FcmClient,
-    private val notificationPreferenceRepository: NotificationPreferenceRepository,
+    private val notificationPreferenceQueryPort: NotificationPreferenceQueryPort,
     private val saveNotificationPort: SaveNotificationPort,
     private val noticeRepository: NoticeRepository,
     private val updateNoticePort: UpdateNoticePort
@@ -44,7 +44,7 @@ class NoticeNotificationService(
     }
 
     private fun sendToAllUsers(title: String, body: String) {
-        val userIds = notificationPreferenceRepository.findAllByEnabledTrue()
+        val userIds = notificationPreferenceQueryPort.findAllEnabled()
             .map { it.userId }
 
         if (userIds.isEmpty()) {
