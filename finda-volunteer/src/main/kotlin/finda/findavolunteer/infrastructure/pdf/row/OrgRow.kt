@@ -15,7 +15,6 @@ data object OrgRow : TableRow {
         y: Float,
         contentW: Float
     ): Float {
-
         val labelW = DocumentLayout.labelW
         val valueW = (contentW - labelW * 2) / 2f
 

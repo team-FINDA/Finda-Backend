@@ -20,7 +20,8 @@ interface TableRow {
         fun drawLabelCell(
             cs: PDPageContentStream,
             semiBoldFont: PDType0Font,
-            x: Float, y: Float,
+            x: Float,
+            y: Float,
             contentW: Float,
             labelLines: List<String>
         ) {

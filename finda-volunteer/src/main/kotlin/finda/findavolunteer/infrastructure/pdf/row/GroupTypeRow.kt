@@ -12,14 +12,14 @@ data class GroupTypeRow(val type: GroupVolunteerType) : TableRow {
     override fun render(cs: PDPageContentStream, font: PDType0Font, semiBoldFont: PDType0Font, x: Float, y: Float, contentW: Float): Float {
         drawLabelCell(cs, semiBoldFont, x, y, contentW, listOf("단체봉사", "구분"))
 
-        val size   = DocumentLayout.fontSizeSection
-        val markW  = font.getStringWidth("○") / 1000f * size
+        val size = DocumentLayout.fontSizeSection
+        val markW = font.getStringWidth("○") / 1000f * size
         val closeW = font.getStringWidth(")") / 1000f * size
-        val textY  = y - DocumentLayout.stdRowH + (DocumentLayout.stdRowH - size) / 2f
+        val textY = y - DocumentLayout.stdRowH + (DocumentLayout.stdRowH - size) / 2f
 
-        val part1  = "정규교육과정 내 봉사활동("
+        val part1 = "정규교육과정 내 봉사활동("
         val part1W = font.getStringWidth(part1) / 1000f * size
-        val part2  = ") / 정규교육과정 외의 봉사활동("
+        val part2 = ") / 정규교육과정 외의 봉사활동("
         val part2W = font.getStringWidth(part2) / 1000f * size
 
         val totalW = part1W + markW + part2W + markW + closeW
