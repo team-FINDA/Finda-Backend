@@ -15,7 +15,10 @@ class UserActivityMapper(
     override fun toDomain(entity: UserActivityJpaEntity): UserActivity {
         return UserActivity(
             id = entity.id!!,
-            activityId = entity.activity!!.id!!
+            activityId = requireNotNull(entity.activity?.id) {
+                "UserActivity(${entity.id}) is missing activity reference"
+            },
+            userId = entity.userId
         )
     }
 
@@ -24,6 +27,7 @@ class UserActivityMapper(
 
         return UserActivityJpaEntity(
             id = domain.id,
+            userId = domain.userId,
             activity = activity
         )
     }
