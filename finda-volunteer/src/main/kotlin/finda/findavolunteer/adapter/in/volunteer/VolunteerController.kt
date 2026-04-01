@@ -42,7 +42,6 @@ class VolunteerController(
     fun exportDocument(
         @PathVariable volunteerId: UUID
     ): ResponseEntity<ByteArray> {
-
         val bytes = exportVolunteerDocumentUseCase.export(volunteerId)
         val filename = "학교교육계획에 의한 단체봉사활동 실시 확인서(활동내용).pdf"
 

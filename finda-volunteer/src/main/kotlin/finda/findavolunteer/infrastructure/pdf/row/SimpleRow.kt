@@ -15,11 +15,11 @@ data class SimpleRow(
     override fun render(cs: PDPageContentStream, font: PDType0Font, semiBoldFont: PDType0Font, x: Float, y: Float, contentW: Float): Float {
         drawLabelCell(cs, semiBoldFont, x, y, contentW, labelLines)
 
-        val size  = DocumentLayout.fontSizeSection
+        val size = DocumentLayout.fontSizeSection
         val textY = y - DocumentLayout.stdRowH + (DocumentLayout.stdRowH - size) / 2f
         val textX = if (centerAlign) {
             val valueW = contentW - DocumentLayout.labelW
-            val textW  = font.getStringWidth(valueText) / 1000f * size
+            val textW = font.getStringWidth(valueText) / 1000f * size
             x + DocumentLayout.labelW + (valueW - textW) / 2f
         } else {
             x + DocumentLayout.labelW + 4f

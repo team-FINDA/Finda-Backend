@@ -2,10 +2,10 @@ package finda.findavolunteer.adapter.out.document
 
 import finda.findavolunteer.application.port.out.document.GenerateVolunteerDocumentPort
 import finda.findavolunteer.domain.volunteer.data.VolunteerDocumentData
-import finda.findavolunteer.infrastructure.pdf.layout.DocumentLayout
 import finda.findavolunteer.infrastructure.pdf.drawer.FooterDrawer
 import finda.findavolunteer.infrastructure.pdf.drawer.InfoTableDrawer
 import finda.findavolunteer.infrastructure.pdf.drawer.ParticipantTableDrawer
+import finda.findavolunteer.infrastructure.pdf.layout.DocumentLayout
 import finda.findavolunteer.infrastructure.pdf.util.PdfDrawingUtils.drawTextCentered
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -28,7 +28,7 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
 
     override fun generate(data: VolunteerDocumentData): ByteArray {
         PDDocument().use { doc ->
-            val font         = PDType0Font.load(doc, fontBytes.inputStream(), true)
+            val font = PDType0Font.load(doc, fontBytes.inputStream(), true)
             val semiBoldFont = PDType0Font.load(doc, semiBoldFontBytes.inputStream(), true)
 
             drawFirstPage(doc, font, semiBoldFont, data)
@@ -54,10 +54,10 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
         semiBoldFont: PDType0Font,
         data: VolunteerDocumentData
     ) {
-        val page     = PDPage(PDRectangle.A4)
+        val page = PDPage(PDRectangle.A4)
         doc.addPage(page)
-        val pageW    = page.mediaBox.width
-        val pageH    = page.mediaBox.height
+        val pageW = page.mediaBox.width
+        val pageH = page.mediaBox.height
         val contentW = pageW - DocumentLayout.margin * 2
 
         PDPageContentStream(doc, page).use { cs ->
@@ -65,7 +65,12 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
             y = drawTitle(cs, semiBoldFont, pageW, y)
             y = InfoTableDrawer.draw(cs, font, semiBoldFont, DocumentLayout.margin, contentW, y - 8f, data)
             y = ParticipantTableDrawer.draw(
-                cs, font, semiBoldFont, DocumentLayout.margin, contentW, y,
+                cs,
+                font,
+                semiBoldFont,
+                DocumentLayout.margin,
+                contentW,
+                y,
                 participants = data.participants.take(ParticipantTableDrawer.maxPerPage()),
                 startSeq = 1
             )
@@ -81,16 +86,21 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
         startSeq: Int,
         teacherName: String
     ) {
-        val page     = PDPage(PDRectangle.A4)
+        val page = PDPage(PDRectangle.A4)
         doc.addPage(page)
-        val pageW    = page.mediaBox.width
-        val pageH    = page.mediaBox.height
+        val pageW = page.mediaBox.width
+        val pageH = page.mediaBox.height
         val contentW = pageW - DocumentLayout.margin * 2
 
         PDPageContentStream(doc, page).use { cs ->
             var y = pageH - DocumentLayout.margin
             y = ParticipantTableDrawer.draw(
-                cs, font, semiBoldFont, DocumentLayout.margin, contentW, y,
+                cs,
+                font,
+                semiBoldFont,
+                DocumentLayout.margin,
+                contentW,
+                y,
                 participants = participants,
                 startSeq = startSeq
             )

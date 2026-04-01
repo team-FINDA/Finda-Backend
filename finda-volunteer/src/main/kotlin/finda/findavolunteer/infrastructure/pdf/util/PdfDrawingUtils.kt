@@ -10,13 +10,15 @@ object PdfDrawingUtils {
     fun drawCellLabel(
         cs: PDPageContentStream,
         font: PDType0Font,
-        cellX: Float, cellTopY: Float, cellH: Float,
+        cellX: Float,
+        cellTopY: Float,
+        cellH: Float,
         labelLines: List<String>,
         size: Float = DocumentLayout.fontSizeSection
     ) {
-        val lineH      = size + 3f
+        val lineH = size + 3f
         val totalTextH = labelLines.size * lineH
-        var ty         = cellTopY - (cellH - totalTextH) / 2f - size + 2f
+        var ty = cellTopY - (cellH - totalTextH) / 2f - size + 2f
         labelLines.forEach { line ->
             val tw = font.getStringWidth(line) / 1000f * size
             drawText(cs, font, size, cellX + (DocumentLayout.labelW - tw) / 2f, ty, line)

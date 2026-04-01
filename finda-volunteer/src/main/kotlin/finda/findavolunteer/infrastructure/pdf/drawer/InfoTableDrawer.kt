@@ -22,7 +22,6 @@ object InfoTableDrawer {
         topY: Float,
         data: VolunteerDocumentData
     ): Float {
-
         val rows: List<TableRow> = listOf(
             GroupTypeRow(data.groupVolunteerType),
             SimpleRow(listOf("봉사활동", "인원"), buildPersonnelText(data)),
