@@ -4,6 +4,7 @@ import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRe
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.ExportVolunteerDocumentUseCase
+import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -17,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.net.URLEncoder
 import java.util.UUID
-import kotlin.text.Charsets.UTF_8
 
 @RestController
 @RequestMapping("/volunteers")
@@ -28,6 +27,7 @@ class VolunteerController(
     private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
     private val exportVolunteerDocumentUseCase: ExportVolunteerDocumentUseCase
 ) {
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createVolunteer(@RequestBody request: CreateVolunteerRequest) =
@@ -38,14 +38,23 @@ class VolunteerController(
     fun deleteVolunteer(@RequestParam volunteerId: UUID) =
         deleteVolunteerUseCase.execute(volunteerId)
 
-    @GetMapping("/{volunteerId}/export", produces = ["application/pdf"])
-    fun exportDocument(@PathVariable volunteerId: UUID): ResponseEntity<ByteArray> {
+    @GetMapping("/{volunteerId}/export", produces = [MediaType.APPLICATION_PDF_VALUE])
+    fun exportDocument(
+        @PathVariable volunteerId: UUID
+    ): ResponseEntity<ByteArray> {
+
         val bytes = exportVolunteerDocumentUseCase.export(volunteerId)
-        val encodedName = URLEncoder.encode("봉사활동확인서_$volunteerId.pdf", UTF_8).replace("+", "%20")
+        val filename = "학교교육계획에 의한 단체봉사활동 실시 확인서(활동내용).pdf"
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"volunteer.pdf\"; filename*=UTF-8''$encodedName")
             .contentType(MediaType.APPLICATION_PDF)
+            .header(
+                HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.attachment()
+                    .filename(filename, Charsets.UTF_8)
+                    .build()
+                    .toString()
+            )
             .contentLength(bytes.size.toLong())
             .body(bytes)
     }

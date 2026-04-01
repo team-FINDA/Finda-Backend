@@ -71,6 +71,8 @@ class VolunteerDocumentPersistenceAdapter(
             startDate = volunteer.workStartDate,
             endDate = volunteer.workEndDate,
             teacherName = teacherName,
+            groupVolunteerType = volunteer.groupVolunteerType,
+            volunteerType = volunteer.volunteerType,
             participants = participants
         )
     }
