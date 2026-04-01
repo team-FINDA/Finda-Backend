@@ -19,66 +19,15 @@ data object OrgRow : TableRow {
         val labelW = DocumentLayout.labelW
         val valueW = (contentW - labelW * 2) / 2f
 
-        PdfDrawingUtils.fillRect(
-            cs, x,
-            y - DocumentLayout.stdRowH,
-            labelW,
-            DocumentLayout.stdRowH,
-            DocumentLayout.labelBgColor
-        )
-
-        PdfDrawingUtils.fillRect(
-            cs,
-            x + labelW + valueW,
-            y - DocumentLayout.stdRowH,
-            labelW,
-            DocumentLayout.stdRowH,
-            DocumentLayout.labelBgColor
-        )
-
+        PdfDrawingUtils.fillRect(cs, x, y - DocumentLayout.stdRowH, labelW, DocumentLayout.stdRowH, DocumentLayout.labelBgColor)
+        PdfDrawingUtils.fillRect(cs, x + labelW + valueW, y - DocumentLayout.stdRowH, labelW, DocumentLayout.stdRowH, DocumentLayout.labelBgColor)
         PdfDrawingUtils.drawRect(cs, x, y - DocumentLayout.stdRowH, labelW, DocumentLayout.stdRowH)
+        PdfDrawingUtils.drawRect(cs, x + labelW, y - DocumentLayout.stdRowH, valueW, DocumentLayout.stdRowH)
+        PdfDrawingUtils.drawRect(cs, x + labelW + valueW, y - DocumentLayout.stdRowH, labelW, DocumentLayout.stdRowH)
+        PdfDrawingUtils.drawRect(cs, x + labelW + valueW + labelW, y - DocumentLayout.stdRowH, valueW, DocumentLayout.stdRowH)
 
-        PdfDrawingUtils.drawRect(
-            cs,
-            x + labelW,
-            y - DocumentLayout.stdRowH,
-            valueW,
-            DocumentLayout.stdRowH
-        )
-
-        PdfDrawingUtils.drawRect(
-            cs,
-            x + labelW + valueW,
-            y - DocumentLayout.stdRowH,
-            labelW,
-            DocumentLayout.stdRowH
-        )
-
-        PdfDrawingUtils.drawRect(
-            cs,
-            x + labelW + valueW + labelW,
-            y - DocumentLayout.stdRowH,
-            valueW,
-            DocumentLayout.stdRowH
-        )
-
-        PdfDrawingUtils.drawCellLabel(
-            cs,
-            semiBoldFont,
-            x,
-            y,
-            DocumentLayout.stdRowH,
-            listOf("봉사활동", "기관")
-        )
-
-        PdfDrawingUtils.drawCellLabel(
-            cs,
-            semiBoldFont,
-            x + labelW + valueW,
-            y,
-            DocumentLayout.stdRowH,
-            listOf("기관", "연락처")
-        )
+        PdfDrawingUtils.drawCellLabel(cs, semiBoldFont, x, y, DocumentLayout.stdRowH, listOf("봉사활동", "기관"))
+        PdfDrawingUtils.drawCellLabel(cs, semiBoldFont, x + labelW + valueW, y, DocumentLayout.stdRowH, listOf("기관", "연락처"))
 
         return y - DocumentLayout.stdRowH
     }

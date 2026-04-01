@@ -28,7 +28,14 @@ data class VolunteerTypeRow(val type: VolunteerType) : TableRow {
             Item("기타",       VolunteerType.OTHER)
         )
 
-        var curX = x + DocumentLayout.labelW + 4f
+        val totalW = items.mapIndexed { index, item ->
+            val labelW = font.getStringWidth("${item.label}(") / 1000f * size
+            labelW + markW + closeW + if (index < items.lastIndex) gapW else 0f
+        }.sum()
+
+        val valueW = contentW - DocumentLayout.labelW
+        var curX   = x + DocumentLayout.labelW + (valueW - totalW) / 2f
+
         items.forEach { item ->
             val labelText = "${item.label}("
             val labelW    = font.getStringWidth(labelText) / 1000f * size

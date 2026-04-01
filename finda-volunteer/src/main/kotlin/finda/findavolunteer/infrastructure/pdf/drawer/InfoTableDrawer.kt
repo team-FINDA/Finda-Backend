@@ -32,7 +32,7 @@ object InfoTableDrawer {
             ),
             OrgRow,
             VolunteerTypeRow(data.volunteerType),
-            SimpleRow(listOf("활동", "장소"), ""),
+            SimpleRow(listOf("활동", "장소"), "", centerAlign = false),
             DescriptionRow(data.description)
         )
 
