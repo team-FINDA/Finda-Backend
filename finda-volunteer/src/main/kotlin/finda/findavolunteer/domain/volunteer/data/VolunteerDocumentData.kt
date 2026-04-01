@@ -1,5 +1,7 @@
 package finda.findavolunteer.domain.volunteer.data
 
+import finda.findavolunteer.domain.volunteer.enum.GroupVolunteerType
+import finda.findavolunteer.domain.volunteer.enum.VolunteerType
 import java.time.LocalDate
 import java.util.UUID
 
@@ -10,6 +12,8 @@ data class VolunteerDocumentData(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val teacherName: String,
+    val groupVolunteerType: GroupVolunteerType,
+    val volunteerType: VolunteerType,
     val participants: List<ParticipantInfo>
 )
 
