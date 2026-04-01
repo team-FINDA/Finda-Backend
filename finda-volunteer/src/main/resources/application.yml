@@ -4,6 +4,12 @@ server:
   servlet:
     context-path: /finda-volunteer
 
+grpc:
+  client:
+    auth-service:
+      address: ${AUTH_GRPC_ADDRESS}
+      negotiation-type: plaintext
+
 spring:
   profiles:
     active: ${PROFILE:local}

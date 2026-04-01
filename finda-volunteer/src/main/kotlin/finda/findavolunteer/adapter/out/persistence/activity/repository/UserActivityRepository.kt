@@ -18,4 +18,14 @@ interface UserActivityRepository : CrudRepository<UserActivityJpaEntity, UUID> {
         """
     )
     fun findWithActivityById(@Param("id") id: UUID): UserActivityJpaEntity?
+
+    @Query(
+        """
+        select userActivity
+        from UserActivityJpaEntity userActivity
+        join fetch userActivity.activity activity
+        where activity.volunteer.id = :volunteerId
+        """
+    )
+    fun findAllWithActivityByVolunteerId(@Param("volunteerId") volunteerId: UUID): List<UserActivityJpaEntity>
 }
