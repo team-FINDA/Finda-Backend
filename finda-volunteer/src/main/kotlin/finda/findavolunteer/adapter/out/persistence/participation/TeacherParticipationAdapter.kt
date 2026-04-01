@@ -2,6 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.participation
 
 import finda.findavolunteer.adapter.out.persistence.participation.mapper.TeacherParticipationMapper
 import finda.findavolunteer.adapter.out.persistence.participation.repository.TeacherParticipationRepository
+import finda.findavolunteer.application.exception.TeacherParticipationNotFoundException
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationCommandPort
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationQueryPort
 import finda.findavolunteer.domain.participation.model.TeacherParticipation
@@ -19,11 +20,11 @@ class TeacherParticipationAdapter(
     }
 
     override fun findByUserId(userId: UUID): TeacherParticipation? {
-        val entity = teacherParticipationRepository.findByUserId(userId)
+        val entity = teacherParticipationRepository.findAllByUserId(userId).firstOrNull()
         return entity?.let(teacherParticipationMapper::toDomain)
     }
 
     override fun findByUserIdOrThrow(userId: UUID): TeacherParticipation {
-        TODO("Not yet implemented")
+        return findByUserId(userId) ?: throw TeacherParticipationNotFoundException
     }
 }
