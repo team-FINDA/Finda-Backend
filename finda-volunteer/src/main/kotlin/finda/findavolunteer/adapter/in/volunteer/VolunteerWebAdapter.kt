@@ -33,10 +33,12 @@ class VolunteerWebAdapter(
     fun createVolunteer(@RequestBody request: CreateVolunteerRequest) = createVolunteerUseCase.execute(request)
 
     @GetMapping("/{volunteerId}")
+    @ResponseStatus(value = HttpStatus.OK)
     fun getVolunteer(@PathVariable volunteerId: UUID): VolunteerDetailResponse =
         volunteerDetailUseCase.execute(volunteerId)
 
     @GetMapping
+    @ResponseStatus(value = HttpStatus.OK)
     fun getVolunteers(
         @RequestParam(required = false) status: VolunteerStatus?,
         @RequestParam(required = false) year: Int?,
@@ -48,5 +50,6 @@ class VolunteerWebAdapter(
     )
 
     @DeleteMapping
+    @ResponseStatus(value = HttpStatus.OK)
     fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)
 }
