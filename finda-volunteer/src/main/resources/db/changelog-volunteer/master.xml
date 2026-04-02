@@ -7,5 +7,6 @@
 
     <include file="/db/changelog-volunteer/schema/001-create-volunteer-tables.sql"/>
     <include file="/db/changelog-volunteer/schema/002-add-user-id-to-user-activity.sql"/>
+    <include file="/db/changelog-volunteer/schema/003-add-unique-teacher-participation-user-id.sql"/>
 
 </databaseChangeLog>
