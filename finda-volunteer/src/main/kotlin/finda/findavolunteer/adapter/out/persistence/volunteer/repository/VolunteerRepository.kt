@@ -3,8 +3,8 @@ package finda.findavolunteer.adapter.out.persistence.volunteer.repository
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.UUID
 

@@ -2,9 +2,9 @@ package finda.findavolunteer.application.service.volunteer
 
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.ActivityResponse
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.StudentParticipationResponse
+import finda.findavolunteer.adapter.`in`.volunteer.dto.response.UserActivityResponse
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerDetailResponse
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerScheduleResponse
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.UserActivityResponse
 import finda.findavolunteer.application.exception.UserNotFoundException
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
 import finda.findavolunteer.application.port.out.user.UserQueryPort
