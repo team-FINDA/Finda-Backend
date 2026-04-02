@@ -142,7 +142,7 @@ CREATE TABLE tbl_user_activity
 CREATE INDEX idx_activity_volunteer_id ON tbl_activity (volunteer_id);
 CREATE INDEX idx_volunteer_schedule_volunteer_id ON tbl_volunteer_schedule (volunteer_id);
 CREATE INDEX idx_volunteer_record_volunteer_id ON tbl_volunteer_record (volunteer_id);
-CREATE INDEX idx_student_particitation_volunteer_id ON tbl_student_particitation (volunteer_id);
+CREATE INDEX idx_student_participation_volunteer_id ON tbl_student_participation (volunteer_id);
 CREATE INDEX idx_teacher_participation_volunteer_id ON tbl_teacher_participation (volunteer_id);
 CREATE INDEX idx_qr_code_volunteer_id ON tbl_qr_code (volunteer_id);
 CREATE INDEX idx_activity_recurrence_month_volunteer_id ON activity_recurrence_month (volunteer_id);
