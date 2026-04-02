@@ -2,9 +2,12 @@ package finda.findavolunteer.adapter.`in`.volunteer
 
 import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRequest
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerDetailResponse
+import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerListResponse
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.VolunteerListUseCase
+import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,7 +25,8 @@ import java.util.UUID
 class VolunteerWebAdapter(
     val createVolunteerUseCase: CreateVolunteerUseCase,
     val deleteVolunteerUseCase: DeleteVolunteerUseCase,
-    val volunteerDetailUseCase: VolunteerDetailUseCase
+    val volunteerDetailUseCase: VolunteerDetailUseCase,
+    val volunteerListUseCase: VolunteerListUseCase
 ) {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -31,6 +35,17 @@ class VolunteerWebAdapter(
     @GetMapping("/{volunteerId}")
     fun getVolunteer(@PathVariable volunteerId: UUID): VolunteerDetailResponse =
         volunteerDetailUseCase.execute(volunteerId)
+
+    @GetMapping
+    fun getVolunteers(
+        @RequestParam(required = false) status: VolunteerStatus?,
+        @RequestParam(required = false) year: Int?,
+        @RequestParam(required = false) sortBy: String?
+    ): List<VolunteerListResponse> = volunteerListUseCase.execute(
+        status = status,
+        year = year,
+        sortBy = sortBy
+    )
 
     @DeleteMapping
     fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)

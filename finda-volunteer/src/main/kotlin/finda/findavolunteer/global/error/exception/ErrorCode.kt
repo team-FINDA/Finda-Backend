@@ -11,6 +11,7 @@ enum class ErrorCode(
 
     // client error
     BAD_REQUEST(400, "Bad Request", 1),
+    INVALID_VOLUNTEER_SORT_BY(400, "Invalid Volunteer Sort By", 2),
 
     VOLUNTEER_FORBIDDEN(403, "Volunteer Forbidden", 1),
 
