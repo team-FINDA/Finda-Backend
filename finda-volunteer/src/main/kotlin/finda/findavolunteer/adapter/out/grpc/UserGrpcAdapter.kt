@@ -32,7 +32,7 @@ class UserGrpcAdapter : UserQueryPort {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> null
                 else -> {
-                    log.error("gRPC getUserName failed. userId=$userId", e)
+                    log.error("gRPC getUserName failed.", e)
                     throw e
                 }
             }
