@@ -28,6 +28,7 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
+    implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
     implementation(Dependencies.GRPC_CLIENT)
     implementation(Dependencies.GRPC_PROTOBUF)
