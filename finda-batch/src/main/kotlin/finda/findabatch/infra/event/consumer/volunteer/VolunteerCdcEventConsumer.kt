@@ -33,41 +33,36 @@ class VolunteerCdcEventConsumer(
     )
     fun consumeVolunteer(message: String?, acknowledgment: Acknowledgment) {
         if (message.isNullOrBlank()) { acknowledgment.acknowledge(); return }
-        try {
-            val payload = objectMapper.readTree(message)["payload"]
-                ?: run { acknowledgment.acknowledge(); return }
-            val event = parseCdcEvent<VolunteerSnapshot>(payload)
-            when (event.op) {
-                "c" -> event.after?.let {
-                    it.remindTime?.let { time ->
-                        remindTimeCache[it.id] = time.toLocalTime()
-                        log.info("remind_time cached: ${it.id}")
-                    }
-                }
-                "u" -> {
-                    val before = event.before
-                    val after = event.after
-                    if (after != null) {
-                        after.remindTime?.let { time ->
-                            remindTimeCache[after.id] = time.toLocalTime()
-                        }
-                        if (before?.remindTime != after.remindTime) {
-                            volunteerRemindJobScheduler.delete(after.id)
-                            log.info("remind_time changed, deleted all jobs: ${after.id}")
-                        }
-                    }
-                }
-                "d" -> event.before?.let {
-                    volunteerRemindJobScheduler.delete(it.id)
-                    remindTimeCache.remove(it.id)
-                    log.info("volunteer deleted, removed all jobs and cache: ${it.id}")
+        val payload = objectMapper.readTree(message)["payload"]
+            ?: run { acknowledgment.acknowledge(); return }
+        val event = parseCdcEvent<VolunteerSnapshot>(payload)
+        when (event.op) {
+            "c" -> event.after?.let {
+                it.remindTime?.let { time ->
+                    remindTimeCache[it.id] = time.toLocalTime()
+                    log.info("remind_time cached: ${it.id}")
                 }
             }
-            acknowledgment.acknowledge()
-        } catch (e: Exception) {
-            log.error("CDC tbl_volunteer processing failed", e)
-            acknowledgment.acknowledge()
+            "u" -> {
+                val before = event.before
+                val after = event.after
+                if (after != null) {
+                    after.remindTime?.let { time ->
+                        remindTimeCache[after.id] = time.toLocalTime()
+                    }
+                    if (before?.remindTime != after.remindTime) {
+                        volunteerRemindJobScheduler.delete(after.id)
+                        log.info("remind_time changed, deleted all jobs: ${after.id}")
+                    }
+                }
+            }
+            "d" -> event.before?.let {
+                volunteerRemindJobScheduler.delete(it.id)
+                remindTimeCache.remove(it.id)
+                log.info("volunteer deleted, removed all jobs and cache: ${it.id}")
+            }
         }
+        acknowledgment.acknowledge()
     }
 
     @KafkaListener(
@@ -76,59 +71,54 @@ class VolunteerCdcEventConsumer(
     )
     fun consumeVolunteerSchedule(message: String?, acknowledgment: Acknowledgment) {
         if (message.isNullOrBlank()) { acknowledgment.acknowledge(); return }
-        try {
-            val payload = objectMapper.readTree(message)["payload"]
-                ?: run { acknowledgment.acknowledge(); return }
-            val event = parseCdcEvent<VolunteerScheduleSnapshot>(payload)
-            when (event.op) {
-                "c" -> event.after?.let {
-                    val remindTime = remindTimeCache[it.volunteerId]
-                    if (remindTime == null) {
-                        log.warn("remind_time not cached for volunteer: ${it.volunteerId}, skipping")
-                        acknowledgment.acknowledge()
-                        return
-                    }
-                    val date = LocalDate.parse(it.date)
-                    if (date.isBefore(LocalDate.now())) {
-                        acknowledgment.acknowledge()
-                        return
-                    }
-                    volunteerRemindJobScheduler.scheduleOne(it.volunteerId, date, remindTime)
-                    log.info("job scheduled: ${it.volunteerId}, date: $date")
+        val payload = objectMapper.readTree(message)["payload"]
+            ?: run { acknowledgment.acknowledge(); return }
+        val event = parseCdcEvent<VolunteerScheduleSnapshot>(payload)
+        when (event.op) {
+            "c" -> event.after?.let {
+                val remindTime = remindTimeCache[it.volunteerId]
+                if (remindTime == null) {
+                    log.warn("remind_time not cached for volunteer: ${it.volunteerId}, skipping")
+                    acknowledgment.acknowledge()
+                    return
                 }
-                "u" -> {
-                    val remindTime = remindTimeCache[event.after?.volunteerId]
-                    if (remindTime == null) {
-                        log.warn("remind_time not cached for volunteer: ${event.after?.volunteerId}, skipping")
+                val date = LocalDate.parse(it.date)
+                if (date.isBefore(LocalDate.now())) {
+                    acknowledgment.acknowledge()
+                    return
+                }
+                volunteerRemindJobScheduler.scheduleOne(it.volunteerId, date, remindTime)
+                log.info("job scheduled: ${it.volunteerId}, date: $date")
+            }
+            "u" -> {
+                val remindTime = remindTimeCache[event.after?.volunteerId]
+                if (remindTime == null) {
+                    log.warn("remind_time not cached for volunteer: ${event.after?.volunteerId}, skipping")
+                    acknowledgment.acknowledge()
+                    return
+                }
+                event.before?.let { before ->
+                    val oldDate = LocalDate.parse(before.date)
+                    volunteerRemindJobScheduler.delete(before.volunteerId, oldDate)
+                    log.info("old job deleted: ${before.volunteerId}, date: $oldDate")
+                }
+                event.after?.let { after ->
+                    val newDate = LocalDate.parse(after.date)
+                    if (newDate.isBefore(LocalDate.now())) {
                         acknowledgment.acknowledge()
                         return
                     }
-                    event.before?.let { before ->
-                        val oldDate = LocalDate.parse(before.date)
-                        volunteerRemindJobScheduler.delete(before.volunteerId, oldDate)
-                        log.info("old job deleted: ${before.volunteerId}, date: $oldDate")
-                    }
-                    event.after?.let { after ->
-                        val newDate = LocalDate.parse(after.date)
-                        if (newDate.isBefore(LocalDate.now())) {
-                            acknowledgment.acknowledge()
-                            return
-                        }
-                        volunteerRemindJobScheduler.scheduleOne(after.volunteerId, newDate, remindTime)
-                        log.info("job rescheduled: ${after.volunteerId}, date: $newDate")
-                    }
-                }
-                "d" -> event.before?.let {
-                    val date = LocalDate.parse(it.date)
-                    volunteerRemindJobScheduler.delete(it.volunteerId, date)
-                    log.info("job deleted: ${it.volunteerId}, date: $date")
+                    volunteerRemindJobScheduler.scheduleOne(after.volunteerId, newDate, remindTime)
+                    log.info("job rescheduled: ${after.volunteerId}, date: $newDate")
                 }
             }
-            acknowledgment.acknowledge()
-        } catch (e: Exception) {
-            log.error("CDC tbl_volunteer_schedule processing failed", e)
-            acknowledgment.acknowledge()
+            "d" -> event.before?.let {
+                val date = LocalDate.parse(it.date)
+                volunteerRemindJobScheduler.delete(it.volunteerId, date)
+                log.info("job deleted: ${it.volunteerId}, date: $date")
+            }
         }
+        acknowledgment.acknowledge()
     }
 
     @KafkaListener(
@@ -137,19 +127,14 @@ class VolunteerCdcEventConsumer(
     )
     fun consumeRecurrenceWeek(message: String?, acknowledgment: Acknowledgment) {
         if (message.isNullOrBlank()) { acknowledgment.acknowledge(); return }
-        try {
-            val payload = objectMapper.readTree(message)["payload"]
-                ?: run { acknowledgment.acknowledge(); return }
-            val event = parseCdcEvent<RecurrenceWeekSnapshot>(payload)
-            val volunteerId = (event.after ?: event.before)?.volunteerId
-                ?: run { acknowledgment.acknowledge(); return }
-            volunteerRemindJobScheduler.delete(volunteerId)
-            log.info("recurrence_week changed, deleted all jobs: $volunteerId")
-            acknowledgment.acknowledge()
-        } catch (e: Exception) {
-            log.error("CDC activity_recurrence_week processing failed", e)
-            acknowledgment.acknowledge()
-        }
+        val payload = objectMapper.readTree(message)["payload"]
+            ?: run { acknowledgment.acknowledge(); return }
+        val event = parseCdcEvent<RecurrenceWeekSnapshot>(payload)
+        val volunteerId = (event.after ?: event.before)?.volunteerId
+            ?: run { acknowledgment.acknowledge(); return }
+        volunteerRemindJobScheduler.delete(volunteerId)
+        log.info("recurrence_week changed, deleted all jobs: $volunteerId")
+        acknowledgment.acknowledge()
     }
 
     @KafkaListener(
@@ -158,18 +143,13 @@ class VolunteerCdcEventConsumer(
     )
     fun consumeRecurrenceMonth(message: String?, acknowledgment: Acknowledgment) {
         if (message.isNullOrBlank()) { acknowledgment.acknowledge(); return }
-        try {
-            val payload = objectMapper.readTree(message)["payload"]
-                ?: run { acknowledgment.acknowledge(); return }
-            val event = parseCdcEvent<RecurrenceMonthSnapshot>(payload)
-            val volunteerId = (event.after ?: event.before)?.volunteerId
-                ?: run { acknowledgment.acknowledge(); return }
-            volunteerRemindJobScheduler.delete(volunteerId)
-            log.info("recurrence_month changed, deleted all jobs: $volunteerId")
-            acknowledgment.acknowledge()
-        } catch (e: Exception) {
-            log.error("CDC activity_recurrence_month processing failed", e)
-            acknowledgment.acknowledge()
-        }
+        val payload = objectMapper.readTree(message)["payload"]
+            ?: run { acknowledgment.acknowledge(); return }
+        val event = parseCdcEvent<RecurrenceMonthSnapshot>(payload)
+        val volunteerId = (event.after ?: event.before)?.volunteerId
+            ?: run { acknowledgment.acknowledge(); return }
+        volunteerRemindJobScheduler.delete(volunteerId)
+        log.info("recurrence_month changed, deleted all jobs: $volunteerId")
+        acknowledgment.acknowledge()
     }
 }

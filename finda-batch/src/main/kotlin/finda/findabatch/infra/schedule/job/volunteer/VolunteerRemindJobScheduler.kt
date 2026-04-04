@@ -31,7 +31,7 @@ class VolunteerRemindJobScheduler(
         }
     }
 
-    private fun scheduleOne(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
+    fun scheduleOne(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
         val identity = "${volunteerId}_$scheduleDate"
         val jobKey = JobKey.jobKey(identity, "volunteer-remind")
         val triggerKey = TriggerKey.triggerKey(identity, "volunteer-remind")
