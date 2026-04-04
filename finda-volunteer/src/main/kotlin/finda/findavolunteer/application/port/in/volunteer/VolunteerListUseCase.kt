@@ -1,6 +1,6 @@
 package finda.findavolunteer.application.port.`in`.volunteer
 
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerListResponse
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.VolunteerListResult
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
 
 interface VolunteerListUseCase {
@@ -8,5 +8,5 @@ interface VolunteerListUseCase {
         status: VolunteerStatus?,
         year: Int?,
         sortBy: String?
-    ): List<VolunteerListResponse>
+    ): List<VolunteerListResult>
 }

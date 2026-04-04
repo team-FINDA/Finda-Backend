@@ -1,8 +1,8 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerListResponse
 import finda.findavolunteer.application.exception.InvalidVolunteerSortByException
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerListUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.VolunteerListResult
 import finda.findavolunteer.application.port.out.volunteer.VolunteerListQueryPort
 import finda.findavolunteer.domain.volunteer.enum.VolunteerSortBy
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
@@ -16,7 +16,7 @@ class VolunteerListService(
         status: VolunteerStatus?,
         year: Int?,
         sortBy: String?
-    ): List<VolunteerListResponse> {
+    ): List<VolunteerListResult> {
         val sortType = try {
             VolunteerSortBy.from(sortBy)
         } catch (_: IllegalArgumentException) {
@@ -28,7 +28,7 @@ class VolunteerListService(
             year = year,
             sortBy = sortType
         ).map {
-            VolunteerListResponse(
+            VolunteerListResult(
                 volunteerId = it.id,
                 title = it.title,
                 workStartDate = it.workStartDate,

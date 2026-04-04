@@ -1,12 +1,12 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.ActivityResponse
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.StudentParticipationResponse
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.UserActivityResponse
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerDetailResponse
-import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerScheduleResponse
 import finda.findavolunteer.application.exception.UserNotFoundException
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.ActivityResult
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.StudentParticipationResult
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.UserActivityResult
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.VolunteerDetailResult
+import finda.findavolunteer.application.port.`in`.volunteer.dto.response.VolunteerScheduleResult
 import finda.findavolunteer.application.port.out.user.UserQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerDetailQueryPort
 import org.springframework.stereotype.Service
@@ -17,11 +17,11 @@ class VolunteerDetailService(
     private val volunteerDetailQueryPort: VolunteerDetailQueryPort,
     private val userQueryPort: UserQueryPort
 ) : VolunteerDetailUseCase {
-    override fun execute(volunteerId: UUID): VolunteerDetailResponse {
+    override fun execute(volunteerId: UUID): VolunteerDetailResult {
         val volunteerDetail = volunteerDetailQueryPort.findDetailByIdOrThrow(volunteerId)
         val volunteer = volunteerDetail.volunteer
 
-        return VolunteerDetailResponse(
+        return VolunteerDetailResult(
             volunteerId = volunteer.id,
             title = volunteer.title,
             description = volunteer.description,
@@ -33,34 +33,34 @@ class VolunteerDetailService(
             workStartDate = volunteer.workStartDate,
             workEndDate = volunteer.workEndDate,
             cycleType = volunteer.cycleType,
-            weekdays = volunteerDetail.weekdays,
+            weekdayList = volunteerDetail.weekdays,
             monthDate = volunteerDetail.monthDate,
             remindTime = volunteer.remindTime,
             groupVolunteerType = volunteer.groupVolunteerType,
             volunteerType = volunteer.volunteerType,
             writerUserId = volunteer.userId,
-            schedules = volunteerDetail.schedules.map {
-                VolunteerScheduleResponse(
+            scheduleResultList = volunteerDetail.schedules.map {
+                VolunteerScheduleResult(
                     scheduleId = it.id,
                     scheduleDate = it.scheduleDate
                 )
             },
-            studentParticipations = volunteerDetail.studentParticipations.map {
-                StudentParticipationResponse(
+            studentParticipationResultList = volunteerDetail.studentParticipations.map {
+                StudentParticipationResult(
                     userId = it.userId,
                     name = userQueryPort.getUserName(it.userId) ?: throw UserNotFoundException,
                     status = it.status,
                     participatedAt = it.participatedAt
                 )
             },
-            activities = volunteerDetail.activities.map {
-                ActivityResponse(
+            activityResultList = volunteerDetail.activities.map {
+                ActivityResult(
                     activityId = it.id,
                     activityName = it.activityName
                 )
             },
-            userActivities = volunteerDetail.userActivities.map {
-                UserActivityResponse(
+            userActivityResultList = volunteerDetail.userActivities.map {
+                UserActivityResult(
                     userId = it.userId,
                     userName = userQueryPort.getUserName(it.userId) ?: throw UserNotFoundException,
                     activityId = it.activityId

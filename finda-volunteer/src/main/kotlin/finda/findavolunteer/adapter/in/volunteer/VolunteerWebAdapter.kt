@@ -3,6 +3,8 @@ package finda.findavolunteer.adapter.`in`.volunteer
 import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRequest
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerDetailResponse
 import finda.findavolunteer.adapter.`in`.volunteer.dto.response.VolunteerListResponse
+import finda.findavolunteer.adapter.`in`.volunteer.mapper.toCommand
+import finda.findavolunteer.adapter.`in`.volunteer.mapper.toResponse
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
@@ -30,12 +32,13 @@ class VolunteerWebAdapter(
 ) {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    fun createVolunteer(@RequestBody request: CreateVolunteerRequest) = createVolunteerUseCase.execute(request)
+    fun createVolunteer(@RequestBody request: CreateVolunteerRequest) =
+        createVolunteerUseCase.execute(request.toCommand())
 
     @GetMapping("/{volunteerId}")
     @ResponseStatus(value = HttpStatus.OK)
     fun getVolunteer(@PathVariable volunteerId: UUID): VolunteerDetailResponse =
-        volunteerDetailUseCase.execute(volunteerId)
+        volunteerDetailUseCase.execute(volunteerId).toResponse()
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
@@ -47,7 +50,7 @@ class VolunteerWebAdapter(
         status = status,
         year = year,
         sortBy = sortBy
-    )
+    ).map { it.toResponse() }
 
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

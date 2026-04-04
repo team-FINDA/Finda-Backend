@@ -1,7 +1,7 @@
 package finda.findavolunteer.application.port.`in`.volunteer
 
-import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRequest
+import finda.findavolunteer.application.port.`in`.volunteer.dto.request.CreateVolunteerCommand
 
 interface CreateVolunteerUseCase {
-    fun execute(request: CreateVolunteerRequest)
+    fun execute(command: CreateVolunteerCommand)
 }

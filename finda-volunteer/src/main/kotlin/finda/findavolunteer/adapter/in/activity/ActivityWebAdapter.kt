@@ -1,6 +1,7 @@
 package finda.findavolunteer.adapter.`in`.activity
 
 import finda.findavolunteer.adapter.`in`.activity.dto.request.CreateUserActivityRequest
+import finda.findavolunteer.adapter.`in`.activity.mapper.toCommand
 import finda.findavolunteer.application.port.`in`.activity.CreateUserActivityUseCase
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,5 +19,5 @@ class ActivityWebAdapter(
         @Valid @RequestBody
         request: CreateUserActivityRequest
     ) =
-        createUserActivityUseCase.execute(request)
+        createUserActivityUseCase.execute(request.toCommand())
 }

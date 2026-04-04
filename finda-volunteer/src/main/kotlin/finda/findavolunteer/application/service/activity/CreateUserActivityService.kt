@@ -1,7 +1,7 @@
 package finda.findavolunteer.application.service.activity
 
-import finda.findavolunteer.adapter.`in`.activity.dto.request.CreateUserActivityRequest
 import finda.findavolunteer.application.port.`in`.activity.CreateUserActivityUseCase
+import finda.findavolunteer.application.port.`in`.activity.dto.request.CreateUserActivityCommand
 import finda.findavolunteer.application.port.out.activity.ActivityQueryPort
 import finda.findavolunteer.application.port.out.activity.UserActivityCommandPort
 import finda.findavolunteer.domain.activity.model.UserActivity
@@ -14,8 +14,8 @@ class CreateUserActivityService(
     val activityQueryPort: ActivityQueryPort
 ) : CreateUserActivityUseCase {
     @Transactional
-    override fun execute(request: CreateUserActivityRequest) {
-        request.userActivityList.forEach {
+    override fun execute(command: CreateUserActivityCommand) {
+        command.userActivityCommandList.forEach {
             val activity = activityQueryPort.findById(it.activityId)
             userActivityCommandPort.save(
                 UserActivity(

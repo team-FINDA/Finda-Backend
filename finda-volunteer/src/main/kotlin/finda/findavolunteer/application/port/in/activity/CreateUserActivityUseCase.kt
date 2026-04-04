@@ -1,7 +1,7 @@
 package finda.findavolunteer.application.port.`in`.activity
 
-import finda.findavolunteer.adapter.`in`.activity.dto.request.CreateUserActivityRequest
+import finda.findavolunteer.application.port.`in`.activity.dto.request.CreateUserActivityCommand
 
 interface CreateUserActivityUseCase {
-    fun execute(request: CreateUserActivityRequest)
+    fun execute(command: CreateUserActivityCommand)
 }
