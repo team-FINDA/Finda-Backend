@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package volunteer;
+
+option java_package = "finda.findabatch.adapter.out.grpc";
+option java_multiple_files = true;
+
+import "google/protobuf/empty.proto";
+
+service VolunteerService {
+  rpc GetAllRemindTimes (google.protobuf.Empty) returns (RemindTimeListResponse);
+}
+
+message RemindTimeListResponse {
+  repeated RemindTimeItem items = 1;
+}
+
+message RemindTimeItem {
+  string volunteer_id = 1;
+  string remind_time = 2;
+}

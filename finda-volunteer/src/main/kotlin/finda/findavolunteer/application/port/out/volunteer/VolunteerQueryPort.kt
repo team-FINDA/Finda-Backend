@@ -7,4 +7,5 @@ interface VolunteerQueryPort {
     fun findAllByUserId(userId: UUID): List<Volunteer>
     fun findById(id: UUID): Volunteer?
     fun findByIdOrThrow(id: UUID): Volunteer
+    fun findAllWithRemindTime(): List<Volunteer>
 }

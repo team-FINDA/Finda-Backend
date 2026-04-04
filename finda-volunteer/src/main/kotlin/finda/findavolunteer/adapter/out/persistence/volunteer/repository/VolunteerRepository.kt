@@ -8,4 +8,5 @@ import java.util.UUID
 @Repository
 interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
     fun findAllByUserId(userId: UUID): List<VolunteerJpaEntity>
+    fun findAllByRemindTimeIsNotNull(): List<VolunteerJpaEntity>
 }
