@@ -15,20 +15,23 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class VolunteerRemindJobScheduler(
     private val scheduler: Scheduler
 ) {
-    // 기존 봉사를 다 지우고 request의 날짜로 재생성
-    fun schedule(event: VolunteerRemindEvent) {
+    val remindTimeCache = ConcurrentHashMap<UUID, LocalTime>()
+
+    fun scheduleAndCache(event: VolunteerRemindEvent) {
+        remindTimeCache[event.volunteerId] = event.remindTime
         delete(event.volunteerId)
         event.scheduleDate.forEach { date ->
-            schedule(event.volunteerId, date, event.remindTime)
+            scheduleOne(event.volunteerId, date, event.remindTime)
         }
     }
 
-    private fun schedule(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
+    private fun scheduleOne(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
         val identity = "${volunteerId}_$scheduleDate"
         val jobKey = JobKey.jobKey(identity, "volunteer-remind")
         val triggerKey = TriggerKey.triggerKey(identity, "volunteer-remind")
