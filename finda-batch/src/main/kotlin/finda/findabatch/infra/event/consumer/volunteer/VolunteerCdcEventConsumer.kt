@@ -48,12 +48,21 @@ class VolunteerCdcEventConsumer(
                 val before = event.before
                 val after = event.after
                 if (after != null) {
-                    after.remindTime?.let { time ->
-                        remindTimeCache[after.id] = time.toLocalTime()
-                    }
                     if (before?.remindTime != after.remindTime) {
-                        volunteerRemindJobScheduler.delete(after.id)
-                        log.info("remind_time changed, deleted all jobs: ${after.id}")
+                        if (after.remindTime == null) {
+                            remindTimeCache.remove(after.id)
+                            volunteerRemindJobScheduler.delete(after.id)
+                            log.info("remindTime set to null, removed cache and all jobs: ${after.id}")
+                        } else {
+                            val newRemindTime = after.remindTime.toLocalTime()
+                            remindTimeCache[after.id] = newRemindTime
+                            volunteerRemindJobScheduler.rescheduleAll(after.id, newRemindTime)
+                            log.info("remindTime changed, rescheduled all jobs: ${after.id}")
+                        }
+                    } else {
+                        after.remindTime?.let { time ->
+                            remindTimeCache[after.id] = time.toLocalTime()
+                        }
                     }
                 }
             }
@@ -77,13 +86,13 @@ class VolunteerCdcEventConsumer(
         val event = parseCdcEvent<VolunteerScheduleSnapshot>(payload)
         when (event.op) {
             "c" -> event.after?.let {
-                val remindTime = remindTimeCache[it.volunteerId]
-                    ?: throw RemindTimeNotFoundException(it.volunteerId)
                 val date = LocalDate.parse(it.date)
                 if (date.isBefore(LocalDate.now())) {
                     acknowledgment.acknowledge()
                     return
                 }
+                val remindTime = remindTimeCache[it.volunteerId]
+                    ?: throw RemindTimeNotFoundException(it.volunteerId)
                 volunteerRemindJobScheduler.scheduleOne(it.volunteerId, date, remindTime)
                 log.info("job scheduled: ${it.volunteerId}, date: $date")
             }
@@ -94,8 +103,7 @@ class VolunteerCdcEventConsumer(
                         acknowledgment.acknowledge()
                         return
                     }
-                val remindTime = remindTimeCache[afterVolunteerId]
-                    ?: throw RemindTimeNotFoundException(afterVolunteerId)
+                // old job은 날짜/remindTime 무관하게 항상 먼저 삭제
                 event.before?.let { before ->
                     val oldDate = LocalDate.parse(before.date)
                     volunteerRemindJobScheduler.delete(before.volunteerId, oldDate)
@@ -107,6 +115,8 @@ class VolunteerCdcEventConsumer(
                         acknowledgment.acknowledge()
                         return
                     }
+                    val remindTime = remindTimeCache[afterVolunteerId]
+                        ?: throw RemindTimeNotFoundException(afterVolunteerId)
                     volunteerRemindJobScheduler.scheduleOne(after.volunteerId, newDate, remindTime)
                     log.info("job rescheduled: ${after.volunteerId}, date: $newDate")
                 }

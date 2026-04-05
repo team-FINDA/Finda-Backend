@@ -73,4 +73,19 @@ class VolunteerRemindJobScheduler(
         val identity = "${volunteerId}_$scheduleDate"
         scheduler.deleteJob(JobKey.jobKey(identity, "volunteer-remind"))
     }
+
+    // 해당 봉사의 모든 future job을 새 remindTime으로 재등록
+    fun rescheduleAll(volunteerId: UUID, newRemindTime: LocalTime) {
+        val prefix = "${volunteerId}_"
+        val jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals("volunteer-remind"))
+        jobKeys
+            .filter { it.name.startsWith(prefix) }
+            .forEach { jobKey ->
+                val dateStr = jobKey.name.removePrefix(prefix)
+                val date = LocalDate.parse(dateStr)
+                if (!date.isBefore(LocalDate.now())) {
+                    scheduleOne(volunteerId, date, newRemindTime)
+                }
+            }
+    }
 }
