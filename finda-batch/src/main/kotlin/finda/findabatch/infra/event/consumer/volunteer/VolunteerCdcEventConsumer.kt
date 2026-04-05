@@ -1,6 +1,7 @@
 package finda.findabatch.infra.event.consumer.volunteer
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import finda.findabatch.global.error.exception.RemindTimeNotFoundException
 import finda.findabatch.infra.event.dto.volunteer.CdcEvent
 import finda.findabatch.infra.event.dto.volunteer.RecurrenceMonthSnapshot
 import finda.findabatch.infra.event.dto.volunteer.RecurrenceWeekSnapshot
@@ -77,11 +78,7 @@ class VolunteerCdcEventConsumer(
         when (event.op) {
             "c" -> event.after?.let {
                 val remindTime = remindTimeCache[it.volunteerId]
-                if (remindTime == null) {
-                    log.warn("remind_time not cached for volunteer: ${it.volunteerId}, skipping")
-                    acknowledgment.acknowledge()
-                    return
-                }
+                    ?: throw RemindTimeNotFoundException(it.volunteerId)
                 val date = LocalDate.parse(it.date)
                 if (date.isBefore(LocalDate.now())) {
                     acknowledgment.acknowledge()
@@ -91,12 +88,14 @@ class VolunteerCdcEventConsumer(
                 log.info("job scheduled: ${it.volunteerId}, date: $date")
             }
             "u" -> {
-                val remindTime = remindTimeCache[event.after?.volunteerId]
-                if (remindTime == null) {
-                    log.warn("remind_time not cached for volunteer: ${event.after?.volunteerId}, skipping")
-                    acknowledgment.acknowledge()
-                    return
-                }
+                val afterVolunteerId = event.after?.volunteerId
+                    ?: run {
+                        log.warn("'u' event has null after or volunteerId, skipping")
+                        acknowledgment.acknowledge()
+                        return
+                    }
+                val remindTime = remindTimeCache[afterVolunteerId]
+                    ?: throw RemindTimeNotFoundException(afterVolunteerId)
                 event.before?.let { before ->
                     val oldDate = LocalDate.parse(before.date)
                     volunteerRemindJobScheduler.delete(before.volunteerId, oldDate)
