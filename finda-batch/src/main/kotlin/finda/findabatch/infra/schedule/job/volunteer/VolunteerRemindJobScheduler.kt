@@ -14,21 +14,25 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Date
+import java.util.Optional
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class VolunteerRemindJobScheduler(
     private val scheduler: Scheduler
 ) {
-    // 기존 봉사를 다 지우고 request의 날짜로 재생성
-    fun schedule(event: VolunteerRemindEvent) {
+    val remindTimeCache = ConcurrentHashMap<UUID, Optional<LocalTime>>()
+
+    fun scheduleAndCache(event: VolunteerRemindEvent) {
+        remindTimeCache[event.volunteerId] = Optional.of(event.remindTime)
         delete(event.volunteerId)
         event.scheduleDate.forEach { date ->
-            schedule(event.volunteerId, date, event.remindTime)
+            scheduleOne(event.volunteerId, date, event.remindTime)
         }
     }
 
-    private fun schedule(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
+    fun scheduleOne(volunteerId: UUID, scheduleDate: LocalDate, remindTime: LocalTime) {
         val identity = "${volunteerId}_$scheduleDate"
         val jobKey = JobKey.jobKey(identity, "volunteer-remind")
         val triggerKey = TriggerKey.triggerKey(identity, "volunteer-remind")
@@ -69,5 +73,20 @@ class VolunteerRemindJobScheduler(
     fun delete(volunteerId: UUID, scheduleDate: LocalDate) {
         val identity = "${volunteerId}_$scheduleDate"
         scheduler.deleteJob(JobKey.jobKey(identity, "volunteer-remind"))
+    }
+
+    // 해당 봉사의 모든 future job을 새 remindTime으로 재등록
+    fun rescheduleAll(volunteerId: UUID, newRemindTime: LocalTime) {
+        val prefix = "${volunteerId}_"
+        val jobKeys = scheduler.getJobKeys(GroupMatcher.jobGroupEquals("volunteer-remind"))
+        jobKeys
+            .filter { it.name.startsWith(prefix) }
+            .forEach { jobKey ->
+                val dateStr = jobKey.name.removePrefix(prefix)
+                val date = LocalDate.parse(dateStr)
+                if (!date.isBefore(LocalDate.now())) {
+                    scheduleOne(volunteerId, date, newRemindTime)
+                }
+            }
     }
 }

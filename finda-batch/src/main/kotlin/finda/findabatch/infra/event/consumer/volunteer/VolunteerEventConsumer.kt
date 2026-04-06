@@ -14,7 +14,6 @@ class VolunteerEventConsumer(
     private val volunteerRemindJobScheduler: VolunteerRemindJobScheduler,
     private val volunteerStatusChangedJobScheduler: VolunteerStatusChangedJobScheduler
 ) {
-
     @KafkaListener(topics = ["VOLUNTEER-STATUS-CHANGED"])
     fun consumeVolunteerStatusChanged(
         @Payload event: VolunteerStatusChangedEvent,
@@ -29,7 +28,7 @@ class VolunteerEventConsumer(
         @Payload event: VolunteerRemindEvent,
         acknowledgment: Acknowledgment
     ) {
-        volunteerRemindJobScheduler.schedule(event)
+        volunteerRemindJobScheduler.scheduleAndCache(event)
         acknowledgment.acknowledge()
     }
 }

@@ -68,3 +68,6 @@ logs/
 
 ### Firebase ###
 **/firebase-service-account.json
+
+### Docker env ###
+.env
