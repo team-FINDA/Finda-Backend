@@ -67,8 +67,9 @@ class VolunteerCdcEventConsumer(
                 }
             }
             "d" -> event.before?.let {
-                volunteerRemindJobScheduler.delete(it.id)
+                // 캐시를 먼저 제거해야 schedule 리스너가 orphan job을 재생성하지 않음
                 remindTimeCache.remove(it.id)
+                volunteerRemindJobScheduler.delete(it.id)
                 log.info("volunteer deleted, removed all jobs and cache: ${it.id}")
             }
         }
@@ -103,7 +104,6 @@ class VolunteerCdcEventConsumer(
                         acknowledgment.acknowledge()
                         return
                     }
-                // old job은 날짜/remindTime 무관하게 항상 먼저 삭제
                 event.before?.let { before ->
                     val oldDate = LocalDate.parse(before.date)
                     volunteerRemindJobScheduler.delete(before.volunteerId, oldDate)
@@ -139,10 +139,15 @@ class VolunteerCdcEventConsumer(
         val payload = objectMapper.readTree(message)["payload"]
             ?: run { acknowledgment.acknowledge(); return }
         val event = parseCdcEvent<RecurrenceWeekSnapshot>(payload)
-        val volunteerId = (event.after ?: event.before)?.volunteerId
-            ?: run { acknowledgment.acknowledge(); return }
-        volunteerRemindJobScheduler.delete(volunteerId)
-        log.info("recurrence_week changed, deleted all jobs: $volunteerId")
+        when (event.op) {
+            "c", "u", "d" -> {
+                val volunteerId = (event.after ?: event.before)?.volunteerId
+                    ?: run { acknowledgment.acknowledge(); return }
+                volunteerRemindJobScheduler.delete(volunteerId)
+                log.info("recurrence_week changed, deleted all jobs: $volunteerId")
+            }
+            else -> log.debug("ignored recurrence_week event: op={}", event.op)
+        }
         acknowledgment.acknowledge()
     }
 
@@ -155,10 +160,15 @@ class VolunteerCdcEventConsumer(
         val payload = objectMapper.readTree(message)["payload"]
             ?: run { acknowledgment.acknowledge(); return }
         val event = parseCdcEvent<RecurrenceMonthSnapshot>(payload)
-        val volunteerId = (event.after ?: event.before)?.volunteerId
-            ?: run { acknowledgment.acknowledge(); return }
-        volunteerRemindJobScheduler.delete(volunteerId)
-        log.info("recurrence_month changed, deleted all jobs: $volunteerId")
+        when (event.op) {
+            "c", "u", "d" -> {
+                val volunteerId = (event.after ?: event.before)?.volunteerId
+                    ?: run { acknowledgment.acknowledge(); return }
+                volunteerRemindJobScheduler.delete(volunteerId)
+                log.info("recurrence_month changed, deleted all jobs: $volunteerId")
+            }
+            else -> log.debug("ignored recurrence_month event: op={}", event.op)
+        }
         acknowledgment.acknowledge()
     }
 }
