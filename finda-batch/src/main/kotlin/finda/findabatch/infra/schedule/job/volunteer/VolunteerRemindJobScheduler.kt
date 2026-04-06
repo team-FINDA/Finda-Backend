@@ -14,6 +14,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Date
+import java.util.Optional
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
@@ -21,10 +22,10 @@ import java.util.concurrent.ConcurrentHashMap
 class VolunteerRemindJobScheduler(
     private val scheduler: Scheduler
 ) {
-    val remindTimeCache = ConcurrentHashMap<UUID, LocalTime>()
+    val remindTimeCache = ConcurrentHashMap<UUID, Optional<LocalTime>>()
 
     fun scheduleAndCache(event: VolunteerRemindEvent) {
-        remindTimeCache[event.volunteerId] = event.remindTime
+        remindTimeCache[event.volunteerId] = Optional.of(event.remindTime)
         delete(event.volunteerId)
         event.scheduleDate.forEach { date ->
             scheduleOne(event.volunteerId, date, event.remindTime)

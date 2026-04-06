@@ -14,6 +14,9 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.LocalTime
+import java.util.Optional
+import java.util.UUID
 
 @Component
 class VolunteerCdcEventConsumer(
@@ -28,6 +31,12 @@ class VolunteerCdcEventConsumer(
         return objectMapper.readValue(objectMapper.treeAsTokens(payload), type)
     }
 
+    private fun resolveRemindTime(volunteerId: UUID): LocalTime? {
+        val cached = remindTimeCache[volunteerId]
+            ?: throw RemindTimeNotFoundException(volunteerId)
+        return cached.orElse(null)
+    }
+
     @KafkaListener(
         topics = ["volunteer.finda.tbl_volunteer"],
         containerFactory = "cdcKafkaListenerContainerFactory"
@@ -39,10 +48,9 @@ class VolunteerCdcEventConsumer(
         val event = parseCdcEvent<VolunteerSnapshot>(payload)
         when (event.op) {
             "c" -> event.after?.let {
-                it.remindTime?.let { time ->
-                    remindTimeCache[it.id] = time.toLocalTime()
-                    log.info("remind_time cached: ${it.id}")
-                }
+                // remindTime 미설정이면 Optional.empty()로 명시적 캐싱
+                remindTimeCache[it.id] = Optional.ofNullable(it.remindTime?.toLocalTime())
+                log.info("remind_time cached: ${it.id}, value: ${it.remindTime}")
             }
             "u" -> {
                 val before = event.before
@@ -50,24 +58,22 @@ class VolunteerCdcEventConsumer(
                 if (after != null) {
                     if (before?.remindTime != after.remindTime) {
                         if (after.remindTime == null) {
-                            remindTimeCache.remove(after.id)
+                            // 미설정으로 전환 → Optional.empty()로 캐시 갱신 후 job 삭제
+                            remindTimeCache[after.id] = Optional.empty()
                             volunteerRemindJobScheduler.delete(after.id)
-                            log.info("remindTime set to null, removed cache and all jobs: ${after.id}")
+                            log.info("remindTime set to null, updated cache and deleted all jobs: ${after.id}")
                         } else {
                             val newRemindTime = after.remindTime.toLocalTime()
-                            remindTimeCache[after.id] = newRemindTime
+                            remindTimeCache[after.id] = Optional.of(newRemindTime)
                             volunteerRemindJobScheduler.rescheduleAll(after.id, newRemindTime)
                             log.info("remindTime changed, rescheduled all jobs: ${after.id}")
                         }
                     } else {
-                        after.remindTime?.let { time ->
-                            remindTimeCache[after.id] = time.toLocalTime()
-                        }
+                        remindTimeCache[after.id] = Optional.ofNullable(after.remindTime?.toLocalTime())
                     }
                 }
             }
             "d" -> event.before?.let {
-                // 캐시를 먼저 제거해야 schedule 리스너가 orphan job을 재생성하지 않음
                 remindTimeCache.remove(it.id)
                 volunteerRemindJobScheduler.delete(it.id)
                 log.info("volunteer deleted, removed all jobs and cache: ${it.id}")
@@ -92,8 +98,12 @@ class VolunteerCdcEventConsumer(
                     acknowledgment.acknowledge()
                     return
                 }
-                val remindTime = remindTimeCache[it.volunteerId]
-                    ?: throw RemindTimeNotFoundException(it.volunteerId)
+                // null → remindTime 미설정 정상 상태, skip
+                val remindTime = resolveRemindTime(it.volunteerId) ?: run {
+                    log.info("remindTime not set for volunteer: ${it.volunteerId}, skipping schedule")
+                    acknowledgment.acknowledge()
+                    return
+                }
                 volunteerRemindJobScheduler.scheduleOne(it.volunteerId, date, remindTime)
                 log.info("job scheduled: ${it.volunteerId}, date: $date")
             }
@@ -115,8 +125,12 @@ class VolunteerCdcEventConsumer(
                         acknowledgment.acknowledge()
                         return
                     }
-                    val remindTime = remindTimeCache[afterVolunteerId]
-                        ?: throw RemindTimeNotFoundException(afterVolunteerId)
+                    // null → remindTime 미설정 정상 상태, skip
+                    val remindTime = resolveRemindTime(afterVolunteerId) ?: run {
+                        log.info("remindTime not set for volunteer: $afterVolunteerId, skipping schedule")
+                        acknowledgment.acknowledge()
+                        return
+                    }
                     volunteerRemindJobScheduler.scheduleOne(after.volunteerId, newDate, remindTime)
                     log.info("job rescheduled: ${after.volunteerId}, date: $newDate")
                 }
