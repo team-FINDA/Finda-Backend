@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
+import java.util.Optional
 import java.util.UUID
 
 /**
@@ -28,7 +29,7 @@ class RemindTimeCacheWarmUp(
             volunteerGrpcClient.getAllRemindTimes()
                 .forEach {
                     volunteerRemindJobScheduler.remindTimeCache[UUID.fromString(it.volunteerId)] =
-                        it.remindTime.toLocalTime()
+                        Optional.of(it.remindTime.toLocalTime())
                 }
             log.info("remindTimeCache warm-up success: ${volunteerRemindJobScheduler.remindTimeCache.size}")
         } catch (e: Exception) {
