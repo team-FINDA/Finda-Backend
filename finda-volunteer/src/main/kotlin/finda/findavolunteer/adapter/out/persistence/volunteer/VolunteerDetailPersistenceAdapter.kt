@@ -7,7 +7,7 @@ import finda.findavolunteer.adapter.out.persistence.volunteer.repository.Activit
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.ActivityRecurrenceWeekRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerScheduleRepository
-import finda.findavolunteer.application.exception.VolunteerNotFoundException
+import finda.findavolunteer.application.exception.volunteer.VolunteerNotFoundException
 import finda.findavolunteer.application.port.out.volunteer.VolunteerDetailQueryPort
 import finda.findavolunteer.domain.activity.model.Activity
 import finda.findavolunteer.domain.activity.model.UserActivity

@@ -1,6 +1,6 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.application.exception.InvalidVolunteerSortByException
+import finda.findavolunteer.application.exception.volunteer.InvalidVolunteerSortByException
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerListUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.dto.response.VolunteerListResult
 import finda.findavolunteer.application.port.out.volunteer.VolunteerListQueryPort

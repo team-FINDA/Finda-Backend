@@ -1,6 +1,6 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.application.exception.UserNotFoundException
+import finda.findavolunteer.application.exception.user.UserNotFoundException
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.dto.response.ActivityResult
 import finda.findavolunteer.application.port.`in`.volunteer.dto.response.StudentParticipationResult

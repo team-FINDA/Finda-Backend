@@ -1,6 +1,6 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.application.exception.VolunteerForbiddenException
+import finda.findavolunteer.application.exception.volunteer.VolunteerForbiddenException
 import finda.findavolunteer.application.facade.UserFacade
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.out.volunteer.VolunteerCommandPort

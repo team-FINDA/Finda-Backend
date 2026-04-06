@@ -2,6 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.activity
 
 import finda.findavolunteer.adapter.out.persistence.activity.mapper.ActivityMapper
 import finda.findavolunteer.adapter.out.persistence.activity.repository.ActivityRepository
+import finda.findavolunteer.application.exception.activity.ActivityNotFoundException
 import finda.findavolunteer.application.port.out.activity.ActivityCommandPort
 import finda.findavolunteer.application.port.out.activity.ActivityQueryPort
 import finda.findavolunteer.domain.activity.model.Activity
@@ -22,5 +23,10 @@ class ActivityPersistenceAdapter(
     override fun findById(id: UUID): Activity? {
         val entity = activityRepository.findByIdOrNull(id)
         return entity?.let(activityMapper::toDomain)
+    }
+
+    override fun findByIdOrThrow(id: UUID): Activity {
+        val entity = activityRepository.findByIdOrNull(id) ?: throw ActivityNotFoundException
+        return activityMapper.toDomain(entity)
     }
 }

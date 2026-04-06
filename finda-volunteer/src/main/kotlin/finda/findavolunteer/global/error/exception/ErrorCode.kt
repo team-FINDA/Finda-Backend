@@ -17,7 +17,8 @@ enum class ErrorCode(
 
     VOLUNTEER_NOT_FOUND(404, "Volunteer Not Found", 1),
     TEACHER_PARTICIPATION_NOT_FOUND(404, "Teacher Participation Not Found", 2),
-    USER_NOT_FOUND(404, "User Not Found", 3);
+    USER_NOT_FOUND(404, "User Not Found", 3),
+    ACTIVITY_NOT_FOUND(404, "Activity Not Found", 4);
 
     override fun status(): Int = status
     override fun message(): String = message

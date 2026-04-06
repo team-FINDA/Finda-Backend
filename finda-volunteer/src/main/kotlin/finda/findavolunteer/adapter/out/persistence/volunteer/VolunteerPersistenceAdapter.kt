@@ -6,7 +6,7 @@ import finda.findavolunteer.adapter.out.persistence.volunteer.mapper.VolunteerMa
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.ActivityRecurrenceMonthRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.ActivityRecurrenceWeekRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
-import finda.findavolunteer.application.exception.VolunteerNotFoundException
+import finda.findavolunteer.application.exception.volunteer.VolunteerNotFoundException
 import finda.findavolunteer.application.port.out.volunteer.VolunteerCommandPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerListQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerQueryPort
