@@ -8,4 +8,5 @@ interface TeacherQueryPort {
     fun findTeacherByUserId(userId: UUID): Teacher?
     fun findAllByUserIds(userIds: List<UUID>): List<Teacher?>
     fun findAll(): List<Teacher>
+    fun findNameByUserId(userId: UUID): String?
 }

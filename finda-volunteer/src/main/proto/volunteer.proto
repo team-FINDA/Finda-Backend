@@ -9,6 +9,7 @@ import "google/protobuf/empty.proto";
 
 service VolunteerService {
   rpc GetAllRemindTimes (google.protobuf.Empty) returns (RemindTimeListResponse);
+  rpc GetTopActivitiesByVolunteerTime (GetTopActivitiesRequest) returns (GetTopActivitiesResponse);
 }
 
 message RemindTimeListResponse {
@@ -18,4 +19,12 @@ message RemindTimeListResponse {
 message RemindTimeItem {
   string volunteer_id = 1;
   string remind_time = 2;
+}
+
+message GetTopActivitiesRequest {
+  string user_id = 1;
+}
+
+message GetTopActivitiesResponse {
+  repeated string activity_names = 1;
 }
