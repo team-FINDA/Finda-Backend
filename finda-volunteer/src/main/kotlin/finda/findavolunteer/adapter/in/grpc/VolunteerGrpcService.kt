@@ -34,6 +34,29 @@ class VolunteerGrpcService(
             .build()
     }
 
+    override fun getTopActivitiesByVolunteerTime(
+        request: GetTopActivitiesRequest,
+        responseObserver: StreamObserver<GetTopActivitiesResponse>
+    ) = handleGrpc(responseObserver) {
+        val activities = getVolunteerService.getTopActivitiesByVolunteerTime(
+            parseUUID(request.userId)
+        )
+
+        GetTopActivitiesResponse.newBuilder()
+            .addAllActivityNames(activities)
+            .build()
+    }
+
+    private fun parseUUID(value: String): UUID =
+        try {
+            UUID.fromString(value)
+        } catch (e: IllegalArgumentException) {
+            throw Status.INVALID_ARGUMENT
+                .withDescription("Invalid UUID format")
+                .withCause(e)
+                .asRuntimeException()
+        }
+
     private fun <T> handleGrpc(
         observer: StreamObserver<T>,
         block: () -> T
@@ -51,18 +74,5 @@ class VolunteerGrpcService(
                     .asRuntimeException()
             )
         }
-    }
-
-    override fun getTopActivitiesByVolunteerTime(
-        request: GetTopActivitiesRequest,
-        responseObserver: StreamObserver<GetTopActivitiesResponse>
-    ) = handleGrpc(responseObserver) {
-        val activities = getVolunteerService.getTopActivitiesByVolunteerTime(
-            UUID.fromString(request.userId)
-        )
-
-        GetTopActivitiesResponse.newBuilder()
-            .addAllActivityNames(activities)
-            .build()
     }
 }
