@@ -12,6 +12,7 @@ interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
     fun findAllByUserId(userId: UUID): List<VolunteerJpaEntity>
     fun findAllByRemindTimeIsNotNull(): List<VolunteerJpaEntity>
 
+    // TODO: JPQL은 LIMIT을 공식 지원하지 않음. QueryDSL 전환 시 수정 필요
     @Query(
         """
     SELECT v.title
