@@ -15,7 +15,7 @@ class UserFacade {
 
         return when (val principal = authentication.principal) {
             is Passport -> principal.userId
-            is CustomUserDetails -> UUID.fromString(principal.username)
+            is CustomUserDetails -> principal.user.id
             else -> throw AuthenticationCredentialsNotFoundException("유효하지 않은 인증 principal 타입입니다: ${principal::class.simpleName}")
         }
     }
