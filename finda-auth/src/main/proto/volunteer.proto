@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package volunteer;
+
+option java_package = "finda.findaauth.adapter.in.grpc";
+option java_multiple_files = true;
+
+service VolunteerService {
+  rpc GetTopActivitiesByVolunteerTime(GetTopActivitiesRequest) returns (GetTopActivitiesResponse);
+}
+
+message GetTopActivitiesRequest {
+  string user_id = 1;
+}
+
+message GetTopActivitiesResponse {
+  repeated string activity_names = 1;
+}

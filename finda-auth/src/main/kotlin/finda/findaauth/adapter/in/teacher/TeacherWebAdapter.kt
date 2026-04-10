@@ -8,6 +8,8 @@ import finda.findaauth.adapter.`in`.teacher.dto.request.TeacherSignupWebRequest
 import finda.findaauth.adapter.`in`.teacher.dto.request.VerifyEmailCodeWebRequest
 import finda.findaauth.adapter.`in`.teacher.dto.request.VerifySignupWebRequest
 import finda.findaauth.adapter.`in`.teacher.dto.response.PreAuthTokenWebResponse
+import finda.findaauth.adapter.`in`.teacher.dto.response.TeacherProfileResponse
+import finda.findaauth.application.port.`in`.teacher.GetTeacherProfileUseCase
 import finda.findaauth.application.port.`in`.teacher.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.teacher.TeacherLoginUseCase
 import finda.findaauth.application.port.`in`.teacher.TeacherSignupUseCase
@@ -18,7 +20,9 @@ import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherLoginCom
 import finda.findaauth.application.port.`in`.teacher.dto.request.TeacherSignupCommand
 import finda.findaauth.application.port.`in`.teacher.dto.request.VerifyEmailCodeCommand
 import finda.findaauth.application.port.`in`.teacher.dto.request.VerifySignupCommand
+import finda.findaauth.application.service.user.UserFacade
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
@@ -32,7 +36,9 @@ class TeacherWebAdapter(
     private val sendEmailVerificationUseCase: SendEmailVerificationUseCase,
     private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
     private val teacherSignupUseCase: TeacherSignupUseCase,
-    private val teacherLoginUseCase: TeacherLoginUseCase
+    private val teacherLoginUseCase: TeacherLoginUseCase,
+    private val getTeacherProfileUseCase: GetTeacherProfileUseCase,
+    private val userFacade: UserFacade
 ) {
 
     @PostMapping("/verify")
@@ -111,5 +117,11 @@ class TeacherWebAdapter(
                 )
             )
         )
+    }
+
+    @GetMapping("/me")
+    fun getMyProfile(): TeacherProfileResponse {
+        val userId = userFacade.getCurrentUserId()
+        return TeacherProfileResponse.from(getTeacherProfileUseCase.getProfile(userId))
     }
 }

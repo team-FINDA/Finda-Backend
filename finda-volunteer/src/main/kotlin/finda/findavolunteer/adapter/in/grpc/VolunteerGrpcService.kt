@@ -1,6 +1,8 @@
 package finda.findavolunteer.adapter.`in`.grpc
 
 import com.google.protobuf.Empty
+import finda.findavolunteer.adapter.out.grpc.GetTopActivitiesRequest
+import finda.findavolunteer.adapter.out.grpc.GetTopActivitiesResponse
 import finda.findavolunteer.adapter.out.grpc.RemindTimeItem
 import finda.findavolunteer.adapter.out.grpc.RemindTimeListResponse
 import finda.findavolunteer.adapter.out.grpc.VolunteerServiceGrpc
@@ -9,6 +11,7 @@ import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
 import net.devh.boot.grpc.server.service.GrpcService
+import java.util.UUID
 
 @GrpcService
 class VolunteerGrpcService(
@@ -30,6 +33,29 @@ class VolunteerGrpcService(
             .addAllItems(items)
             .build()
     }
+
+    override fun getTopActivitiesByVolunteerTime(
+        request: GetTopActivitiesRequest,
+        responseObserver: StreamObserver<GetTopActivitiesResponse>
+    ) = handleGrpc(responseObserver) {
+        val activities = getVolunteerService.getTopActivitiesByVolunteerTime(
+            parseUUID(request.userId)
+        )
+
+        GetTopActivitiesResponse.newBuilder()
+            .addAllActivityNames(activities)
+            .build()
+    }
+
+    private fun parseUUID(value: String): UUID =
+        try {
+            UUID.fromString(value)
+        } catch (e: IllegalArgumentException) {
+            throw Status.INVALID_ARGUMENT
+                .withDescription("Invalid UUID format")
+                .withCause(e)
+                .asRuntimeException()
+        }
 
     private fun <T> handleGrpc(
         observer: StreamObserver<T>,

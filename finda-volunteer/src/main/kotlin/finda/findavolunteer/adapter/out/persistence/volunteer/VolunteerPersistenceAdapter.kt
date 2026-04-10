@@ -62,4 +62,8 @@ class VolunteerPersistenceAdapter(
         return volunteerRepository.findAllByRemindTimeIsNotNull()
             .map { volunteerMapper.toDomain(it) }
     }
+
+    override fun findTopActivitiesByUserId(userId: UUID): List<String> {
+        return volunteerRepository.findTop3TitlesByUserId(userId)
+    }
 }
