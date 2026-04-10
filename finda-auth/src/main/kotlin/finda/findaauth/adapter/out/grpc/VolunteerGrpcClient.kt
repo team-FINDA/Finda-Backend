@@ -34,7 +34,7 @@ class VolunteerGrpcClient : VolunteerGrpcPort {
         } catch (e: StatusRuntimeException) {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> {
-                    log.info("Volunteer activities not found for userId=$userId")
+                    log.info("Volunteer activities not found for userId")
                     emptyList()
                 }
                 Status.Code.DEADLINE_EXCEEDED -> {
