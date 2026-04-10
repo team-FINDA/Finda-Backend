@@ -49,6 +49,7 @@ class TeacherPersistenceAdapter(
 
     override fun findNameByUserId(userId: UUID): String? {
         val userEntity = userRepository.findByIdOrNull(userId) ?: return null
+        teacherRepository.findByUser(userEntity).orElse(null) ?: return null
         return userEntity.name
     }
 }
