@@ -2,7 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.participation
 
 import finda.findavolunteer.adapter.out.persistence.participation.mapper.TeacherParticipationMapper
 import finda.findavolunteer.adapter.out.persistence.participation.repository.TeacherParticipationRepository
-import finda.findavolunteer.application.exception.TeacherParticipationNotFoundException
+import finda.findavolunteer.application.exception.participation.TeacherParticipationNotFoundException
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationCommandPort
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationQueryPort
 import finda.findavolunteer.domain.participation.model.TeacherParticipation

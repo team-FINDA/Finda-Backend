@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface VolunteerScheduleRepository : CrudRepository<VolunteerScheduleJpaEntity, UUID>
+interface VolunteerScheduleRepository : CrudRepository<VolunteerScheduleJpaEntity, UUID> {
+    fun findAllByVolunteerIdOrderByScheduleDateAsc(volunteerId: UUID): List<VolunteerScheduleJpaEntity>
+}

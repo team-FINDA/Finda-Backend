@@ -69,5 +69,11 @@ logs/
 ### Firebase ###
 **/firebase-service-account.json
 
-### Docker env ###
+### Environment Variables ###
 .env
+.env.local
+.env.dev
+.env.prod
+.env.example
+CLAUDE.md
+run.sh

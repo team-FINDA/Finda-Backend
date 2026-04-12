@@ -28,7 +28,14 @@ dependencies {
     implementation(Dependencies.SPRING_SECURITY)
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.JACKSON_TYPE)
+    implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
+    implementation(Dependencies.GRPC_CLIENT)
+    implementation(Dependencies.GRPC_SERVER)
+    implementation(Dependencies.GRPC_PROTOBUF)
+    implementation(Dependencies.GRPC_STUB)
+    implementation(Dependencies.PROTOBUF_JAVA)
+    compileOnly(Dependencies.JAVAX_ANNOTATION)
 
     // JWT
     implementation(Dependencies.JWT_API)
@@ -37,14 +44,6 @@ dependencies {
 
     // Security Common
     implementation(project(":finda-security-common"))
-
-    // gRPC
-    implementation(Dependencies.GRPC_SERVER)
-    implementation(Dependencies.GRPC_PROTOBUF)
-    implementation(Dependencies.GRPC_STUB)
-
-    implementation(Dependencies.PROTOBUF_JAVA)
-    compileOnly(Dependencies.JAVAX_ANNOTATION)
 }
 
 protobuf {

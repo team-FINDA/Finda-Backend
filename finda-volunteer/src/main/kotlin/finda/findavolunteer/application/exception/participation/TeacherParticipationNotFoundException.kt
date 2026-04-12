@@ -1,4 +1,4 @@
-package finda.findavolunteer.application.exception
+package finda.findavolunteer.application.exception.participation
 
 import finda.findavolunteer.global.error.exception.ErrorCode
 import finda.findavolunteer.global.error.exception.FindaException

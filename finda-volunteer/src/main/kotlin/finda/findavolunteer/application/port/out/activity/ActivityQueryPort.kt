@@ -5,4 +5,5 @@ import java.util.UUID
 
 interface ActivityQueryPort {
     fun findById(id: UUID): Activity?
+    fun findByIdOrThrow(id: UUID): Activity
 }

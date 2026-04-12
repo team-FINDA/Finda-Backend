@@ -6,9 +6,11 @@ import finda.findavolunteer.adapter.out.persistence.volunteer.mapper.VolunteerMa
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.ActivityRecurrenceMonthRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.ActivityRecurrenceWeekRepository
 import finda.findavolunteer.adapter.out.persistence.volunteer.repository.VolunteerRepository
-import finda.findavolunteer.application.exception.VolunteerNotFoundException
+import finda.findavolunteer.application.exception.volunteer.VolunteerNotFoundException
 import finda.findavolunteer.application.port.out.volunteer.VolunteerCommandPort
+import finda.findavolunteer.application.port.out.volunteer.VolunteerListQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerQueryPort
+import finda.findavolunteer.domain.volunteer.enum.VolunteerSortBy
 import finda.findavolunteer.domain.volunteer.model.Volunteer
 import finda.findavolunteer.domain.volunteer.model.recurrence.ActivityRecurrenceMonth
 import finda.findavolunteer.domain.volunteer.model.recurrence.ActivityRecurrenceWeek
@@ -24,7 +26,7 @@ class VolunteerPersistenceAdapter(
     val activityRecurrenceMonthMapper: ActivityRecurrenceMonthMapper,
     val activityRecurrenceWeekRepository: ActivityRecurrenceWeekRepository,
     val activityRecurrenceWeekMapper: ActivityRecurrenceWeekMapper
-) : VolunteerCommandPort, VolunteerQueryPort {
+) : VolunteerCommandPort, VolunteerQueryPort, VolunteerListQueryPort {
     override fun save(volunteer: Volunteer): Volunteer {
         val entity = volunteerRepository.save(volunteerMapper.toEntity(volunteer))
         return volunteerMapper.toDomain(entity)
@@ -56,6 +58,18 @@ class VolunteerPersistenceAdapter(
 
     override fun findByIdOrThrow(id: UUID): Volunteer {
         return findById(id) ?: throw VolunteerNotFoundException
+    }
+
+    override fun findAll(
+        status: finda.findavolunteer.domain.volunteer.enum.VolunteerStatus?,
+        year: Int?,
+        sortBy: VolunteerSortBy
+    ): List<Volunteer> {
+        return when (sortBy) {
+            VolunteerSortBy.WORK_START_DATE ->
+                volunteerRepository.findAllByStatusAndYearOrderByWorkStartDateDesc(status, year)
+                    .map(volunteerMapper::toDomain)
+        }
     }
 
     override fun findAllWithRemindTime(): List<Volunteer> {

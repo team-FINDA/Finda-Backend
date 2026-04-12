@@ -1,8 +1,8 @@
 package finda.findavolunteer.application.service.volunteer
 
-import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRequest
 import finda.findavolunteer.application.facade.UserFacade
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.dto.request.CreateVolunteerCommand
 import finda.findavolunteer.application.port.out.activity.ActivityCommandPort
 import finda.findavolunteer.application.port.out.participation.StudentParticipationCommandPort
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationCommandPort
@@ -32,29 +32,29 @@ class CreateVolunteerService(
     val teacherParticipationCommandPort: TeacherParticipationCommandPort
 ) : CreateVolunteerUseCase {
     @Transactional
-    override fun execute(request: CreateVolunteerRequest) {
+    override fun execute(command: CreateVolunteerCommand) {
         val userId = userFacade.currentUserId()
 
         val volunteer = volunteerCommandPort.save(
             Volunteer(
                 status = VolunteerStatus.APPLICATION,
-                personnel = request.personnal,
-                title = request.title,
-                description = request.description,
-                unitVolunteerHours = request.unitVolunteerTime,
-                applicationStartDate = request.applicationDate.startDate,
-                applicationEndDate = request.applicationDate.endDate,
-                workStartDate = request.workDate.startDate,
-                workEndDate = request.workDate.endDate,
-                cycleType = request.cycle,
+                personnel = command.personnel,
+                title = command.title,
+                description = command.description,
+                unitVolunteerHours = command.unitVolunteerTime,
+                applicationStartDate = command.applicationDateCommand.startDate,
+                applicationEndDate = command.applicationDateCommand.endDate,
+                workStartDate = command.workDateCommand.startDate,
+                workEndDate = command.workDateCommand.endDate,
+                cycleType = command.cycle,
                 userId = userId,
-                remindTime = request.remindTime,
-                groupVolunteerType = request.groupVolunteerType,
-                volunteerType = request.volunteerType
+                remindTime = command.remindTime,
+                groupVolunteerType = command.groupVolunteerType,
+                volunteerType = command.volunteerType
             )
         )
 
-        request.volunteerDate.forEach {
+        command.volunteerDateList.forEach {
             volunteerScheduleCommandPort.save(
                 VolunteerSchedule(
                     scheduleDate = it,
@@ -63,10 +63,10 @@ class CreateVolunteerService(
             )
         }
 
-        when (request.cycle) {
+        when (command.cycle) {
             CycleType.NONE -> Unit
             CycleType.WEEK -> {
-                request.weekdays.forEach {
+                command.weekdayList.forEach {
                     volunteerCommandPort.saveWeekRecurrence(
                         ActivityRecurrenceWeek(
                             weekday = it,
@@ -79,13 +79,13 @@ class CreateVolunteerService(
                 volunteerCommandPort.saveMonthRecurrence(
                     ActivityRecurrenceMonth(
                         volunteerId = volunteer.id,
-                        day = request.monthDate!!
+                        day = command.monthDate!!
                     )
                 )
             }
         }
 
-        request.activity.forEach {
+        command.activityNameList.forEach {
             activityCommandPort.save(
                 Activity(
                     activityName = it,
@@ -94,7 +94,7 @@ class CreateVolunteerService(
             )
         }
 
-        request.students.forEach {
+        command.studentIdList.forEach {
             studentParticipationCommandPort.save(
                 StudentParticipation(
                     volunteerId = volunteer.id,
@@ -105,7 +105,7 @@ class CreateVolunteerService(
             )
         }
 
-        request.teachers.forEach {
+        command.teacherIdList.forEach {
             teacherParticipationCommandPort.save(
                 TeacherParticipation(
                     volunteerId = volunteer.id,
