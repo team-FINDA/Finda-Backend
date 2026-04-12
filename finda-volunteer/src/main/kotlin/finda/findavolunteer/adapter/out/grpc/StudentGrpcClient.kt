@@ -39,7 +39,7 @@ class StudentGrpcClient {
         } catch (e: StatusRuntimeException) {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> {
-                    log.error("Students not found for ids=$userIds")
+                    log.error("Students not found")
                     throw StudentInfoNotFoundException
                 }
                 Status.Code.DEADLINE_EXCEEDED -> {

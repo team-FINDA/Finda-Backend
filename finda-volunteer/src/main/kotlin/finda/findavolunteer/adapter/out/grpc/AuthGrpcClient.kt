@@ -33,7 +33,7 @@ class AuthGrpcClient {
         } catch (e: StatusRuntimeException) {
             when (e.status.code) {
                 Status.Code.NOT_FOUND -> {
-                    log.info("User not found for id=$userId")
+                    log.info("User not found")
                     throw UserNotFoundException
                 }
                 Status.Code.DEADLINE_EXCEEDED -> {
