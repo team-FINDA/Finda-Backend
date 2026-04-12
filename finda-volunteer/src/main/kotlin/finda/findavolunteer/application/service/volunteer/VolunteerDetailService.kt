@@ -21,6 +21,11 @@ class VolunteerDetailService(
         val volunteerDetail = volunteerDetailQueryPort.findDetailByIdOrThrow(volunteerId)
         val volunteer = volunteerDetail.volunteer
 
+        val userNameMap = (volunteerDetail.studentParticipations.map { it.userId } +
+                volunteerDetail.userActivities.map { it.userId })
+            .toSet()
+            .associateWith { userQueryPort.getUserName(it) ?: throw UserNotFoundException }
+
         return VolunteerDetailResult(
             volunteerId = volunteer.id,
             title = volunteer.title,
@@ -48,7 +53,7 @@ class VolunteerDetailService(
             studentParticipationResultList = volunteerDetail.studentParticipations.map {
                 StudentParticipationResult(
                     userId = it.userId,
-                    name = userQueryPort.getUserName(it.userId) ?: throw UserNotFoundException,
+                    name = userNameMap[it.userId]!!,
                     status = it.status,
                     participatedAt = it.participatedAt
                 )
@@ -62,7 +67,7 @@ class VolunteerDetailService(
             userActivityResultList = volunteerDetail.userActivities.map {
                 UserActivityResult(
                     userId = it.userId,
-                    userName = userQueryPort.getUserName(it.userId) ?: throw UserNotFoundException,
+                    userName = userNameMap[it.userId]!!,
                     activityId = it.activityId
                 )
             }
