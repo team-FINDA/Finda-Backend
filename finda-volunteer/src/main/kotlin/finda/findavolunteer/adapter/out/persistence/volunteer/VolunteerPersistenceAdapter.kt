@@ -72,8 +72,6 @@ class VolunteerPersistenceAdapter(
         }
     }
 
-    override fun deleteById(volunteerId: UUID) {
-        volunteerRepository.deleteById(volunteerId)
     override fun findAllWithRemindTime(): List<Volunteer> {
         return volunteerRepository.findAllByRemindTimeIsNotNull()
             .map { volunteerMapper.toDomain(it) }
