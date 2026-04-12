@@ -46,4 +46,10 @@ class TeacherPersistenceAdapter(
     override fun findAll(): List<Teacher> {
         return teacherRepository.findAll().map(teacherMapper::toDomain).toList()
     }
+
+    override fun findNameByUserId(userId: UUID): String? {
+        val userEntity = userRepository.findByIdOrNull(userId) ?: return null
+        teacherRepository.findByUser(userEntity).orElse(null) ?: return null
+        return userEntity.name
+    }
 }

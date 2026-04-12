@@ -11,11 +11,12 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.util.UUID
 
 @Entity
 @Table(name = "tbl_device_token")
 class DeviceTokenJpaEntity(
-    id: java.util.UUID? = null,
+    id: UUID? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

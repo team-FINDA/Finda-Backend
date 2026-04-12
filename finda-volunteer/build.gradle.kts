@@ -43,6 +43,32 @@ dependencies {
 
     // Security Common
     implementation(project(":finda-security-common"))
+
+    // gRPC
+    implementation(Dependencies.GRPC_SERVER)
+    implementation(Dependencies.GRPC_PROTOBUF)
+    implementation(Dependencies.GRPC_STUB)
+
+    implementation(Dependencies.PROTOBUF_JAVA)
+    compileOnly(Dependencies.JAVAX_ANNOTATION)
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.24.0"
+    }
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
+        }
+    }
+    generateProtoTasks {
+        all().forEach {
+            it.plugins {
+                create("grpc")
+            }
+        }
+    }
 }
 
 protobuf {

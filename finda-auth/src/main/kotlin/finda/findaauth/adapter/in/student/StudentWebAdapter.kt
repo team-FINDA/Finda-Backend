@@ -7,6 +7,8 @@ import finda.findaauth.adapter.`in`.student.dto.request.StudentLoginWebRequest
 import finda.findaauth.adapter.`in`.student.dto.request.StudentSignupWebRequest
 import finda.findaauth.adapter.`in`.student.dto.request.VerifyEmailCodeWebRequest
 import finda.findaauth.adapter.`in`.student.dto.response.GetStudentsResponse
+import finda.findaauth.adapter.`in`.student.dto.response.StudentProfileResponse
+import finda.findaauth.application.port.`in`.student.GetStudentProfileUseCase
 import finda.findaauth.application.port.`in`.student.GetStudentsUseCase
 import finda.findaauth.application.port.`in`.student.SendEmailVerificationUseCase
 import finda.findaauth.application.port.`in`.student.StudentLoginUseCase
@@ -16,6 +18,7 @@ import finda.findaauth.application.port.`in`.student.dto.request.SendEmailVerifi
 import finda.findaauth.application.port.`in`.student.dto.request.StudentLoginCommand
 import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
 import finda.findaauth.application.port.`in`.student.dto.request.VerifyEmailCodeCommand
+import finda.findaauth.application.service.user.UserFacade
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -31,7 +34,9 @@ class StudentWebAdapter(
     private val verifyEmailCodeUseCase: VerifyEmailCodeUseCase,
     private val studentSignupUseCase: StudentSignupUseCase,
     private val studentLoginUseCase: StudentLoginUseCase,
-    private val getStudentsUseCase: GetStudentsUseCase
+    private val getStudentsUseCase: GetStudentsUseCase,
+    private val getStudentProfileUseCase: GetStudentProfileUseCase,
+    private val userFacade: UserFacade
 ) {
 
     @PostMapping("/send-verification")
@@ -103,5 +108,11 @@ class StudentWebAdapter(
                 classNum
             )
         )
+    }
+
+    @GetMapping("/me")
+    fun getMyProfile(): StudentProfileResponse {
+        val userId = userFacade.getCurrentUserId()
+        return StudentProfileResponse.from(getStudentProfileUseCase.getProfile(userId))
     }
 }

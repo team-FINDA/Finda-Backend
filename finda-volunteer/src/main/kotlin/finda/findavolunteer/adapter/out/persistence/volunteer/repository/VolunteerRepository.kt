@@ -25,4 +25,20 @@ interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
         @Param("status") status: VolunteerStatus?,
         @Param("year") year: Int?
     ): List<VolunteerJpaEntity>
+    fun findAllByRemindTimeIsNotNull(): List<VolunteerJpaEntity>
+
+    // TODO: JPQL은 LIMIT을 공식 지원하지 않음. QueryDSL 전환 시 수정 필요
+    @Query(
+        """
+    SELECT v.title
+    FROM VolunteerJpaEntity v
+    JOIN StudentParticipationJpaEntity sp ON sp.volunteer = v
+    WHERE sp.userId = :userId
+    AND sp.status = 'PARTICIPATED'
+    GROUP BY v.id, v.title
+    ORDER BY SUM(v.unitVolunteerHours) DESC
+    LIMIT 3
+"""
+    )
+    fun findTop3TitlesByUserId(@Param("userId") userId: UUID): List<String>
 }

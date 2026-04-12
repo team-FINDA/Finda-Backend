@@ -58,4 +58,9 @@ class StudentPersistenceAdapter(
                 studentRepository.findAll()
         }.map(studentMapper::toDomain)
     }
+
+    override fun findNameByUserId(userId: UUID): String? {
+        val userEntity = userRepository.findByIdOrNull(userId) ?: return null
+        return userEntity.name
+    }
 }

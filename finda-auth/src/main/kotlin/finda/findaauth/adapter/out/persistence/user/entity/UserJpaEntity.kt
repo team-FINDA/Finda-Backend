@@ -8,11 +8,12 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import java.time.LocalDateTime
+import java.util.UUID
 
 @Entity
 @Table(name = "tbl_user")
 class UserJpaEntity(
-    id: java.util.UUID? = null,
+    id: UUID? = null,
 
     @Column(name = "name", nullable = false)
     val name: String,

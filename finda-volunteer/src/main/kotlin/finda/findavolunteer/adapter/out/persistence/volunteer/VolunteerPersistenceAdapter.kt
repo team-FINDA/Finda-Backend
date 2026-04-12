@@ -42,6 +42,10 @@ class VolunteerPersistenceAdapter(
         return activityRecurrenceMonthMapper.toDomain(entity)
     }
 
+    override fun deleteById(volunteerId: UUID) {
+        volunteerRepository.deleteById(volunteerId)
+    }
+
     override fun findAllByUserId(userId: UUID): List<Volunteer> {
         val entities = volunteerRepository.findAllByUserId(userId)
         return entities.map { volunteerMapper.toDomain(it) }
@@ -70,5 +74,12 @@ class VolunteerPersistenceAdapter(
 
     override fun deleteById(volunteerId: UUID) {
         volunteerRepository.deleteById(volunteerId)
+    override fun findAllWithRemindTime(): List<Volunteer> {
+        return volunteerRepository.findAllByRemindTimeIsNotNull()
+            .map { volunteerMapper.toDomain(it) }
+    }
+
+    override fun findTopActivitiesByUserId(userId: UUID): List<String> {
+        return volunteerRepository.findTop3TitlesByUserId(userId)
     }
 }
