@@ -23,12 +23,13 @@ interface TableRow {
             x: Float,
             y: Float,
             contentW: Float,
-            labelLines: List<String>
+            labelLines: List<String>,
+            rowH: Float = DocumentLayout.stdRowH
         ) {
-            PdfDrawingUtils.fillRect(cs, x, y - DocumentLayout.stdRowH, DocumentLayout.labelW, DocumentLayout.stdRowH, DocumentLayout.labelBgColor)
-            PdfDrawingUtils.drawRect(cs, x, y - DocumentLayout.stdRowH, DocumentLayout.labelW, DocumentLayout.stdRowH)
-            PdfDrawingUtils.drawRect(cs, x + DocumentLayout.labelW, y - DocumentLayout.stdRowH, contentW - DocumentLayout.labelW, DocumentLayout.stdRowH)
-            PdfDrawingUtils.drawCellLabel(cs, semiBoldFont, x, y, DocumentLayout.stdRowH, labelLines)
+            PdfDrawingUtils.fillRect(cs, x, y - rowH, DocumentLayout.labelW, rowH, DocumentLayout.labelBgColor)
+            PdfDrawingUtils.drawRect(cs, x, y - rowH, DocumentLayout.labelW, rowH)
+            PdfDrawingUtils.drawRect(cs, x + DocumentLayout.labelW, y - rowH, contentW - DocumentLayout.labelW, rowH)
+            PdfDrawingUtils.drawCellLabel(cs, semiBoldFont, x, y, rowH, labelLines)
         }
     }
 }
