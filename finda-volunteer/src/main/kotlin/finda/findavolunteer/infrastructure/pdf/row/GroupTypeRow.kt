@@ -24,7 +24,9 @@ data class GroupTypeRow(val type: GroupVolunteerType) : TableRow {
 
         val totalW = part1W + markW + part2W + markW + closeW
         val valueW = contentW - DocumentLayout.labelW
-        val startX = x + DocumentLayout.labelW + (valueW - totalW) / 2f
+        val leftPadding = 4f
+        val startX = (x + DocumentLayout.labelW + (valueW - totalW) / 2f)
+            .coerceAtLeast(x + DocumentLayout.labelW + leftPadding)
 
         PdfDrawingUtils.drawText(cs, font, size, startX, textY, part1)
         if (type == GroupVolunteerType.CURRICULAR) {
