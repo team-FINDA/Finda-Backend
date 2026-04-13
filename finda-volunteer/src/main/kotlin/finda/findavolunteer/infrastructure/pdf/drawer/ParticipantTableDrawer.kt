@@ -5,6 +5,7 @@ import finda.findavolunteer.infrastructure.pdf.layout.DocumentLayout
 import finda.findavolunteer.infrastructure.pdf.util.PdfDrawingUtils
 import org.apache.pdfbox.pdmodel.PDPageContentStream
 import org.apache.pdfbox.pdmodel.font.PDType0Font
+import kotlin.math.ceil
 
 object ParticipantTableDrawer {
 
@@ -41,9 +42,10 @@ object ParticipantTableDrawer {
         drawCells(cs, semiBoldFont, x + halfW, y, headers, isHeader = true)
         y -= DocumentLayout.participantRowH
 
-        for (i in 0 until 15) {
+        val rows = minOf(15, ceil(participants.size / 2.0).toInt())
+        for (i in 0 until rows) {
             drawCells(cs, font, x, y, rowValues(startSeq + i, participants.getOrNull(i)))
-            drawCells(cs, font, x + halfW, y, rowValues(startSeq + i + 15, participants.getOrNull(i + 15)))
+            drawCells(cs, font, x + halfW, y, rowValues(startSeq + i + rows, participants.getOrNull(i + rows)))
             y -= DocumentLayout.participantRowH
         }
 
