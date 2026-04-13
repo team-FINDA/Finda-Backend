@@ -30,6 +30,7 @@ dependencies {
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
+    implementation(Dependencies.JAVAX_ANNOTATION)
     implementation(Dependencies.GRPC_CLIENT)
     implementation(Dependencies.GRPC_SERVER)
     implementation(Dependencies.GRPC_PROTOBUF)
