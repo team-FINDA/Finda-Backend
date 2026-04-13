@@ -4,6 +4,8 @@ import finda.findavolunteer.adapter.`in`.volunteer.dto.request.CreateVolunteerRe
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.ExportVolunteerDocumentUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.dto.request.CreateVolunteerCommand
+import finda.findavolunteer.application.port.`in`.volunteer.dto.request.VolunteerDateCommand
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -27,11 +29,35 @@ class VolunteerController(
     private val deleteVolunteerUseCase: DeleteVolunteerUseCase,
     private val exportVolunteerDocumentUseCase: ExportVolunteerDocumentUseCase
 ) {
-
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(value = HttpStatus.CREATED)
     fun createVolunteer(@RequestBody request: CreateVolunteerRequest) =
-        createVolunteerUseCase.execute(request)
+        createVolunteerUseCase.execute(
+            CreateVolunteerCommand(
+                personnel = request.personnel,
+                title = request.title,
+                description = request.description,
+                unitVolunteerTime = request.unitVolunteerTime,
+                applicationDateCommand = VolunteerDateCommand(
+                    startDate = request.applicationDate.startDate,
+                    endDate = request.applicationDate.endDate
+                ),
+                workDateCommand = VolunteerDateCommand(
+                    startDate = request.workDate.startDate,
+                    endDate = request.workDate.endDate
+                ),
+                cycle = request.cycle,
+                volunteerDateList = request.volunteerDate,
+                teacherIdList = request.teachers,
+                studentIdList = request.students,
+                remindTime = request.remindTime,
+                volunteerType = request.volunteerType,
+                groupVolunteerType = request.groupVolunteerType,
+                activityNameList = request.activity,
+                weekdayList = request.weekdays,
+                monthDate = request.monthDate
+            )
+        )
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)

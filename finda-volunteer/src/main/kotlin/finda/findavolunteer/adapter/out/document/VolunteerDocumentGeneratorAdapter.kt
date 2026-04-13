@@ -83,8 +83,12 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
                 .coerceAtMost(ParticipantTableDrawer.maxPerPage())
 
             y = ParticipantTableDrawer.draw(
-                cs, font, semiBoldFont,
-                DocumentLayout.margin, contentW, y,
+                cs,
+                font,
+                semiBoldFont,
+                DocumentLayout.margin,
+                contentW,
+                y,
                 participants = data.participants.take(fittableParticipants),
                 startSeq = 1
             )
@@ -111,8 +115,12 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
         PDPageContentStream(doc, page).use { cs ->
             var y = pageH - DocumentLayout.margin
             y = ParticipantTableDrawer.draw(
-                cs, font, semiBoldFont,
-                DocumentLayout.margin, contentW, y,
+                cs,
+                font,
+                semiBoldFont,
+                DocumentLayout.margin,
+                contentW,
+                y,
                 participants = participants,
                 startSeq = startSeq
             )
