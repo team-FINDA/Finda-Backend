@@ -34,7 +34,9 @@ data class VolunteerTypeRow(val type: VolunteerType) : TableRow {
         }.sum()
 
         val valueW = contentW - DocumentLayout.labelW
-        var curX = x + DocumentLayout.labelW + (valueW - totalW) / 2f
+        val leftPadding = 4f
+        var curX = (x + DocumentLayout.labelW + (valueW - totalW) / 2f)
+            .coerceAtLeast(x + DocumentLayout.labelW + leftPadding)
 
         items.forEach { item ->
             val labelText = "${item.label}("
