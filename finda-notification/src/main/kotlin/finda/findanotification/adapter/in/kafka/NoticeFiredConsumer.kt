@@ -12,7 +12,7 @@ class NoticeFiredConsumer(
     private val sendNoticeNotificationUseCase: SendNoticeNotificationUseCase
 ) {
 
-    @KafkaListener(topics = ["NOTICE-FIRED"])
+    @KafkaListener(topics = ["NOTICE-FIRED"], containerFactory = "noticeFiredListenerContainerFactory")
     fun consumeNoticeFired(
         @Payload event: NoticeScheduledEvent,
         acknowledgment: Acknowledgment

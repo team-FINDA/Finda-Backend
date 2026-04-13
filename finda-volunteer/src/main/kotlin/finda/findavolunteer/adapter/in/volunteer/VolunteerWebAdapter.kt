@@ -7,10 +7,15 @@ import finda.findavolunteer.adapter.`in`.volunteer.mapper.toCommand
 import finda.findavolunteer.adapter.`in`.volunteer.mapper.toResponse
 import finda.findavolunteer.application.port.`in`.volunteer.CreateVolunteerUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.DeleteVolunteerUseCase
+import finda.findavolunteer.application.port.`in`.volunteer.ExportVolunteerDocumentUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerListUseCase
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,7 +33,8 @@ class VolunteerWebAdapter(
     val createVolunteerUseCase: CreateVolunteerUseCase,
     val deleteVolunteerUseCase: DeleteVolunteerUseCase,
     val volunteerDetailUseCase: VolunteerDetailUseCase,
-    val volunteerListUseCase: VolunteerListUseCase
+    val volunteerListUseCase: VolunteerListUseCase,
+    val exportVolunteerDocumentUseCase: ExportVolunteerDocumentUseCase
 ) {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -55,4 +61,24 @@ class VolunteerWebAdapter(
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)
+
+    @GetMapping("/{volunteerId}/export", produces = [MediaType.APPLICATION_PDF_VALUE])
+    fun exportDocument(
+        @PathVariable volunteerId: UUID
+    ): ResponseEntity<ByteArray> {
+        val bytes = exportVolunteerDocumentUseCase.export(volunteerId)
+        val filename = "학교교육계획에 의한 단체봉사활동 실시 확인서(활동내용).pdf"
+
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_PDF)
+            .header(
+                HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.attachment()
+                    .filename(filename, Charsets.UTF_8)
+                    .build()
+                    .toString()
+            )
+            .contentLength(bytes.size.toLong())
+            .body(bytes)
+    }
 }
