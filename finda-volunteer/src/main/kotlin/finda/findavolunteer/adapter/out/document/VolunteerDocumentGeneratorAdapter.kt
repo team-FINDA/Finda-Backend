@@ -31,13 +31,14 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
             val font = PDType0Font.load(doc, fontBytes.inputStream(), true)
             val semiBoldFont = PDType0Font.load(doc, semiBoldFontBytes.inputStream(), true)
 
-            drawFirstPage(doc, font, semiBoldFont, data)
+            val drawnOnFirstPage = drawFirstPage(doc, font, semiBoldFont, data)
 
-            val chunks = data.participants.drop(ParticipantTableDrawer.maxPerPage())
+            val chunks = data.participants
+                .drop(drawnOnFirstPage)
                 .chunked(ParticipantTableDrawer.maxPerPage())
 
             chunks.forEachIndexed { index, chunk ->
-                val startSeq = (index + 1) * ParticipantTableDrawer.maxPerPage() + 1
+                val startSeq = drawnOnFirstPage + index * ParticipantTableDrawer.maxPerPage() + 1
                 drawParticipantOnlyPage(doc, font, semiBoldFont, chunk, startSeq, data.teacherName)
             }
 
@@ -53,28 +54,43 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
         font: PDType0Font,
         semiBoldFont: PDType0Font,
         data: VolunteerDocumentData
-    ) {
+    ): Int {
         val page = PDPage(PDRectangle.A4)
         doc.addPage(page)
         val pageW = page.mediaBox.width
         val pageH = page.mediaBox.height
         val contentW = pageW - DocumentLayout.margin * 2
+        val bottomLimit = DocumentLayout.margin
 
         PDPageContentStream(doc, page).use { cs ->
             var y = pageH - DocumentLayout.margin - DocumentLayout.titleBottomPadding
             y = drawTitle(cs, semiBoldFont, pageW, y)
             y = InfoTableDrawer.draw(cs, font, semiBoldFont, DocumentLayout.margin, contentW, y - 8f, data)
+
+            val footerH = 116f
+            val participantHeaderH = 25f
+            val rowH = DocumentLayout.participantRowH
+            val remaining = y - bottomLimit
+
+            if (remaining < participantHeaderH + rowH + footerH) {
+                return 0
+            }
+
+            val availableForRows = remaining - participantHeaderH - footerH
+            val fittableRows = (availableForRows / rowH).toInt().coerceAtMost(15)
+            val fittableParticipants = (fittableRows * 2)
+                .coerceAtMost(data.participants.size)
+                .coerceAtMost(ParticipantTableDrawer.maxPerPage())
+
             y = ParticipantTableDrawer.draw(
-                cs,
-                font,
-                semiBoldFont,
-                DocumentLayout.margin,
-                contentW,
-                y,
-                participants = data.participants.take(ParticipantTableDrawer.maxPerPage()),
+                cs, font, semiBoldFont,
+                DocumentLayout.margin, contentW, y,
+                participants = data.participants.take(fittableParticipants),
                 startSeq = 1
             )
             FooterDrawer.draw(cs, font, semiBoldFont, DocumentLayout.margin, contentW, y, data.teacherName)
+
+            return fittableParticipants
         }
     }
 
@@ -95,12 +111,8 @@ class VolunteerDocumentGeneratorAdapter : GenerateVolunteerDocumentPort {
         PDPageContentStream(doc, page).use { cs ->
             var y = pageH - DocumentLayout.margin
             y = ParticipantTableDrawer.draw(
-                cs,
-                font,
-                semiBoldFont,
-                DocumentLayout.margin,
-                contentW,
-                y,
+                cs, font, semiBoldFont,
+                DocumentLayout.margin, contentW, y,
                 participants = participants,
                 startSeq = startSeq
             )
