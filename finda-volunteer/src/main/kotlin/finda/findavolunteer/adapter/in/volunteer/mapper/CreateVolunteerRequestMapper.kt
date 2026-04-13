@@ -6,7 +6,7 @@ import finda.findavolunteer.application.port.`in`.volunteer.dto.request.Voluntee
 
 fun CreateVolunteerRequest.toCommand(): CreateVolunteerCommand =
     CreateVolunteerCommand(
-        personnel = personnal,
+        personnel = personnel,
         title = title,
         description = description,
         unitVolunteerTime = unitVolunteerTime,
