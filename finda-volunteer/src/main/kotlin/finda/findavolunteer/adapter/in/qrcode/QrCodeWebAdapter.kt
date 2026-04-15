@@ -5,4 +5,5 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/qr-codes")
-class QrCodeWebAdapter
+class QrCodeWebAdapter() {
+}

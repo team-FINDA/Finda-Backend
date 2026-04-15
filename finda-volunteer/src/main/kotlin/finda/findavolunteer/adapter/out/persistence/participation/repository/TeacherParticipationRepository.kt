@@ -8,4 +8,6 @@ import java.util.UUID
 @Repository
 interface TeacherParticipationRepository : CrudRepository<TeacherParticipationJpaEntity, UUID> {
     fun findAllByUserId(userId: UUID): List<TeacherParticipationJpaEntity>
+    fun findByUserIdAndVolunteer_Id(userId: UUID, volunteerId: UUID): TeacherParticipationJpaEntity?
+    fun existsByUserIdAndVolunteer_Id(userId: UUID, volunteerId: UUID): Boolean
 }

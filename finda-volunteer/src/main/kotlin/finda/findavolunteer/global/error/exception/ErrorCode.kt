@@ -14,11 +14,13 @@ enum class ErrorCode(
     INVALID_VOLUNTEER_SORT_BY(400, "Invalid Volunteer Sort By", 2),
 
     VOLUNTEER_FORBIDDEN(403, "Volunteer Forbidden", 1),
+    TEACHER_PARTICIPATION_FORBIDDEN(403, "Teacher Participation Forbidden", 2),
 
     VOLUNTEER_NOT_FOUND(404, "Volunteer Not Found", 1),
     TEACHER_PARTICIPATION_NOT_FOUND(404, "Teacher Participation Not Found", 2),
     USER_NOT_FOUND(404, "User Not Found", 3),
-    ACTIVITY_NOT_FOUND(404, "Activity Not Found", 4);
+    ACTIVITY_NOT_FOUND(404, "Activity Not Found", 4),
+    QRCODE_NOT_FOUND(404, "QRCode Not Found", 5);
 
     override fun status(): Int = status
     override fun message(): String = message

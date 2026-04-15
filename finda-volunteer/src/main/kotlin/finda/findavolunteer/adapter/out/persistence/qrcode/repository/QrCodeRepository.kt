@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface QrCodeRepository : CrudRepository<QrCodeJpaEntity, UUID>
+interface QrCodeRepository : CrudRepository<QrCodeJpaEntity, UUID> {
+    fun findByCode(qrCode: String): QrCodeJpaEntity?
+    fun existsByCode(qrCode: String): Boolean
+}
