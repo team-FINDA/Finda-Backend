@@ -12,6 +12,7 @@ service StudentService {
   rpc GetStudentsInfo(UserListRequest) returns (StudentsInfoResponse);
   rpc GetStudentInfo(UserRequest) returns (UserIdAndUserInfo);
   rpc GetStudentsAllInfo(google.protobuf.Empty) returns (StudentsInfoResponse);
+  rpc AddVolunteerTime(AddVolunteerTimeRequest) returns (google.protobuf.Empty);
 }
 
 enum Authority {
@@ -39,6 +40,11 @@ message UserInfo {
   int32 grade = 4;
   int32 class_num = 5;
   int32 num = 6;
-  int32 total_volunteer_time = 7;
+  float total_volunteer_time = 7;
   TeacherInfo teacher_info = 8;
+}
+
+message AddVolunteerTimeRequest {
+  string user_id = 1;
+  float volunteer_time = 2;
 }

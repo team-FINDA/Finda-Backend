@@ -4,6 +4,7 @@ import com.google.protobuf.Empty
 import finda.error.FindaException
 import finda.findaauth.application.exception.student.StudentNotFoundException
 import finda.findaauth.application.exception.user.UserNotFoundException
+import finda.findaauth.application.port.`in`.student.AddVolunteerTimeUseCase
 import finda.findaauth.application.port.out.student.StudentQueryPort
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.domain.student.model.Student
@@ -17,7 +18,8 @@ import java.util.UUID
 @GrpcService
 class StudentGrpcService(
     private val studentQueryPort: StudentQueryPort,
-    private val userQueryPort: UserQueryPort
+    private val userQueryPort: UserQueryPort,
+    private val addVolunteerTimeUseCase: AddVolunteerTimeUseCase
 ) : StudentServiceGrpc.StudentServiceImplBase() {
     override fun getStudentsInfo(
         request: UserListRequest,
@@ -49,6 +51,15 @@ class StudentGrpcService(
             ?: throw UserNotFoundException
 
         mapStudentInfo(user, student)
+    }
+
+    override fun addVolunteerTime(
+        request: AddVolunteerTimeRequest,
+        responseObserver: StreamObserver<Empty>
+    ) = handleGrpc(responseObserver) {
+        val userId = parseUUID(request.userId)
+        addVolunteerTimeUseCase.execute(userId, request.volunteerTime)
+        Empty.getDefaultInstance()
     }
 
     override fun getStudentsAllInfo(

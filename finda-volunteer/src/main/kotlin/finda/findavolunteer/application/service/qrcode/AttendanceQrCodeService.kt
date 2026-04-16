@@ -8,6 +8,7 @@ import finda.findavolunteer.application.port.`in`.qrcode.dto.request.AttendanceQ
 import finda.findavolunteer.application.port.out.participation.StudentParticipationQueryPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeCommandPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeQueryPort
+import finda.findavolunteer.application.port.out.user.UserCommandPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerRecordCommandPort
 import finda.findavolunteer.domain.volunteer.model.VolunteerRecord
@@ -21,7 +22,8 @@ class AttendanceQrCodeService(
     private val studentParticipationQueryPort: StudentParticipationQueryPort,
     private val userFacade: UserFacade,
     private val volunteerRecordCommandPort: VolunteerRecordCommandPort,
-    private val volunteerQueryPort: VolunteerQueryPort
+    private val volunteerQueryPort: VolunteerQueryPort,
+    private val userCommandPort: UserCommandPort
 ) : AttendanceQrCodeUseCase {
 
     @Transactional
@@ -45,6 +47,8 @@ class AttendanceQrCodeService(
                 volunteerId = volunteer.id
             )
         )
+
+        userCommandPort.addVolunteerTime(userId, volunteer.unitVolunteerHours)
 
         qrCodeCommandPort.save(qrCode.updateStudentId(userId))
     }
