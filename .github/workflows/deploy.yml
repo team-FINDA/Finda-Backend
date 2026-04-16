@@ -1,16 +1,14 @@
-name: Deploy to EC2
+name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -20,30 +18,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew buildNeeded -x test
-
-      - name: Copy to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          source: "."
-          target: "/home/ubuntu/finda-backend"
-
-      - name: Deploy on EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          port: ${{ secrets.EC2_PORT }}
-          script: |
-            cd /home/ubuntu/finda-backend
-            cat > .env << EOF
-            DEBEZIUM_DB_USER=${{ secrets.DEBEZIUM_DB_USER }}
-            DEBEZIUM_DB_PASSWORD=${{ secrets.DEBEZIUM_DB_PASSWORD }}
-            DEBEZIUM_DB_HOST=${{ secrets.DEBEZIUM_DB_HOST }}
-            EOF
-            docker-compose -f docker-compose.prod.yml down
-            docker-compose -f docker-compose.prod.yml up -d --build
