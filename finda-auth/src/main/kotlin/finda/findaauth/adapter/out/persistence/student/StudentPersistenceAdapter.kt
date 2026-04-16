@@ -3,6 +3,7 @@ package finda.findaauth.adapter.out.persistence.student
 import finda.findaauth.adapter.out.persistence.student.mapper.StudentMapper
 import finda.findaauth.adapter.out.persistence.student.repository.StudentRepository
 import finda.findaauth.adapter.out.persistence.user.repository.UserRepository
+import finda.findaauth.application.exception.student.StudentNotFoundException
 import finda.findaauth.application.port.out.student.StudentCommandPort
 import finda.findaauth.application.port.out.student.StudentQueryPort
 import finda.findaauth.domain.student.model.Student
@@ -62,5 +63,10 @@ class StudentPersistenceAdapter(
     override fun findNameByUserId(userId: UUID): String? {
         val userEntity = userRepository.findByIdOrNull(userId) ?: return null
         return userEntity.name
+    }
+
+    override fun addVolunteerTime(userId: UUID, volunteerTime: Float) {
+        val student = findStudentByUserId(userId) ?: throw StudentNotFoundException
+        save(student.copy(totalVolunteerTime = student.totalVolunteerTime + volunteerTime))
     }
 }
