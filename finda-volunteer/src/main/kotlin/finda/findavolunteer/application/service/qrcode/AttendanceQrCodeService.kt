@@ -10,7 +10,6 @@ import finda.findavolunteer.application.port.out.qrcode.QrCodeCommandPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerQueryPort
 import finda.findavolunteer.application.port.out.volunteer.VolunteerRecordCommandPort
-import finda.findavolunteer.application.port.out.volunteer.VolunteerRecordQueryPort
 import finda.findavolunteer.domain.volunteer.model.VolunteerRecord
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,8 +21,8 @@ class AttendanceQrCodeService(
     private val studentParticipationQueryPort: StudentParticipationQueryPort,
     private val userFacade: UserFacade,
     private val volunteerRecordCommandPort: VolunteerRecordCommandPort,
-    private val volunteerQueryPort: VolunteerQueryPort,
-): AttendanceQrCodeUseCase {
+    private val volunteerQueryPort: VolunteerQueryPort
+) : AttendanceQrCodeUseCase {
 
     @Transactional
     override fun execute(request: AttendanceQrCodeCommand) {
@@ -31,21 +30,22 @@ class AttendanceQrCodeService(
         val qrCode = qrCodeQueryPort.findByQrCodeForUpdateOrThrow(request.qrCode)
         val volunteer = volunteerQueryPort.findByIdOrThrow(qrCode.volunteerId)
 
-        if(!studentParticipationQueryPort.existsByUserIdAndVolunteerId(userId, qrCode.volunteerId)){
+        if (!studentParticipationQueryPort.existsByUserIdAndVolunteerId(userId, qrCode.volunteerId)) {
             throw UserParticipationForbiddenException
         }
-        if(qrCode.studentId != null){
+        if (qrCode.studentId != null) {
             throw UsedQrCodeException
         }
 
-        volunteerRecordCommandPort.save(VolunteerRecord(
-            userId = userId,
-            volunteerTime = volunteer.unitVolunteerHours,
-            title = volunteer.title,
-            volunteerId = volunteer.id,
-        ))
+        volunteerRecordCommandPort.save(
+            VolunteerRecord(
+                userId = userId,
+                volunteerTime = volunteer.unitVolunteerHours,
+                title = volunteer.title,
+                volunteerId = volunteer.id
+            )
+        )
 
         qrCodeCommandPort.save(qrCode.updateStudentId(userId))
-
     }
 }

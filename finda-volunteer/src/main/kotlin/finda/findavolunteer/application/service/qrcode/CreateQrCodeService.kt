@@ -33,13 +33,15 @@ class CreateQrCodeService(
             throw TeacherParticipationForbiddenException
         }
 
-        qrCodeCommandPort.save(QrCode(
-            volunteerId = request.volunteerId,
-            code = qrcode,
-            generatedAt = LocalDateTime.now(),
-            isUsed = false,
-            teacherId = userId
-        ))
+        qrCodeCommandPort.save(
+            QrCode(
+                volunteerId = request.volunteerId,
+                code = qrcode,
+                generatedAt = LocalDateTime.now(),
+                isUsed = false,
+                teacherId = userId
+            )
+        )
 
         return qrcode
     }

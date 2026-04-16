@@ -13,7 +13,7 @@ import java.util.UUID
 class StudentParticipationAdapter(
     private val studentParticipationRepository: StudentParticipationRepository,
     private val studentParticipationMapper: StudentParticipationMapper
-): StudentParticipationCommandPort, StudentParticipationQueryPort {
+) : StudentParticipationCommandPort, StudentParticipationQueryPort {
     override fun save(studentParticipation: StudentParticipation): StudentParticipation {
         val entity = studentParticipationRepository.save(studentParticipationMapper.toEntity(studentParticipation))
         return studentParticipationMapper.toDomain(entity)
@@ -29,6 +29,6 @@ class StudentParticipationAdapter(
         return entity?.let { studentParticipationMapper.toDomain(entity) }
     }
 
-    override fun existsByUserIdAndVolunteerId(userId: UUID, volunteerId: UUID)
-    = studentParticipationRepository.existsByUserIdAndVolunteer_Id(userId, volunteerId)
+    override fun existsByUserIdAndVolunteerId(userId: UUID, volunteerId: UUID) =
+        studentParticipationRepository.existsByUserIdAndVolunteer_Id(userId, volunteerId)
 }
