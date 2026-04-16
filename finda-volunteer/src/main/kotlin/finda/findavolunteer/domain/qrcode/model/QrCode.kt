@@ -13,7 +13,7 @@ data class QrCode(
     val studentId: UUID? = null,
     val teacherId: UUID
 ) {
-    fun updateStudentId(studentId: UUID): QrCode  {
+    fun updateStudentId(studentId: UUID): QrCode {
         return this.copy(studentId = studentId, usedAt = LocalDateTime.now())
     }
 }

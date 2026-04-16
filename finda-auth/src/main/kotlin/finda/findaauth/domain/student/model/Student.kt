@@ -8,5 +8,5 @@ data class Student(
     val classNum: Int,
     val num: Int,
     val name: String,
-    val totalVolunteerTime: Int = 0
+    val totalVolunteerTime: Float = 0f
 )
