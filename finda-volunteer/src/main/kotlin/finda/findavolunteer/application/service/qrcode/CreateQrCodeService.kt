@@ -7,8 +7,10 @@ import finda.findavolunteer.application.port.`in`.qrcode.dto.request.CreateQrCod
 import finda.findavolunteer.application.port.out.participation.TeacherParticipationQueryPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeCommandPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeQueryPort
+import finda.findavolunteer.domain.qrcode.model.QrCode
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class CreateQrCodeService(
@@ -30,6 +32,14 @@ class CreateQrCodeService(
         if (!teacherParticipationQueryPort.existsByTeacherIdAndVolunteerId(userId, request.volunteerId)) {
             throw TeacherParticipationForbiddenException
         }
+
+        qrCodeCommandPort.save(QrCode(
+            volunteerId = request.volunteerId,
+            code = qrcode,
+            generatedAt = LocalDateTime.now(),
+            isUsed = false,
+            teacherId = userId
+        ))
 
         return qrcode
     }
