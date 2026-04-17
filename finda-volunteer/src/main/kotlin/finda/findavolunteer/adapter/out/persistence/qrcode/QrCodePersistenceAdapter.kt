@@ -37,8 +37,8 @@ class QrCodePersistenceAdapter(
     override fun existsQrCode(qrCode: String): Boolean =
         qrCodeRepository.existsByCode(qrCode)
 
-    override fun findByQrCodeForUpdateOrThrow(qrCode: String): QrCode? {
-        val entity = qrCodeRepository.findByQrCodeForUpdate(qrCode)
-        return entity?.let { qrCodeMapper.toDomain(it) }
+    override fun findByQrCodeForUpdateOrThrow(qrCode: String): QrCode {
+        val entity = qrCodeRepository.findByQrCodeForUpdate(qrCode) ?: throw QrCodeNotFoundException
+        return qrCodeMapper.toDomain(entity)
     }
 }
