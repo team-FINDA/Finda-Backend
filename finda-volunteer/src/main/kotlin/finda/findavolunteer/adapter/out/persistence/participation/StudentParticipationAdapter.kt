@@ -25,7 +25,7 @@ class StudentParticipationAdapter(
     }
 
     override fun findByUserIdAndVolunteerId(userId: UUID, volunteerId: UUID): StudentParticipation? {
-        val entity = studentParticipationRepository.findByUserIdAndVolunter_Id(userId, volunteerId)
+        val entity = studentParticipationRepository.findByUserIdAndVolunteer_Id(userId, volunteerId)
         return entity?.let { studentParticipationMapper.toDomain(entity) }
     }
 
