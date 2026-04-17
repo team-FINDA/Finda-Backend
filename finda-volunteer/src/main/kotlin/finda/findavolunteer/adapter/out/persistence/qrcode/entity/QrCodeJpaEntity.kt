@@ -32,8 +32,8 @@ class QrCodeJpaEntity(
     @Column(name = "used_at", nullable = true)
     val usedAt: LocalDateTime? = null,
 
-    @Column(name = "student_id", nullable = false)
-    val studentId: UUID,
+    @Column(name = "student_id")
+    val studentId: UUID? = null,
 
     @Column(name = "teacher_id", nullable = false)
     val teacherId: UUID
