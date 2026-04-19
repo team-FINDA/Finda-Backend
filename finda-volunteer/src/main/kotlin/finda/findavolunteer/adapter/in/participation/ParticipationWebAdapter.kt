@@ -5,6 +5,7 @@ import finda.findavolunteer.adapter.`in`.participation.mapper.toCommand
 import finda.findavolunteer.application.service.qrcode.CreateQrCodeService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -16,5 +17,5 @@ class ParticipationWebAdapter(
 ) {
     @PostMapping("/qr/create")
     @ResponseStatus(HttpStatus.CREATED)
-    fun createQr(request: CreateQrCodeRequest) = createQrCodeService.execute(request.toCommand())
+    fun createQr(@RequestBody request: CreateQrCodeRequest) = createQrCodeService.execute(request.toCommand())
 }
