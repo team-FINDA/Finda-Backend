@@ -24,16 +24,18 @@ class AttendanceStudentService(
     override fun execute(request: AttendanceStudentsCommand) {
         val volunteer = volunteerQueryPort.findByIdOrThrow(request.volunteerId)
 
-        request.userIds.forEach { userId ->
-            attendStudent(userId, request.volunteerId, volunteer.title, volunteer.unitVolunteerHours)
-        }
+        request.userIds
+            .forEach { userId ->
+                check(userId, request.volunteerId)
+            }
+
+        request.userIds
+            .forEach { userId ->
+                attendStudent(userId, request.volunteerId, volunteer.title, volunteer.unitVolunteerHours)
+            }
     }
 
     private fun attendStudent(userId: UUID, volunteerId: UUID, title: String, unitVolunteerHours: Float) {
-        if (!studentParticipationQueryPort.existsByUserIdAndVolunteerId(userId, volunteerId)) {
-            throw UserParticipationForbiddenException
-        }
-
         volunteerRecordCommandPort.save(
             VolunteerRecord(
                 userId = userId,
@@ -44,5 +46,11 @@ class AttendanceStudentService(
         )
 
         userCommandPort.addVolunteerTime(userId, unitVolunteerHours)
+    }
+
+    private fun check(userId: UUID, volunteerId: UUID) {
+        if (!studentParticipationQueryPort.existsByUserIdAndVolunteerId(userId, volunteerId)) {
+            throw UserParticipationForbiddenException
+        }
     }
 }
