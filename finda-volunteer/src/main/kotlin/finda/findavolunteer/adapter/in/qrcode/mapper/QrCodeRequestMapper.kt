@@ -19,6 +19,6 @@ fun AttendanceQrCodeRequest.toCommand(): AttendanceQrCodeCommand =
 
 fun AttendanceStudentsRequest.toCommand(): AttendanceStudentsCommand =
     AttendanceStudentsCommand(
-        usersId = usersId,
+        userIds = userIds,
         volunteerId = volunteerId
     )

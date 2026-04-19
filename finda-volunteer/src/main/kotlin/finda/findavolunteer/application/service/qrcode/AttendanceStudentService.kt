@@ -24,7 +24,7 @@ class AttendanceStudentService(
     override fun execute(request: AttendanceStudentsCommand) {
         val volunteer = volunteerQueryPort.findByIdOrThrow(request.volunteerId)
 
-        request.usersId.forEach { userId ->
+        request.userIds.forEach { userId ->
             attendStudent(userId, request.volunteerId, volunteer.title, volunteer.unitVolunteerHours)
         }
     }
