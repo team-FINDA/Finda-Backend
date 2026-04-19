@@ -59,7 +59,9 @@ class StudentGrpcService(
         responseObserver: StreamObserver<Empty>
     ) = handleGrpc(responseObserver) {
         if (request.volunteerTime <= 0) {
-            throw InvalidArgumentException
+            Status.INVALID_ARGUMENT
+            .withDescription("Volunteer time must be positive")
+            .asRuntimeException()
         }
         val userId = parseUUID(request.userId)
         addVolunteerTimeUseCase.execute(userId, request.volunteerTime)
