@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.Version
 import java.util.UUID
 
 @Entity
@@ -39,5 +40,6 @@ class StudentJpaEntity(
     val num: Int,
 
     @Column(name = "total_volunteer_time", nullable = false)
+    @Version
     val totalVolunteerTime: Float
 ) : BaseEntity(id)
