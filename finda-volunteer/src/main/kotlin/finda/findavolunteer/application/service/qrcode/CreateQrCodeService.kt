@@ -25,7 +25,7 @@ class CreateQrCodeService(
         var qrcode = makeCode()
 
         // QR코드가 중복되지 않을 때까지 생성
-        while (!qrCodeQueryPort.existsQrCode(qrcode)) {
+        while (qrCodeQueryPort.existsQrCode(qrcode)) {
             qrcode = makeCode()
         }
 
