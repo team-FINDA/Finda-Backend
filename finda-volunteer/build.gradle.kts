@@ -30,6 +30,7 @@ dependencies {
     implementation(Dependencies.JACKSON_TYPE)
     implementation(Dependencies.SPRING_VALIDITY)
     implementation(Dependencies.LIQUIBASE)
+    implementation(Dependencies.JAVAX_ANNOTATION)
     implementation(Dependencies.GRPC_CLIENT)
     implementation(Dependencies.GRPC_SERVER)
     implementation(Dependencies.GRPC_PROTOBUF)
@@ -44,6 +45,10 @@ dependencies {
 
     // Security Common
     implementation(project(":finda-security-common"))
+
+    // Apache
+    implementation(Dependencies.APACHE_POI)
+    implementation(Dependencies.PDF_BOX)
 }
 
 protobuf {
@@ -72,4 +77,15 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs(
+                "build/generated/source/proto/main/java",
+                "build/generated/source/proto/main/grpc"
+            )
+        }
+    }
 }

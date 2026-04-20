@@ -1,5 +1,6 @@
 package finda.findanotification.global.config
 
+import finda.findanotification.application.port.`in`.kafka.dto.NoticeScheduledEvent
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -26,9 +27,16 @@ class KafkaConfig(
     private val groupId: String
 ) {
 
-    /**
-     * 기본 Kafka Listener
-     */
+    private fun baseConsumerProps(groupId: String = this.groupId): MutableMap<String, Any> = hashMapOf(
+        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+        ConsumerConfig.GROUP_ID_CONFIG to groupId,
+        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to JsonDeserializer::class.java,
+        ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
+        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to false,
+        JsonDeserializer.TRUSTED_PACKAGES to "*"
+    )
+
     @Bean
     fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, Any> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, Any>()
@@ -39,22 +47,27 @@ class KafkaConfig(
     }
 
     @Bean
-    fun consumerFactory(): ConsumerFactory<String, Any> {
-        val props: MutableMap<String, Any> = HashMap()
-        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
-        props[ConsumerConfig.GROUP_ID_CONFIG] = groupId
-        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
-        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = JsonDeserializer::class.java
-        props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
-        props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
-        props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
+    fun consumerFactory(): ConsumerFactory<String, Any> =
+        DefaultKafkaConsumerFactory(baseConsumerProps())
 
+    @Bean
+    fun noticeFiredListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, NoticeScheduledEvent> {
+        val factory = ConcurrentKafkaListenerContainerFactory<String, NoticeScheduledEvent>()
+        factory.consumerFactory = noticeConsumerFactory()
+        factory.setConcurrency(2)
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        return factory
+    }
+
+    @Bean
+    fun noticeConsumerFactory(): ConsumerFactory<String, NoticeScheduledEvent> {
+        val props = baseConsumerProps().apply {
+            put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false)
+            put(JsonDeserializer.VALUE_DEFAULT_TYPE, NoticeScheduledEvent::class.java.name)
+        }
         return DefaultKafkaConsumerFactory(props)
     }
 
-    /**
-     * Debezium CDC 전용 Listener
-     */
     @Bean
     fun cdcKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
@@ -65,28 +78,27 @@ class KafkaConfig(
 
     @Bean
     fun cdcConsumerFactory(): ConsumerFactory<String, String> {
-        val props: MutableMap<String, Any> = HashMap()
-        props[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
-        props[ConsumerConfig.GROUP_ID_CONFIG] = groupId + "-cdc"
-        props[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
-        props[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java
-        props[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
-        props[ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG] = false
-
+        val props: MutableMap<String, Any> = hashMapOf(
+            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+            ConsumerConfig.GROUP_ID_CONFIG to groupId + "-cdc",
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
+            ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to false
+        )
         return DefaultKafkaConsumerFactory(props)
     }
 
     @Bean
     fun producerFactory(): ProducerFactory<String, Any> {
-        val props: MutableMap<String, Any> = HashMap()
-        props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = bootstrapServers
-        props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
+        val props: MutableMap<String, Any> = hashMapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
+        )
         return DefaultKafkaProducerFactory(props)
     }
 
     @Bean
-    fun kafkaTemplate(): KafkaTemplate<String, Any> {
-        return KafkaTemplate(producerFactory())
-    }
+    fun kafkaTemplate(): KafkaTemplate<String, Any> = KafkaTemplate(producerFactory())
 }
