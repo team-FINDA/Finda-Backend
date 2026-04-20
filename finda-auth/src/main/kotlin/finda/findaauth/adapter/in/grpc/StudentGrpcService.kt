@@ -2,7 +2,6 @@ package finda.findaauth.adapter.`in`.grpc
 
 import com.google.protobuf.Empty
 import finda.error.FindaException
-import finda.findaauth.application.exception.auth.InvalidArgumentException
 import finda.findaauth.application.exception.student.StudentNotFoundException
 import finda.findaauth.application.exception.user.UserNotFoundException
 import finda.findaauth.application.port.`in`.student.AddVolunteerTimeUseCase
@@ -60,8 +59,8 @@ class StudentGrpcService(
     ) = handleGrpc(responseObserver) {
         if (request.volunteerTime <= 0) {
             Status.INVALID_ARGUMENT
-            .withDescription("Volunteer time must be positive")
-            .asRuntimeException()
+                .withDescription("Volunteer time must be positive")
+                .asRuntimeException()
         }
         val userId = parseUUID(request.userId)
         addVolunteerTimeUseCase.execute(userId, request.volunteerTime)
