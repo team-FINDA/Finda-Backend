@@ -20,7 +20,7 @@ class QrCodeJpaEntity(
     @JoinColumn(name = "volunteer_id", nullable = true)
     val volunteer: VolunteerJpaEntity?,
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = false, unique = true)
     val code: String,
 
     @Column(name = "generated_at", nullable = false)
