@@ -26,9 +26,6 @@ class QrCodeJpaEntity(
     @Column(name = "generated_at", nullable = false)
     val generatedAt: LocalDateTime,
 
-    @Column(name = "is_used", nullable = false)
-    val isUsed: Boolean = false,
-
     @Column(name = "used_at", nullable = true)
     val usedAt: LocalDateTime? = null,
 

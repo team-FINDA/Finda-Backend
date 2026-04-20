@@ -8,7 +8,6 @@ data class QrCode(
     val volunteerId: UUID,
     val code: String,
     val generatedAt: LocalDateTime,
-    val isUsed: Boolean = false,
     val usedAt: LocalDateTime? = null,
     val studentId: UUID? = null,
     val teacherId: UUID

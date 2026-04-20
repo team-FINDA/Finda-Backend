@@ -38,7 +38,6 @@ class CreateQrCodeService(
                 volunteerId = request.volunteerId,
                 code = qrcode,
                 generatedAt = LocalDateTime.now(),
-                isUsed = false,
                 teacherId = userId
             )
         )
