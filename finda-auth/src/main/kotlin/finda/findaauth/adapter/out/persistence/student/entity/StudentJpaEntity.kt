@@ -40,6 +40,9 @@ class StudentJpaEntity(
     val num: Int,
 
     @Column(name = "total_volunteer_time", nullable = false)
+    val totalVolunteerTime: Float,
+
     @Version
-    val totalVolunteerTime: Float
+    @Column(name = "version", nullable = false)
+    val version: Long = 0L
 ) : BaseEntity(id)

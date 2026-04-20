@@ -6,5 +6,6 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <include file="/db/changelog-auth/schema/001-alter-student-total-volunteer-time-to-float.sql"/>
+    <include file="/db/changelog-auth/schema/002-add-student-version-column.sql"/>
 
 </databaseChangeLog>
