@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import finda.findaauth.application.port.out.user.UserQueryPort
 import finda.findaauth.global.error.filter.ExceptionFilter
 import finda.findaauth.global.security.passport.filter.PassportFilter
+import finda.security.path.SecurityPath
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -43,7 +44,10 @@ class SecurityConfig(
                     "/students/login",
                     "/teachers/signup",
                     "/teachers/login",
+                    "/teachers/verify",
+                    "/teachers/verify-email",
                     "/students/send-verification",
+                    "/teachers/send-verification",
                     "/students/verify-email",
                     "/email/**"
                 ).permitAll()

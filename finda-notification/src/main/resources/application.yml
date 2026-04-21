@@ -5,9 +5,11 @@ server:
     context-path: /finda-notification
 
 grpc:
+  server:
+    port: 9093
   client:
     auth-service:
-      address: ${AUTH_GRPC_ADDRESS} # auth는 서버 역할이라 포트만 열면 되고 notification은 gRPC 클라이언트 역할이라 어디로 연결할지 주소를 알아야 하기 때문에 환경변수 분리
+      address: static://${AUTH_GRPC_ADDRESS:localhost:9090} # auth는 서버 역할이라 포트만 열면 되고 notification은 gRPC 클라이언트 역할이라 어디로 연결할지 주소를 알아야 하기 때문에 환경변수 분리
       negotiation-type: plaintext
 
 spring:
@@ -17,14 +19,8 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${NOTIFICATION_MYSQL_HOST}:${NOTIFICATION_DB_PORT}/${NOTIFICATION_DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    username: ${NOTIFICATION_MYSQL_USERNAME}
-    password: ${NOTIFICATION_MYSQL_PASSWORD}
-
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: finda-notification
 
@@ -47,4 +43,4 @@ spring:
     change-log: classpath:db/changelog-notification/master.xml
 
 passport:
-  secret-key: ${PASSPORT_SECRET_KEY}
+  secret-key: ${PASSPORT_SECRET_KEY:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
