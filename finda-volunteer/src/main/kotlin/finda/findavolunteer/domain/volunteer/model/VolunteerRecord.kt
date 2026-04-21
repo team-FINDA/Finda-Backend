@@ -5,7 +5,7 @@ import java.util.UUID
 data class VolunteerRecord(
     val id: UUID = UUID(0, 0),
     val userId: UUID,
-    val volunteerTime: Int,
+    val volunteerTime: Float,
     val title: String,
     val volunteerId: UUID
 )

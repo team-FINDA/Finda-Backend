@@ -27,4 +27,16 @@ class TeacherParticipationAdapter(
     override fun findByUserIdOrThrow(userId: UUID): TeacherParticipation {
         return findByUserId(userId) ?: throw TeacherParticipationNotFoundException
     }
+
+    override fun findByTeacherIdAndVolunteerId(userId: UUID, volunteerId: UUID): TeacherParticipation? {
+        val entity = teacherParticipationRepository.findByUserIdAndVolunteer_Id(userId, volunteerId)
+        return entity?.let { teacherParticipationMapper.toDomain(it) }
+    }
+
+    override fun findByTeacherIdAndVolunteerIdOrThrow(userId: UUID, volunteerId: UUID): TeacherParticipation {
+        return findByTeacherIdAndVolunteerId(userId, volunteerId) ?: throw TeacherParticipationNotFoundException
+    }
+
+    override fun existsByTeacherIdAndVolunteerId(userId: UUID, volunteerId: UUID) =
+        teacherParticipationRepository.existsByUserIdAndVolunteer_Id(userId, volunteerId)
 }

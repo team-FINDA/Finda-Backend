@@ -7,5 +7,6 @@ import java.util.UUID
 
 @Repository
 interface VolunteerRecordRepository : CrudRepository<VolunteerRecordJpaEntity, UUID> {
-    fun findAllByVolunteerId(volunteerId: UUID): List<VolunteerRecordJpaEntity>
+    fun findAllByUserId(userId: UUID): List<VolunteerRecordJpaEntity>
+    fun findAllByVolunteer_Id(volunteerId: UUID): List<VolunteerRecordJpaEntity>
 }

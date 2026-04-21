@@ -18,7 +18,6 @@ class QrCodeMapper(
             volunteerId = entity.volunteer!!.id!!,
             code = entity.code,
             generatedAt = entity.generatedAt,
-            isUsed = entity.isUsed,
             usedAt = entity.usedAt,
             studentId = entity.studentId,
             teacherId = entity.teacherId
@@ -33,7 +32,6 @@ class QrCodeMapper(
             volunteer = volunteer,
             code = domain.code,
             generatedAt = domain.generatedAt,
-            isUsed = domain.isUsed,
             usedAt = domain.usedAt,
             studentId = domain.studentId,
             teacherId = domain.teacherId

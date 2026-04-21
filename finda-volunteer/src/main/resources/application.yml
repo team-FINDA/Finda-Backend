@@ -5,6 +5,8 @@ server:
     context-path: /finda-volunteer
 
 grpc:
+  server:
+    port: 9094
   client:
     auth-service:
       address: ${AUTH_GRPC_ADDRESS}

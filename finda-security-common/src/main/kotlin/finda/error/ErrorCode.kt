@@ -5,6 +5,7 @@ enum class ErrorCode(
     private val message: String,
     private val sequence: Int
 ) : ErrorProperty {
+    INVALID_ARGUMENT(400, "Invalid Argument", 1),
 
     // jwt
     INVALID_TOKEN(401, "Invalid Token", 1),

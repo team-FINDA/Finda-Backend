@@ -2,6 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.qrcode
 
 import finda.findavolunteer.adapter.out.persistence.qrcode.mapper.QrCodeMapper
 import finda.findavolunteer.adapter.out.persistence.qrcode.repository.QrCodeRepository
+import finda.findavolunteer.application.exception.qrcode.QrCodeNotFoundException
 import finda.findavolunteer.application.port.out.qrcode.QrCodeCommandPort
 import finda.findavolunteer.application.port.out.qrcode.QrCodeQueryPort
 import finda.findavolunteer.domain.qrcode.model.QrCode
@@ -22,5 +23,22 @@ class QrCodePersistenceAdapter(
     override fun findById(id: UUID): QrCode? {
         val entity = qrCodeRepository.findByIdOrNull(id)
         return entity?.let(qrCodeMapper::toDomain)
+    }
+
+    override fun findByQrCode(qrCode: String): QrCode? {
+        val entity = qrCodeRepository.findByCode(qrCode)
+        return entity?.let(qrCodeMapper::toDomain)
+    }
+
+    override fun findByQrCodeOrThrow(qrCode: String): QrCode {
+        return findByQrCode(qrCode) ?: throw QrCodeNotFoundException
+    }
+
+    override fun existsQrCode(qrCode: String): Boolean =
+        qrCodeRepository.existsByCode(qrCode)
+
+    override fun findByQrCodeForUpdateOrThrow(qrCode: String): QrCode {
+        val entity = qrCodeRepository.findByQrCodeForUpdate(qrCode) ?: throw QrCodeNotFoundException
+        return qrCodeMapper.toDomain(entity)
     }
 }

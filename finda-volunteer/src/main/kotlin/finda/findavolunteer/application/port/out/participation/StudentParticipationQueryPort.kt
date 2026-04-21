@@ -5,4 +5,6 @@ import java.util.UUID
 
 interface StudentParticipationQueryPort {
     fun findById(id: UUID): StudentParticipation?
+    fun findByUserIdAndVolunteerId(userId: UUID, volunteerId: UUID): StudentParticipation?
+    fun existsByUserIdAndVolunteerId(userId: UUID, volunteerId: UUID): Boolean
 }

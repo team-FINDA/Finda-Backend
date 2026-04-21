@@ -18,7 +18,7 @@ class VolunteerRecordJpaEntity(
     val userId: UUID,
 
     @Column(name = "volunteer_time", nullable = false)
-    val volunteerTime: Int,
+    val volunteerTime: Float,
 
     @Column(name = "title", nullable = false)
     val title: String,
