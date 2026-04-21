@@ -36,7 +36,7 @@ class VolunteerDocumentPersistenceAdapter(
         val studentMap = studentsInfo.studentsInfoList
             .associateBy { UUID.fromString(it.userId) }
 
-        val records = volunteerRecordRepository.findAllByVolunteerId(volunteerId)
+        val records = volunteerRecordRepository.findAllByVolunteer_Id(volunteerId)
 
         val recordMap = records.associateBy { it.userId }
 
@@ -50,7 +50,7 @@ class VolunteerDocumentPersistenceAdapter(
                 grade = info.userInfo.grade,
                 classNum = info.userInfo.classNum,
                 num = info.userInfo.num,
-                recognizedHours = recordMap[userId]?.volunteerTime ?: 0
+                recognizedHours = recordMap[userId]?.volunteerTime ?: 0F
             )
         }.sortedWith(
             compareBy(

@@ -23,5 +23,5 @@ data class ParticipantInfo(
     val grade: Int,
     val classNum: Int,
     val num: Int,
-    val recognizedHours: Int
+    val recognizedHours: Float,
 )
