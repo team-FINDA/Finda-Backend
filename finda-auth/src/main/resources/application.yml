@@ -1,23 +1,19 @@
 server:
   port: 8081
-  shutdown: graceful
+  shutdown: graceful # 처리 중인 요청을 중간에 끊지 않고 안전하게 마무리하기 위함
   servlet:
     context-path: /finda-auth
 
 grpc:
   server:
     port: 9090
-  client:
-    volunteer-service:
-      address: static://${VOLUNTEER_GRPC_HOST:localhost}:${VOLUNTEER_GRPC_PORT:9091}
-      negotiation-type: plaintext
 
 spring:
   profiles:
     active: ${PROFILE:local}
 
   lifecycle:
-    timeout-per-shutdown-phase: "60s"
+    timeout-per-shutdown-phase: "60s" # 60초 동안 현재 처리 중인 요청을 기다림
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -41,8 +37,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:xavexxn@gmail.com}
-    password: ${MAIL_PASSWORD:ajtp mdgv uycz cnvk}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -56,8 +52,8 @@ spring:
 
   data:
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
       timeout: 3000ms
       lettuce:
@@ -71,14 +67,14 @@ spring:
     change-log: classpath:db/changelog-auth/master.xml
 
 jwt:
-  secret: ${JWT_SECRET:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
+  secret: ${JWT_SECRET}
   access-exp: 3600
   refresh-exp: 604800
   header: Authorization
   prefix: "Bearer "
 
 passport:
-  secret-key: ${PASSPORT_SECRET_KEY:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
+  secret-key: ${PASSPORT_SECRET_KEY}
 
 teacher:
-  signup-secret: ${TEACHER_SIGNUP_SECRET:hello}
+  signup-secret: ${TEACHER_SIGNUP_SECRET}

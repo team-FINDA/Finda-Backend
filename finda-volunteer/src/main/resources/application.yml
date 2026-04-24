@@ -5,11 +5,9 @@ server:
     context-path: /finda-volunteer
 
 grpc:
-  server:
-    port: 9091
   client:
     auth-service:
-      address: static://${AUTH_GRPC_ADDRESS:localhost:9090}
+      address: ${AUTH_GRPC_ADDRESS}
       negotiation-type: plaintext
 
 spring:
@@ -24,7 +22,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
@@ -41,4 +39,4 @@ spring:
     change-log: classpath:db/changelog-volunteer/master.xml
 
 passport:
-  secret-key: ${PASSPORT_SECRET_KEY:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
+  secret-key: ${PASSPORT_SECRET_KEY}

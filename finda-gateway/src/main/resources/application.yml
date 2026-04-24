@@ -27,17 +27,18 @@ spring:
       open-in-view: false
 
 jwt:
-  secret: ${JWT_SECRET:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
+  secret: ${JWT_SECRET}
   access-exp: 3600
   refresh-exp: 604800
   header: Authorization
   prefix: "Bearer "
 
 passport:
-  secret-key: ${PASSPORT_SECRET_KEY:aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789aBcDeFgHiJkLmNoPqRsTuVwXyZ01}
+  secret-key: ${PASSPORT_SECRET_KEY}
 
 app:
   services:
-    volunteer: ${VOLUNTEER_SERVICE_URL:http://localhost:8082}
-    notification: ${NOTIFICATION_SERVICE_URL:http://localhost:8083}
-    auth: ${AUTH_SERVICE_URL:http://localhost:8081}
+    volunteer: ${VOLUNTEER_SERVICE_URL}
+    notification: ${NOTIFICATION_SERVICE_URL}
+    auth: ${AUTH_SERVICE_URL}
+
