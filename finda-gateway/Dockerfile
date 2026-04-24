@@ -1,7 +1,7 @@
 FROM gradle:8-jdk17 AS builder
 WORKDIR /app
 COPY . .
-RUN gradle :finda-gateway:bootJar -x test
+RUN gradle :finda-volunteer:bootJar -x test --no-daemon
 
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
