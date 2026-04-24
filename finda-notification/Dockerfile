@@ -1,7 +1,7 @@
 FROM gradle:8-jdk17 AS builder
 WORKDIR /app
 COPY . .
-RUN gradle :finda-notification:bootJar -x test
+RUN gradle :finda-notification:bootJar -x test --no-daemon
  
 FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
