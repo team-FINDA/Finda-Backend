@@ -2,6 +2,12 @@
 
 --changeset finda-notification:000-create-notification-tables
 
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0
+SELECT COUNT(*) FROM information_schema.tables
+WHERE table_name = 'tbl_notice'
+  AND table_schema = DATABASE();
+
 CREATE TABLE tbl_notice
 (
     id           BINARY(16)   NOT NULL,
@@ -18,7 +24,6 @@ CREATE TABLE tbl_notice
         REFERENCES tbl_user (id)
 ) ENGINE = InnoDB;
 
-
 CREATE TABLE tbl_notification
 (
     id            BINARY(16)   NOT NULL,
@@ -33,7 +38,6 @@ CREATE TABLE tbl_notification
         REFERENCES tbl_volunteer (id)
 ) ENGINE = InnoDB;
 
-
 CREATE TABLE tbl_notification_preference
 (
     id          BINARY(16)   NOT NULL,
@@ -46,7 +50,6 @@ CREATE TABLE tbl_notification_preference
     CONSTRAINT fk_notification_pref_user FOREIGN KEY (user_id)
         REFERENCES tbl_user (id)
 ) ENGINE = InnoDB;
-
 
 CREATE TABLE tbl_volunteer_notification_preference
 (

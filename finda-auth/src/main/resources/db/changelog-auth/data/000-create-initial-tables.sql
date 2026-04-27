@@ -2,6 +2,12 @@
 
 --changeset finda-auth:000-create-auth-tables
 
+--preconditions onFail:MARK_RAN
+--precondition-sql-check expectedResult:0
+SELECT COUNT(*) FROM information_schema.tables
+WHERE table_name = 'tbl_user'
+  AND table_schema = DATABASE();
+
 CREATE TABLE tbl_user
 (
     id           BINARY(16)   NOT NULL,
@@ -23,8 +29,7 @@ CREATE TABLE tbl_student
     grade                  INT         NOT NULL,
     class_num              INT         NOT NULL,
     num                    INT         NOT NULL,
-    total_volunteer_time   INT         NOT NULL DEFAULT 0,
-    version                BIGINT      NOT NULL,
+    total_volunteer_time   FLOAT       NOT NULL DEFAULT 0,
     created_at             DATETIME(6) NOT NULL,
     modified_at            DATETIME(6) NOT NULL,
     PRIMARY KEY (id),
