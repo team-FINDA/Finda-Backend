@@ -43,7 +43,7 @@ class VolunteerNotificationService(
                     title = title,
                     body = body,
                     type = NotificationType.NOTIFICATION,
-                    volunteerId = event.volunteerId.toString()
+                    volunteerId = event.volunteerId
                 )
             )
         } catch (e: Exception) {
@@ -71,7 +71,7 @@ class VolunteerNotificationService(
                     title = title,
                     body = body,
                     type = NotificationType.NOTIFICATION,
-                    volunteerId = event.volunteerId.toString()
+                    volunteerId = event.volunteerId
                 )
             )
         } catch (e: Exception) {
