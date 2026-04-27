@@ -50,3 +50,6 @@ spring:
 
 passport:
   secret-key: ${PASSPORT_SECRET_KEY}
+
+firebase:
+  service-account-json: ${FIREBASE_SERVICE_ACCOUNT_JSON}

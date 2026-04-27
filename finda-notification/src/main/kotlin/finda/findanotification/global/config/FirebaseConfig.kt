@@ -1,11 +1,12 @@
 package finda.findanotification.global.config
 
+import com.google.api.client.util.Value
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import jakarta.annotation.PostConstruct
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.io.ClassPathResource
+import java.io.ByteArrayInputStream
 
 /**
  * 앱 시작 시 서비스 계정 JSON으로 Firebase에 로그인하는 코드
@@ -13,10 +14,13 @@ import org.springframework.core.io.ClassPathResource
 @Configuration
 class FirebaseConfig {
 
+    @Value("\${firebase.service-account-json}")
+    private lateinit var serviceAccountJson: String
+
     @PostConstruct
     fun initialize() {
         if (FirebaseApp.getApps().isEmpty()) {
-            ClassPathResource("firebase-service-account.json").inputStream.use { serviceAccount ->
+            ByteArrayInputStream(serviceAccountJson.toByteArray()).use { serviceAccount ->
                 val options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build()
