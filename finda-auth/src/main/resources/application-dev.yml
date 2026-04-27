@@ -12,3 +12,7 @@ spring:
     properties:
       hibernate:
         show_sql: ${AUTH_DEV_SHOW_SQL}
+grpc:
+  client:
+    volunteer-service:
+      negotiation-type: plaintext

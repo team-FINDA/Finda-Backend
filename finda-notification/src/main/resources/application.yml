@@ -10,7 +10,6 @@ grpc:
   client:
     auth-service:
       address: ${AUTH_GRPC_ADDRESS} # auth는 서버 역할이라 포트만 열면 되고 notification은 gRPC 클라이언트 역할이라 어디로 연결할지 주소를 알아야 하기 때문에 환경변수 분리
-      negotiation-type: plaintext
 
 spring:
   profiles:

@@ -6,7 +6,6 @@ grpc:
   client:
     volunteer-service:
       address: ${VOLUNTEER_GRPC_ADDRESS}
-      negotiation-type: plaintext
 
 spring:
   profiles:
