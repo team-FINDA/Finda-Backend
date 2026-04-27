@@ -7,6 +7,9 @@ server:
 grpc:
   server:
     port: 9091
+  client:
+    volunteer-service:
+      address: ${VOLUNTEER_GRPC_ADDRESS}
 
 spring:
   profiles:
