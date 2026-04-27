@@ -3,10 +3,7 @@
 --changeset finda-notification:000-create-notification-tables
 
 --preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult:0
-SELECT COUNT(*) FROM information_schema.tables
-WHERE table_name = 'tbl_notice'
-  AND table_schema = DATABASE();
+--precondition-sql-check expectedResult 0 SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'tbl_notice' AND table_schema = DATABASE()
 
 CREATE TABLE tbl_notice
 (
