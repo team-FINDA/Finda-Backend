@@ -9,4 +9,4 @@ COPY --from=builder /app/finda-notification/build/libs/*.jar app.jar
 RUN useradd -r -u 10001 appuser && chown -R appuser:appuser /app
 USER appuser
 EXPOSE 8083
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
