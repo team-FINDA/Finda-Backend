@@ -20,4 +20,4 @@ class NotificationPreferenceJpaEntity(
 
     @Column(name = "enabled", nullable = false)
     val enabled: Boolean
-) : BaseEntity()
+) : BaseEntity(id)

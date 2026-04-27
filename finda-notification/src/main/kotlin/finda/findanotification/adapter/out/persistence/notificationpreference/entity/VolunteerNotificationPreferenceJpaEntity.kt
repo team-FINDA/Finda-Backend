@@ -19,4 +19,4 @@ class VolunteerNotificationPreferenceJpaEntity(
 
     @Column(name = "enabled", nullable = false)
     val enabled: Boolean
-) : BaseEntity()
+) : BaseEntity(id)
