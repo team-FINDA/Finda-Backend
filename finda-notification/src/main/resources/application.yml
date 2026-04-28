@@ -4,7 +4,7 @@ server:
   servlet:
     context-path: /finda-notification
 
-grpc:
+grpcs:
   server:
     port: 9093
   client:
@@ -24,7 +24,7 @@ spring:
     username: ${NOTIFICATION_MYSQL_USERNAME}
     password: ${NOTIFICATION_MYSQL_PASSWORD}
 
-  kafka:
+  Kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: finda-notification

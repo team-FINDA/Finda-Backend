@@ -4,7 +4,7 @@ server:
   servlet:
     context-path: /finda-volunteer
 
-grpc:
+grpcs:
   server:
     port: 9094
   client:
