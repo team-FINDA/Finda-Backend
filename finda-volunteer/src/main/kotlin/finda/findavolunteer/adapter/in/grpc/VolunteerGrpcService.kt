@@ -11,12 +11,17 @@ import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.grpc.stub.StreamObserver
 import net.devh.boot.grpc.server.service.GrpcService
+import org.slf4j.LoggerFactory
 import java.util.UUID
 
 @GrpcService
 class VolunteerGrpcService(
     private val getVolunteerService: GetVolunteerService
 ) : VolunteerServiceGrpc.VolunteerServiceImplBase() {
+
+    companion object {
+        private val log = LoggerFactory.getLogger(VolunteerGrpcService::class.java)
+    }
 
     override fun getAllRemindTimes(
         request: Empty,
@@ -67,6 +72,7 @@ class VolunteerGrpcService(
         } catch (e: StatusRuntimeException) {
             observer.onError(e)
         } catch (e: Exception) {
+            log.error("gRPC internal error", e)
             observer.onError(
                 Status.INTERNAL
                     .withDescription("Internal server error")
