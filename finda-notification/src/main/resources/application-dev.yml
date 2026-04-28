@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         show_sql: ${NOTIFICATION_DEV_SHOW_SQL}
-grpcs:
+grpc:
   client:
     auth-service:
       negotiation-type: plaintext

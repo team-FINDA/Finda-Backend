@@ -8,7 +8,7 @@ spring:
     username: ${BATCH_MYSQL_USERNAME}
     password: ${BATCH_MYSQL_PASSWORD}
 
-  Kafka:
+  kafka:
     enabled: true
 
   quartz:

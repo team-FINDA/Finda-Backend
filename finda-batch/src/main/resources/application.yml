@@ -2,7 +2,7 @@ server:
   port: 8084
   shutdown: graceful # 처리 중인 요청을 중간에 끊지 않고 안전하게 마무리하기 위함
 
-grpcs:
+grpc:
   client:
     volunteer-service:
       address: ${VOLUNTEER_GRPC_ADDRESS}
@@ -20,7 +20,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
-  Kafka:
+  kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: finda-batch
