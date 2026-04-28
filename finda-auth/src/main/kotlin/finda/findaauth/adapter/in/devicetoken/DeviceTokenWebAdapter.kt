@@ -3,6 +3,7 @@ package finda.findaauth.adapter.`in`.devicetoken
 import finda.findaauth.adapter.`in`.devicetoken.dto.request.RegisterDeviceTokenWebRequest
 import finda.findaauth.application.port.`in`.devicetoken.RegisterDeviceTokenUseCase
 import finda.findaauth.application.port.`in`.devicetoken.dto.request.RegisterDeviceTokenCommand
+import finda.findaauth.application.service.user.UserFacade
 import finda.findaauth.global.security.principal.CustomUserDetails
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -16,19 +17,20 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/device-tokens")
 class DeviceTokenWebAdapter(
-    private val registerDeviceTokenUseCase: RegisterDeviceTokenUseCase
+    private val registerDeviceTokenUseCase: RegisterDeviceTokenUseCase,
+    private val userFacade: UserFacade
 ) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun registerDeviceToken(
-        @AuthenticationPrincipal customUserDetails: CustomUserDetails,
-        @RequestBody @Valid
-        request: RegisterDeviceTokenWebRequest
+        @RequestBody @Valid request: RegisterDeviceTokenWebRequest
     ) {
+        val userId = userFacade.getCurrentUserId()
+
         registerDeviceTokenUseCase.execute(
             RegisterDeviceTokenCommand(
-                userId = customUserDetails.user.id,
+                userId = userId,
                 deviceToken = request.deviceToken,
                 os = request.os
             )
