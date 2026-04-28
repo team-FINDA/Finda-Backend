@@ -14,6 +14,7 @@ import finda.findavolunteer.domain.volunteer.enum.VolunteerSortBy
 import finda.findavolunteer.domain.volunteer.model.Volunteer
 import finda.findavolunteer.domain.volunteer.model.recurrence.ActivityRecurrenceMonth
 import finda.findavolunteer.domain.volunteer.model.recurrence.ActivityRecurrenceWeek
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.*
@@ -78,6 +79,6 @@ class VolunteerPersistenceAdapter(
     }
 
     override fun findTopActivitiesByUserId(userId: UUID): List<String> {
-        return volunteerRepository.findTop3TitlesByUserId(userId)
+        return volunteerRepository.findTop3TitlesByUserId(userId, PageRequest.of(0, 3))
     }
 }

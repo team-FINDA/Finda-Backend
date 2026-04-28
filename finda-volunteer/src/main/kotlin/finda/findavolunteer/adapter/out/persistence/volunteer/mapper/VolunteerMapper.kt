@@ -2,6 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.volunteer.mapper
 
 import finda.findavolunteer.adapter.out.persistence.GenericMapper
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
+import finda.findavolunteer.domain.volunteer.enum.CycleType
 import finda.findavolunteer.domain.volunteer.model.Volunteer
 import org.springframework.stereotype.Component
 
@@ -19,7 +20,7 @@ class VolunteerMapper : GenericMapper<Volunteer, VolunteerJpaEntity> {
             applicationEndDate = entity.applicationEndDate,
             workStartDate = entity.workStartDate,
             workEndDate = entity.workEndDate,
-            cycleType = entity.cycleType,
+            cycleType = entity.cycleType ?: CycleType.NONE,
             userId = entity.userId,
             remindTime = entity.remindTime,
             description = entity.description,

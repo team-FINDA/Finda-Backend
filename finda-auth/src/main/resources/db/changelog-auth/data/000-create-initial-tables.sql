@@ -1,10 +1,8 @@
 --liquibase formatted sql
 
 --changeset finda-auth:000-create-auth-tables
-
 --preconditions onFail:MARK_RAN
---precondition-sql-check expectedResult 0 SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'tbl_user' AND table_schema = DATABASE()
-
+--precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'tbl_user' AND table_schema = DATABASE()
 CREATE TABLE tbl_user
 (
     id           BINARY(16)   NOT NULL,

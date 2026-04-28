@@ -2,6 +2,7 @@ package finda.findavolunteer.adapter.out.persistence.volunteer.repository
 
 import finda.findavolunteer.adapter.out.persistence.volunteer.entity.VolunteerJpaEntity
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -27,7 +28,6 @@ interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
     ): List<VolunteerJpaEntity>
     fun findAllByRemindTimeIsNotNull(): List<VolunteerJpaEntity>
 
-    // TODO: JPQL은 LIMIT을 공식 지원하지 않음. QueryDSL 전환 시 수정 필요
     @Query(
         """
     SELECT v.title
@@ -37,8 +37,7 @@ interface VolunteerRepository : CrudRepository<VolunteerJpaEntity, UUID> {
     AND sp.status = 'PARTICIPATED'
     GROUP BY v.id, v.title
     ORDER BY SUM(v.unitVolunteerHours) DESC
-    LIMIT 3
 """
     )
-    fun findTop3TitlesByUserId(@Param("userId") userId: UUID): List<String>
+    fun findTop3TitlesByUserId(@Param("userId") userId: UUID, pageable: Pageable): List<String>
 }
