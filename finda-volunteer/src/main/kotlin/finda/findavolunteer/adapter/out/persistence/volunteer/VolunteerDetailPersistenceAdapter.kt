@@ -12,6 +12,7 @@ import finda.findavolunteer.application.port.out.volunteer.VolunteerDetailQueryP
 import finda.findavolunteer.domain.activity.model.Activity
 import finda.findavolunteer.domain.activity.model.UserActivity
 import finda.findavolunteer.domain.participation.model.StudentParticipation
+import finda.findavolunteer.domain.volunteer.enum.CycleType
 import finda.findavolunteer.domain.volunteer.model.Volunteer
 import finda.findavolunteer.domain.volunteer.model.VolunteerDetail
 import finda.findavolunteer.domain.volunteer.model.VolunteerSchedule
@@ -87,7 +88,7 @@ class VolunteerDetailPersistenceAdapter(
             applicationEndDate = volunteerEntity.applicationEndDate,
             workStartDate = volunteerEntity.workStartDate,
             workEndDate = volunteerEntity.workEndDate,
-            cycleType = volunteerEntity.cycleType,
+            cycleType = volunteerEntity.cycleType ?: CycleType.NONE,
             userId = volunteerEntity.userId,
             remindTime = volunteerEntity.remindTime,
             groupVolunteerType = volunteerEntity.groupVolunteerType,
