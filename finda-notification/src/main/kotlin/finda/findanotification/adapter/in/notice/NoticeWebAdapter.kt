@@ -11,6 +11,8 @@ import finda.findanotification.application.port.`in`.notice.UpdateNoticeUseCase
 import finda.findanotification.application.port.`in`.notice.dto.request.DeleteNoticeCommand
 import finda.findanotification.application.port.`in`.notice.dto.request.NoticeCommand
 import finda.findanotification.application.service.user.facade.UserFacade
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
+@Tag(name = "공지", description = "공지 생성, 조회, 수정, 삭제 API")
 @RestController
 @RequestMapping("/notice")
 class NoticeWebAdapter(
@@ -35,6 +38,7 @@ class NoticeWebAdapter(
     private val userFacade: UserFacade
 ) {
 
+    @Operation(summary = "공지 생성", description = "예약 발송할 공지를 생성합니다. 미래 날짜/시간만 허용됩니다.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createNotice(
@@ -54,6 +58,7 @@ class NoticeWebAdapter(
         )
     }
 
+    @Operation(summary = "공지 단건 조회", description = "공지 ID로 특정 공지를 조회합니다.")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun getNotice(
@@ -64,6 +69,7 @@ class NoticeWebAdapter(
         )
     }
 
+    @Operation(summary = "공지 전체 조회", description = "전체 공지 목록을 조회합니다.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getAllNotices(): List<GetAllNoticesWebResponse> {
@@ -71,6 +77,7 @@ class NoticeWebAdapter(
             .map(GetAllNoticesWebResponse::from)
     }
 
+    @Operation(summary = "공지 수정", description = "본인이 작성한 공지의 내용, 날짜, 시간을 수정합니다.")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun updateNotice(
@@ -92,6 +99,7 @@ class NoticeWebAdapter(
         )
     }
 
+    @Operation(summary = "공지 삭제", description = "본인이 작성한 공지를 삭제합니다.")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteNotice(

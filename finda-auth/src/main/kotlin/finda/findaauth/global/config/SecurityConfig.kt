@@ -45,7 +45,9 @@ class SecurityConfig(
                     "/teachers/login",
                     "/students/send-verification",
                     "/students/verify-email",
-                    "/email/**"
+                    "/email/**",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
                 ).permitAll()
                 it.requestMatchers(HttpMethod.GET, "/students").hasAuthority("TEACHER")
                     .anyRequest().authenticated()

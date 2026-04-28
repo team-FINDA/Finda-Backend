@@ -12,4 +12,5 @@ object DependencyVersions {
     const val FIRE_BASE = "9.5.0"
     const val APACHE_POI = "5.3.0"
     const val PDF_BOX = "3.0.1"
+    const val SWAGGER_VERSION = "2.6.0"
 }

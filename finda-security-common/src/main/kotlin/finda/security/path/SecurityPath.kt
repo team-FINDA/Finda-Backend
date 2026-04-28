@@ -9,6 +9,8 @@ object SecurityPath {
         "/teachers/login",
         "/students/send-verification",
         "/students/verify-email",
-        "/email/**"
+        "/email/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**"
     )
 }
