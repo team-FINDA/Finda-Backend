@@ -25,6 +25,10 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authorizeHttpRequests {
+                it.requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
                 it.anyRequest().permitAll()
             }
             .addFilterBefore(passportFilter(), UsernamePasswordAuthenticationFilter::class.java)

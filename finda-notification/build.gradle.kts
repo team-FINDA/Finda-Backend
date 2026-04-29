@@ -47,6 +47,7 @@ dependencies {
     implementation(Dependencies.FIRE_BASE)
     implementation(Dependencies.KAFKA)
     implementation(Dependencies.SPRING_VALIDITY)
+    implementation(Dependencies.SWAGGER)
 }
 
 protobuf {

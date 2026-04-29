@@ -77,3 +77,7 @@ logs/
 .env.example
 CLAUDE.md
 run.sh
+
+### ai agents ###
+AGENTS.md
+.omc

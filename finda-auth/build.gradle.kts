@@ -43,6 +43,7 @@ dependencies {
     implementation(Dependencies.GRPC_CLIENT)
     implementation(Dependencies.GRPC_PROTOBUF)
     implementation(Dependencies.GRPC_STUB)
+    implementation(Dependencies.SWAGGER)
 }
 
 protobuf {
