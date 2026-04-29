@@ -19,6 +19,8 @@ import finda.findaauth.application.port.`in`.student.dto.request.StudentLoginCom
 import finda.findaauth.application.port.`in`.student.dto.request.StudentSignupCommand
 import finda.findaauth.application.port.`in`.student.dto.request.VerifyEmailCodeCommand
 import finda.findaauth.application.service.user.UserFacade
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "학생", description = "학생 회원가입, 로그인, 이메일 인증, 조회 API")
 @RestController
 @RequestMapping("/students")
 class StudentWebAdapter(
@@ -39,6 +42,7 @@ class StudentWebAdapter(
     private val userFacade: UserFacade
 ) {
 
+    @Operation(summary = "이메일 인증 코드 발송", description = "학생 이메일로 인증 코드를 발송합니다.")
     @PostMapping("/send-verification")
     fun sendEmailVerification(
         @Valid @RequestBody
@@ -53,6 +57,7 @@ class StudentWebAdapter(
         )
     }
 
+    @Operation(summary = "이메일 인증 코드 확인", description = "발송된 인증 코드의 유효성을 검증합니다.")
     @PostMapping("/verify-email")
     fun verifyEmailCode(
         @Valid @RequestBody
@@ -68,6 +73,7 @@ class StudentWebAdapter(
         )
     }
 
+    @Operation(summary = "학생 회원가입", description = "이메일 인증 완료 후 학생 계정을 생성합니다.")
     @PostMapping("/signup")
     fun signup(
         @Valid @RequestBody
@@ -82,6 +88,7 @@ class StudentWebAdapter(
         )
     }
 
+    @Operation(summary = "학생 로그인", description = "학번과 비밀번호로 로그인하여 Access/Refresh 토큰을 발급받습니다.")
     @PostMapping("/login")
     fun login(
         @RequestBody @Valid
@@ -97,6 +104,7 @@ class StudentWebAdapter(
         )
     }
 
+    @Operation(summary = "학생 목록 조회", description = "학년/반 조건으로 학생 목록을 조회합니다. TEACHER 권한 필요.")
     @GetMapping
     fun getStudents(
         @RequestParam(required = false) grade: Int?,
@@ -110,6 +118,7 @@ class StudentWebAdapter(
         )
     }
 
+    @Operation(summary = "내 프로필 조회", description = "현재 로그인한 학생의 프로필 정보를 반환합니다.")
     @GetMapping("/me")
     fun getMyProfile(): StudentProfileResponse {
         val userId = userFacade.getCurrentUserId()

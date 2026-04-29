@@ -49,6 +49,7 @@ dependencies {
     // Apache
     implementation(Dependencies.APACHE_POI)
     implementation(Dependencies.PDF_BOX)
+    implementation(Dependencies.SWAGGER)
 }
 
 protobuf {

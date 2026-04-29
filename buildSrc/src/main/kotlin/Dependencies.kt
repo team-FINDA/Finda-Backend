@@ -29,6 +29,8 @@ object Dependencies {
 
     const val LIQUIBASE = "org.liquibase:liquibase-core"
 
+    const val SWAGGER = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${DependencyVersions.SWAGGER_VERSION}"
+
     // Netty DNS resolver for MacOS
     const val NETTY_DNS_MACOS = "io.netty:netty-resolver-dns-native-macos:${DependencyVersions.NETTY_DNS}"
     const val GRPC_SERVER = "net.devh:grpc-server-spring-boot-starter:${DependencyVersions.GRPC_STARTER}"

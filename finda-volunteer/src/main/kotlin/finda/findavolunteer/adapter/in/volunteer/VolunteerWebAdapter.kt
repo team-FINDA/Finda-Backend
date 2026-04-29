@@ -11,6 +11,8 @@ import finda.findavolunteer.application.port.`in`.volunteer.ExportVolunteerDocum
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerDetailUseCase
 import finda.findavolunteer.application.port.`in`.volunteer.VolunteerListUseCase
 import finda.findavolunteer.domain.volunteer.enum.VolunteerStatus
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
+@Tag(name = "봉사활동", description = "봉사활동 생성, 조회, 삭제, 문서 출력 API")
 @RestController
 @RequestMapping("/volunteers")
 class VolunteerWebAdapter(
@@ -36,16 +39,19 @@ class VolunteerWebAdapter(
     val volunteerListUseCase: VolunteerListUseCase,
     val exportVolunteerDocumentUseCase: ExportVolunteerDocumentUseCase
 ) {
+    @Operation(summary = "봉사활동 생성", description = "새 봉사활동을 등록합니다.")
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     fun createVolunteer(@RequestBody request: CreateVolunteerRequest) =
         createVolunteerUseCase.execute(request.toCommand())
 
+    @Operation(summary = "봉사활동 상세 조회", description = "봉사활동 ID로 상세 정보를 조회합니다.")
     @GetMapping("/{volunteerId}")
     @ResponseStatus(value = HttpStatus.OK)
     fun getVolunteer(@PathVariable volunteerId: UUID): VolunteerDetailResponse =
         volunteerDetailUseCase.execute(volunteerId).toResponse()
 
+    @Operation(summary = "봉사활동 목록 조회", description = "상태(status), 연도(year), 정렬 기준(sortBy)으로 봉사활동 목록을 조회합니다.")
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     fun getVolunteers(
@@ -58,10 +64,12 @@ class VolunteerWebAdapter(
         sortBy = sortBy
     ).map { it.toResponse() }
 
+    @Operation(summary = "봉사활동 삭제", description = "봉사활동 ID로 봉사활동을 삭제합니다.")
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     fun deleteVolunteer(@RequestParam volunteerId: UUID) = deleteVolunteerUseCase.execute(volunteerId)
 
+    @Operation(summary = "봉사활동 확인서 출력", description = "봉사활동 확인서를 PDF로 출력합니다.")
     @GetMapping("/{volunteerId}/export", produces = [MediaType.APPLICATION_PDF_VALUE])
     fun exportDocument(
         @PathVariable volunteerId: UUID
