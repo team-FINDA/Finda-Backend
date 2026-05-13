@@ -8,7 +8,6 @@ object SecurityPath {
         "/teachers/verify-email",
         "/teachers/signup",
         "/teachers/login",
-        "/teachers/verify",
 
         "/students/signup",
         "/students/login",
