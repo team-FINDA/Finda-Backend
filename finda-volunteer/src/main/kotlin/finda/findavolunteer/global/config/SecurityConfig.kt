@@ -4,6 +4,7 @@ import finda.findavolunteer.global.security.passport.filter.PassportFilter
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -29,7 +30,40 @@ class SecurityConfig(
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                it.anyRequest().permitAll()
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/volunteers"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/volunteers",
+                    "/volunteers/*"
+                ).authenticated()
+                it.requestMatchers(
+                    HttpMethod.DELETE,
+                    "/volunteers"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/volunteers/*/export"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/qr-codes"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/qr-codes/attendance"
+                ).hasAuthority("STUDENT")
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/qr-codes/attendance/students"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/activities/user"
+                ).hasAuthority("TEACHER")
+                it.anyRequest().denyAll()
             }
             .addFilterBefore(passportFilter(), UsernamePasswordAuthenticationFilter::class.java)
             .build()
