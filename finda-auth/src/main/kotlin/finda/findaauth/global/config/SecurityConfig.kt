@@ -37,20 +37,42 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it.requestMatchers(
-                    "/auth/test",
-                    "/auth/reissue",
-                    "/students/signup",
-                    "/students/login",
-                    "/teachers/signup",
-                    "/teachers/login",
-                    "/students/send-verification",
-                    "/students/verify-email",
-                    "/email/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                it.requestMatchers(HttpMethod.GET, "/students").hasAuthority("TEACHER")
-                    .anyRequest().authenticated()
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/auth/reissue"
+                ).permitAll()
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/students/send-verification",
+                    "/students/verify-email",
+                    "/students/signup",
+                    "/students/login",
+                    "/teachers/verify",
+                    "/teachers/send-verification",
+                    "/teachers/verify-email",
+                    "/teachers/signup",
+                    "/teachers/login"
+                ).permitAll()
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/students"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/students/me"
+                ).hasAuthority("STUDENT")
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/teachers/me"
+                ).hasAuthority("TEACHER")
+                it.requestMatchers(
+                    HttpMethod.POST,
+                    "/device-tokens"
+                ).authenticated()
+                it.anyRequest().denyAll()
             }
             .addFilterBefore(PassportFilter(passportProperties, userQueryPort), UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(ExceptionFilter(objectMapper), PassportFilter::class.java)
